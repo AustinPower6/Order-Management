@@ -85,7 +85,11 @@ v75 (2026-07-15): benutzer — Spalte geloescht entfernt. Löschen ist endgülti
                   der UNIQUE-Login sonst durch soft-gelöschte Zeilen dauerhaft
                   blockiert blieb. Bereits soft-gelöschte Benutzer werden dadurch
                   wieder sichtbar (siehe _to_v75).
-Nächste freie Version: v76.
+v76 (2026-07-15): benutzer — Spalte geloescht wieder eingeführt, v75 umgekehrt.
+                  Benutzer müssen für ein späteres Änderungsprotokoll dauerhaft
+                  erhalten bleiben; der belegte Login wird stattdessen über das
+                  Wiederherstellen in der Oberfläche gelöst (siehe _to_v76).
+Nächste freie Version: v77.
 """
 import os
 import shutil
@@ -1790,7 +1794,33 @@ def _to_v75(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 75
+def _to_v76(conn):
+    """benutzer: Spalte geloescht wieder einführen — Soft-Delete statt Hard-Delete.
+
+    Kehrt v75 (vom selben Tag) bewusst um. Grund: Benutzer müssen dauerhaft
+    erhalten bleiben, damit ein späteres Änderungsprotokoll auch auf gelöschte
+    Benutzer verweisen kann. Ein hart gelöschter Benutzer hinterlässt dort eine
+    nicht mehr auflösbare ID.
+
+    Damit ist die Login-Sperre aus v74 zurück (`login` ist UNIQUE, die gelöschte
+    Zeile belegt ihn weiter) — gelöst wird sie jetzt in der Oberfläche: Beim
+    Anlegen desselben Logins bietet die Benutzerverwaltung das Wiederherstellen
+    des gelöschten Benutzers an (`restore_benutzer`), statt einen zweiten
+    Datensatz mit demselben Login zuzulassen.
+
+    Alle bestehenden Benutzer starten mit geloescht=0. Wer vor v75 gelöscht war,
+    ist durch den Spaltenwegfall bereits sichtbar geworden und bleibt es — die
+    Information war ab v75 nicht mehr in der DB. Betroffene Benutzer sind in der
+    Benutzerverwaltung erneut zu löschen (Auto-Backup …db.74 enthält den alten
+    Stand). Idempotent über die PRAGMA-Prüfung.
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(benutzer)").fetchall()}
+    if "geloescht" not in cols:
+        conn.execute("ALTER TABLE benutzer ADD COLUMN geloescht INTEGER DEFAULT 0")
+    conn.commit()
+
+
+CURRENT_VERSION = 76
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1867,6 +1897,7 @@ MIGRATIONEN: dict = {
     73: _to_v73,
     74: _to_v74,
     75: _to_v75,
+    76: _to_v76,
 }
 
 

@@ -8177,3 +8177,26 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
 - `_to_v75` löscht soft-gelöschte Benutzer **nicht** hart, sie werden durch den Spaltenwegfall wieder sichtbar. Stiller Datenverlust wäre die schlechtere Überraschung als ein wieder auftauchender Benutzer, den ein Admin sichtbar erneut löschen kann. Die Benutzerverwaltung ist erst seit v74 (Vortag) im Feld.
 
 **Hinweis (vorbestehend, nicht angefasst):** Die Versionshistorie im Docstring von `DB-Pflege.py` hatte eine Lücke — v72–v74 sind dort nie eingetragen worden, „Nächste freie Version" stand noch auf v72. Die Angabe ist jetzt auf v76 korrigiert und v75 dokumentiert; die fehlenden v72–v74 wurden bewusst nicht nachgetragen (out of scope).
+
+
+## 2026-07-15 10:50 — Benutzer: Soft-Delete zurück (DB v76), Wiederherstellen, drei Zustände
+
+**Auslöser:** Korrektur der Entscheidung vom selben Vormittag. Benutzer müssen dauerhaft erhalten bleiben — ein späteres **Änderungsprotokoll** muss auch auf gelöschte Benutzer verweisen können; ein hart gelöschter Benutzer hinterlässt dort eine nicht auflösbare ID. Damit ist v75 (Hard-Delete) fachlich falsch und wird zurückgedreht.
+
+**Zielbild (drei Zustände), vom Anwender vorgegeben:**
+1. **aktiv** — in der Liste, Anmeldung möglich.
+2. **inaktiv** (`aktiv=0`) — in der Liste sichtbar, keine Anmeldung.
+3. **gelöscht** (`geloescht=1`) — nicht in der Liste, keine Anmeldung, Datensatz bleibt in der DB.
+
+**Kernproblem und Lösung:** `benutzer.login` ist UNIQUE, die gelöschte Zeile belegt den Login weiter — genau die Sackgasse, die v75 beseitigen sollte. Statt eines partiellen UNIQUE-Index (zweiter Datensatz mit gleichem Login → im Protokoll mehrdeutig) wird sie jetzt in der Oberfläche gelöst: Beim Anlegen desselben Logins wird das **Wiederherstellen** angeboten. Es bleibt bei **einer** Zeile pro Login, ein Protokolleintrag ist damit immer eindeutig einer Person zuordenbar.
+
+**Umgesetzt:**
+- **DB v76** (beide Pflichtstellen): `_to_v76` führt `benutzer.geloescht` wieder ein (`ADD COLUMN`, idempotent), `db_schema.py` entsprechend; der Tabellenkommentar dokumentiert jetzt die drei Zustände und warum nie hart gelöscht wird.
+- `app/db/db_benutzer.py`: `delete_benutzer` wieder Soft-Delete (Rechte-Matrix bleibt stehen — ohne Anmeldung wirkungslos, beim Wiederherstellen sofort wieder gültig). Neu `restore_benutzer` und `get_geloeschten_benutzer_by_login`. `geloescht`-Filter zurück in `get_benutzer_alle` (inkl. Parameter `inkl_geloescht`), `get_benutzer_by_login`, `anzahl_benutzer`, `anzahl_aktive_admins`.
+- `app/dlg_benutzerverwaltung.py`: Checkbox **„Gelöschte anzeigen"** (grau + kursiv, Login mit Zusatz „(gelöscht)"). `_sel(ohne_geloeschte=True)` lehnt Bearbeiten/Löschen/Passwort-Reset für gelöschte ab und nennt den Weg zurück. **Wiederherstellen-Fluss:** `_login_pruefen` prüft beim Verlassen des Login-Felds (und nochmals beim Speichern) auf einen gelöschten Benutzer und fragt; bei Ja setzt der Dialog `restore_id` und schließt, die Liste stellt wieder her und öffnet den regulären Bearbeiten-Dialog über `_bearbeiten_id`. Bewusst so: Der Neuanlage-Dialog hat eine **leere** Rechte-Matrix, und `_speichern` schreibt sie immer — ein Wiederherstellen im Speichern-Pfad hätte die alten Rechte der gewählten Firma still gelöscht. Über den Umweg gelten wieder Sperre (`try_lock`) und echte Daten.
+- `app/dlg_benutzerverwaltung.py`: `_bearbeiten` bleibt parameterlos, die ID-Variante liegt in `_bearbeiten_id` — an `clicked`/`doubleClicked` würde Qt sonst `checked` bzw. den QModelIndex als benutzer_id durchreichen.
+- `app/language.json`: 5 neue Keys (`benutzer.geloeschte_anzeigen`, `benutzer.ist_geloescht`, `benutzer.login_geloescht`, `benutzer.restore_titel`, `benutzer.restore_frage`), `benutzer.loeschen_frage` zurück auf Soft-Delete-Semantik (DE+EN).
+
+**Verifikation:** `ruff check app` grün; `py_compile`; `language.json` lädt (1795 Keys, alle neuen Keys DE+EN). Migration v75 → v76 real beim App-Start gefahren (Backup `…db.75`): Spalte wieder da, DB-Version 76. Auf **Kopie** der echten DB alle drei Zustände geprüft: inaktiv → sichtbar/keine Anmeldung; gelöscht → unsichtbar, keine Anmeldung, Datensatz + Rechte erhalten, `login_existiert` weiter True; Wiederherstellen → sichtbar, Anmeldung, Rechte unverändert. UI headless (offscreen): Rückfrage bei gelöschtem Login (case-insensitive) setzt `restore_id`, „Nein" nicht, zweite Frage wird unterdrückt, freier Login fragt nicht; Liste zeigt gelöschte nur mit Checkbox (kursiv/grau, „(gelöscht)"), Guard lehnt Aktionen auf gelöschte ab.
+
+**Datenverlust im v75-Zeitfenster (dokumentiert):** Zwischen v75 (10:25) und v76 (10:46) war der Hard-Delete aktiv. In dieser Zeit wurde **David2 (id 4) hart gelöscht** und ist aus der produktiven DB unwiederbringlich weg; das Auto-Backup `daten/auftragsabwicklung.db.74` (10:19) enthält ihn noch. David (id 3) wurde nach v76 regulär soft-gelöscht (`geloescht=1`, 15 Rechte-Zeilen erhalten) und lässt sich über die Login-Rückfrage zurückholen.

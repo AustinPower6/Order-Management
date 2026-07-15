@@ -115,6 +115,10 @@ class BenutzerVerwaltungDialog(settings.DialogSizeMixin, QDialog):
         hint.setStyleSheet(theme.hint_label_style())
         lay.addWidget(hint)
 
+        self._geloescht_cb = QCheckBox(_("benutzer.geloeschte_anzeigen"))
+        self._geloescht_cb.stateChanged.connect(self._refresh)
+        lay.addWidget(self._geloescht_cb)
+
         self.table = QTableWidget()
         self.table.setColumnCount(6)
         self.table.setHorizontalHeaderLabels([
@@ -148,7 +152,8 @@ class BenutzerVerwaltungDialog(settings.DialogSizeMixin, QDialog):
 
     # ── Liste ───────────────────────────────────────────────────────────
     def _refresh(self):
-        self._benutzer = [dict(b) for b in self.db.get_benutzer_alle()]
+        self._benutzer = [dict(b) for b in self.db.get_benutzer_alle(
+            inkl_geloescht=self._geloescht_cb.isChecked())]
         self.table.setRowCount(len(self._benutzer))
         for r, b in enumerate(self._benutzer):
             if b.get("ist_admin"):
@@ -157,8 +162,10 @@ class BenutzerVerwaltungDialog(settings.DialogSizeMixin, QDialog):
                 rolle = _("benutzer.rolle.benutzerverwaltung")
             else:
                 rolle = _("benutzer.rolle.benutzer")
+            geloescht = bool(b.get("geloescht"))
+            login = b.get("login") or ""
             werte = [
-                b.get("login") or "",
+                _("benutzer.login_geloescht", login=login) if geloescht else login,
                 b.get("name") or "",
                 b.get("email") or "",
                 _(f"benutzer.anmeldeart.{b.get('anmeldeart') or 'passwort'}"),
@@ -167,42 +174,69 @@ class BenutzerVerwaltungDialog(settings.DialogSizeMixin, QDialog):
             ]
             for c, v in enumerate(werte):
                 item = QTableWidgetItem(v)
-                if not b.get("aktiv"):
+                if geloescht or not b.get("aktiv"):
                     item.setForeground(theme.status_qcolor("muted"))
+                if geloescht:
+                    f = item.font()
+                    f.setItalic(True)
+                    item.setFont(f)
                 self.table.setItem(r, c, item)
 
-    def _sel(self):
+    def _sel(self, ohne_geloeschte=True):
+        """Markierter Benutzer. `ohne_geloeschte` lehnt gelöschte ab — sie sind
+        nur zur Einsicht eingeblendet; zurückholen lassen sie sich über „Neu" mit
+        demselben Login (Rückfrage zum Wiederherstellen)."""
         r = self.table.currentRow()
         if r < 0 or r >= len(self._benutzer):
             zeige_warnung(self, _("msg.hinweis"), _("benutzer.bitte_waehlen"))
             return None
-        return self._benutzer[r]
+        b = self._benutzer[r]
+        if ohne_geloeschte and b.get("geloescht"):
+            zeige_warnung(self, _("msg.hinweis"),
+                          _("benutzer.ist_geloescht", login=b.get("login") or ""))
+            return None
+        return b
 
     # ── Aktionen ────────────────────────────────────────────────────────
     def _neu(self):
         dlg = BenutzerEditDialog(self, self.db, None)
-        if dlg.exec():
+        gespeichert = bool(dlg.exec())
+        restore_id = dlg.restore_id
+        if gespeichert:
             self._refresh()
             session.rechte_neuladen(self.db)
+        if restore_id:
+            # Der Login gehört zu einem gelöschten Benutzer und der Admin will ihn
+            # zurück: wiederherstellen und regulär zum Bearbeiten öffnen — mit
+            # Sperre und seinen alten Rechten, statt sie mit einer leeren Matrix
+            # aus der Neuanlage zu überschreiben.
+            self.db.restore_benutzer(restore_id)
+            self._refresh()
+            self._bearbeiten_id(restore_id)
 
     def _bearbeiten(self):
         b = self._sel()
-        if not b:
-            return
-        ok, _info = lock_manager.try_lock(self.db, "benutzer", b["id"],
+        if b:
+            self._bearbeiten_id(b["id"])
+
+    def _bearbeiten_id(self, benutzer_id):
+        """Bearbeiten-Dialog für eine bekannte ID (eigene Methode, damit
+        `_bearbeiten` parameterlos an clicked/doubleClicked hängen kann — Qt würde
+        sonst checked bzw. den QModelIndex als ID durchreichen)."""
+        ok, _info = lock_manager.try_lock(self.db, "benutzer", benutzer_id,
                                           Module.BENUTZER, self)
         if not ok:
             return
         gespeichert = False
         try:
-            dlg = BenutzerEditDialog(self, self.db, b["id"])
+            dlg = BenutzerEditDialog(self, self.db, benutzer_id)
             if dlg.exec():
                 gespeichert = True
                 self._refresh()
                 session.rechte_neuladen(self.db)
         finally:
             if not gespeichert:
-                lock_manager.release_lock_beim_schliessen(self.db, "benutzer", b["id"])
+                lock_manager.release_lock_beim_schliessen(self.db, "benutzer", benutzer_id)
 
     def _loeschen(self):
         b = self._sel()
@@ -253,6 +287,11 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
         self.db = db
         self.benutzer_id = benutzer_id
         self._dirty = False
+        # Gesetzt, wenn der eingegebene Login zu einem gelöschten Benutzer gehört
+        # und der Admin ihn zurückholen will — die Liste erledigt das dann
+        # (Wiederherstellen + regulärer Bearbeiten-Dialog mit Sperre).
+        self.restore_id = None
+        self._restore_gefragt = ""
         self.setWindowTitle(_("benutzer.edit_titel") if benutzer_id
                             else _("benutzer.neu_titel"))
         self._build()
@@ -267,6 +306,8 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
         self._login = QLineEdit()
         if self.benutzer_id:
             self._login.setReadOnly(True)   # Login ist nach der Anlage unveränderlich
+        else:
+            self._login.editingFinished.connect(self._login_pruefen)
         form.addRow(_("benutzer.col.login"), self._login)
         self._name = QLineEdit()
         form.addRow(_("benutzer.col.name"), self._name)
@@ -449,11 +490,41 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
             cb.setCurrentIndex(cb.findData(int(m.get(mk, rechte.KEIN))))
         self._mark_dirty()
 
+    def _login_pruefen(self):
+        """Beim Verlassen des Login-Felds prüfen, ob der Login zu einem gelöschten
+        Benutzer gehört, und das Wiederherstellen anbieten.
+
+        Bewusst hier statt beim Speichern: Der Admin sieht sofort, dass es den
+        Benutzer schon gibt, und bekommt über die Liste dessen echte Daten samt
+        Rechten — die leere Matrix dieses Anlegen-Fensters darf sie nicht
+        überschreiben. Rückgabe True = Dialog schließt sich, die Liste übernimmt.
+        """
+        login = self._login.text().strip()
+        if not login or login.lower() == self._restore_gefragt.lower():
+            return False
+        alt = self.db.get_geloeschten_benutzer_by_login(login)
+        if not alt:
+            return False
+        self._restore_gefragt = login   # pro Login nur einmal fragen
+        alt = dict(alt)
+        from PyQt6.QtWidgets import QMessageBox
+        if QMessageBox.question(
+                self, _("benutzer.restore_titel"),
+                _("benutzer.restore_frage", login=alt.get("login") or login,
+                  name=alt.get("name") or "")) != QMessageBox.StandardButton.Yes:
+            return False
+        self.restore_id = alt["id"]
+        self._dirty = False             # kein „Änderungen verwerfen?" beim Schließen
+        self.reject()
+        return True
+
     def _speichern(self):
         login = self._login.text().strip()
         if not login:
             zeige_warnung(self, _("msg.fehler"), _("benutzer.login_pflicht"))
             return
+        if self._login_pruefen():
+            return                      # gelöschter Benutzer wird wiederhergestellt
         if self.db.login_existiert(login, ausser_id=self.benutzer_id):
             zeige_warnung(self, _("msg.fehler"), _("benutzer.login_vergeben", login=login))
             return

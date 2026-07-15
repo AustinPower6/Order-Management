@@ -477,195 +477,321 @@
   },
   "benutzer.absender_firma": {
     "de": "Absender-Firma für Passwort-Mails:",
-    "en": "Sender company for password emails:"
+    "en": "Sender company for password emails:",
+    "ts": "2026-07-15 10:46",
+    "h": "b716928b49dc"
   },
   "benutzer.absender_hinweis": {
     "de": "Initialpasswörter und Passwort-Rücksetzungen werden über die E-Mail-Einstellungen dieser Firma versendet. Möglich ist das nur mit Brevo, Gmail oder SMTP — Outlook kann nicht automatisch versenden.",
-    "en": "Initial passwords and password resets are sent using this company's email settings. This only works with Brevo, Gmail or SMTP — Outlook cannot send automatically."
+    "en": "Initial passwords and password resets are sent using this company's email settings. This only works with Brevo, Gmail or SMTP — Outlook cannot send automatically.",
+    "ts": "2026-07-15 10:46",
+    "h": "ff96e71f057b"
   },
   "benutzer.absender_keine": {
     "de": "— nicht konfiguriert —",
-    "en": "— not configured —"
+    "en": "— not configured —",
+    "ts": "2026-07-15 10:46",
+    "h": "0276893382bc"
   },
   "benutzer.anmeldeart.passwort": {
     "de": "Login + Passwort",
-    "en": "Login + password"
+    "en": "Login + password",
+    "ts": "2026-07-15 10:46",
+    "h": "d7ed9c834c7e"
   },
   "benutzer.anmeldeart.windows": {
     "de": "Windows-Anmeldung",
-    "en": "Windows sign-in"
+    "en": "Windows sign-in",
+    "ts": "2026-07-15 10:46",
+    "h": "099f6f8b700c"
   },
   "benutzer.bitte_waehlen": {
     "de": "Bitte wählen Sie einen Benutzer aus.",
-    "en": "Please select a user."
+    "en": "Please select a user.",
+    "ts": "2026-07-15 10:46",
+    "h": "6d67d75353bf"
   },
   "benutzer.btn_alle_stufe": {
     "de": "Alle: {stufe}",
-    "en": "All: {stufe}"
+    "en": "All: {stufe}",
+    "ts": "2026-07-15 10:46",
+    "h": "8b48a6934b15"
   },
   "benutzer.btn_pw_reset": {
     "de": "Passwort zurücksetzen",
-    "en": "Reset password"
+    "en": "Reset password",
+    "ts": "2026-07-15 10:46",
+    "h": "7ccd51dbf23a"
   },
   "benutzer.btn_rechte_uebernehmen": {
     "de": "Rechte von Firma übernehmen…",
-    "en": "Copy permissions from company…"
+    "en": "Copy permissions from company…",
+    "ts": "2026-07-15 10:46",
+    "h": "6cef87fac284"
   },
   "benutzer.col.aktiv": {
     "de": "Aktiv",
-    "en": "Active"
+    "en": "Active",
+    "ts": "2026-07-15 10:46",
+    "h": "2e77b08c012e"
   },
   "benutzer.col.anmeldeart": {
     "de": "Anmeldung",
-    "en": "Sign-in"
+    "en": "Sign-in",
+    "ts": "2026-07-15 10:46",
+    "h": "c6049fa51da4"
   },
   "benutzer.col.email": {
     "de": "E-Mail",
-    "en": "Email"
+    "en": "Email",
+    "ts": "2026-07-15 10:46",
+    "h": "f02954137678"
   },
   "benutzer.col.login": {
     "de": "Benutzer",
-    "en": "User"
+    "en": "User",
+    "ts": "2026-07-15 10:46",
+    "h": "9d3de98e5e98"
   },
   "benutzer.col.name": {
     "de": "Name",
-    "en": "Name"
+    "en": "Name",
+    "ts": "2026-07-15 10:46",
+    "h": "a504a1a1d4c7"
   },
   "benutzer.col.programmteil": {
     "de": "Programmteil",
-    "en": "Program area"
+    "en": "Program area",
+    "ts": "2026-07-15 10:46",
+    "h": "3452923862b4"
   },
   "benutzer.col.rolle": {
     "de": "Rolle",
-    "en": "Role"
+    "en": "Role",
+    "ts": "2026-07-15 10:46",
+    "h": "2491dd816a1d"
   },
   "benutzer.col.stufe": {
     "de": "Recht",
-    "en": "Permission"
+    "en": "Permission",
+    "ts": "2026-07-15 10:46",
+    "h": "42cd0ddd6728"
   },
   "benutzer.dlg_titel": {
     "de": "Benutzerverwaltung",
-    "en": "User management"
+    "en": "User management",
+    "ts": "2026-07-15 10:46",
+    "h": "d315161e2066"
   },
   "benutzer.edit_titel": {
     "de": "Benutzer bearbeiten",
-    "en": "Edit user"
+    "en": "Edit user",
+    "ts": "2026-07-15 10:46",
+    "h": "32027bbde2cf"
   },
   "benutzer.email_pflicht": {
     "de": "Für die Anmeldung mit Passwort wird eine E-Mail-Adresse benötigt — an sie geht das Initialpasswort.",
-    "en": "An email address is required for password sign-in — the initial password is sent to it."
+    "en": "An email address is required for password sign-in — the initial password is sent to it.",
+    "ts": "2026-07-15 10:46",
+    "h": "b5807d56f327"
   },
   "benutzer.erst_speichern": {
     "de": "Bitte speichern Sie den Benutzer zuerst — danach lassen sich Rechte übernehmen.",
-    "en": "Please save the user first — permissions can be copied afterwards."
+    "en": "Please save the user first — permissions can be copied afterwards.",
+    "ts": "2026-07-15 10:46",
+    "h": "7f5d647eaf3c"
+  },
+  "benutzer.geloeschte_anzeigen": {
+    "de": "Gelöschte anzeigen",
+    "en": "Show deleted",
+    "ts": "2026-07-15 10:46",
+    "h": "f2cd8e990e1e"
   },
   "benutzer.ist_admin_hinweis": {
     "de": "darf alles, in allen Firmen (Rechte-Matrix wird nicht ausgewertet)",
-    "en": "may do everything, in all companies (permission matrix is ignored)"
+    "en": "may do everything, in all companies (permission matrix is ignored)",
+    "ts": "2026-07-15 10:46",
+    "h": "d41fadf67655"
+  },
+  "benutzer.ist_geloescht": {
+    "de": "Der Benutzer „{login}“ ist gelöscht und wird nur zur Einsicht angezeigt.\n\nUm ihn zurückzuholen: „Neu“ wählen und denselben Login eingeben — dann wird das Wiederherstellen angeboten.",
+    "en": "User “{login}” is deleted and shown for reference only.\n\nTo bring them back: choose “New” and enter the same login — you will then be offered to restore them.",
+    "ts": "2026-07-15 10:46",
+    "h": "c4136dc744bc"
   },
   "benutzer.ja": {
     "de": "ja",
-    "en": "yes"
+    "en": "yes",
+    "ts": "2026-07-15 10:46",
+    "h": "2194ee7566db"
   },
   "benutzer.letzter_admin": {
     "de": "Das ist der letzte aktive Administrator — sonst könnte sich niemand mehr anmelden und Rechte vergeben.",
-    "en": "This is the last active administrator — otherwise nobody could sign in and assign permissions any more."
+    "en": "This is the last active administrator — otherwise nobody could sign in and assign permissions any more.",
+    "ts": "2026-07-15 10:46",
+    "h": "c54337714ffd"
   },
   "benutzer.loeschen_frage": {
-    "de": "Benutzer „{login}“ endgültig löschen?\n\nDer Benutzer wird mit allen Rechten unwiderruflich entfernt. Der Login „{login}“ ist danach wieder frei und kann neu vergeben werden.",
-    "en": "Permanently delete user “{login}”?\n\nThe user and all their permissions are removed for good. The login “{login}” becomes available again afterwards."
+    "de": "Benutzer „{login}“ löschen?\n\nEr verschwindet aus der Liste und kann sich nicht mehr anmelden. Der Datensatz bleibt erhalten (für spätere Auswertungen) und lässt sich über „Gelöschte anzeigen“ einsehen. Beim Anlegen desselben Logins wird angeboten, ihn wiederherzustellen.",
+    "en": "Delete user “{login}”?\n\nThey disappear from the list and can no longer sign in. The record is kept (for later audits) and stays visible via “Show deleted”. Creating the same login again offers to restore them.",
+    "ts": "2026-07-15 10:46",
+    "h": "b47b7c03f730"
+  },
+  "benutzer.login_geloescht": {
+    "de": "{login} (gelöscht)",
+    "en": "{login} (deleted)",
+    "ts": "2026-07-15 10:46",
+    "h": "15dc99dd1658"
   },
   "benutzer.login_pflicht": {
     "de": "Bitte geben Sie einen Benutzernamen (Login) ein.",
-    "en": "Please enter a user name (login)."
+    "en": "Please enter a user name (login).",
+    "ts": "2026-07-15 10:46",
+    "h": "041b826fc543"
   },
   "benutzer.login_vergeben": {
     "de": "Der Login „{login}“ ist bereits vergeben.",
-    "en": "The login “{login}” is already taken."
+    "en": "The login “{login}” is already taken.",
+    "ts": "2026-07-15 10:46",
+    "h": "7ed1f2a10d0e"
   },
   "benutzer.mail.fehler_text": {
     "de": "Die E-Mail konnte nicht versendet werden:\n{fehler}\n\nBitte geben Sie das Passwort persönlich weiter:\n\nBenutzer: {login}\nPasswort: {passwort}\n\nEs wird beim ersten Anmelden geändert. Der Vorfall steht in der Fehler-Nachverfolgung.",
-    "en": "The email could not be sent:\n{fehler}\n\nPlease pass the password on personally:\n\nUser: {login}\nPassword: {passwort}\n\nIt must be changed at first sign-in. The incident is recorded in the error tracking."
+    "en": "The email could not be sent:\n{fehler}\n\nPlease pass the password on personally:\n\nUser: {login}\nPassword: {passwort}\n\nIt must be changed at first sign-in. The incident is recorded in the error tracking.",
+    "ts": "2026-07-15 10:46",
+    "h": "9753019e7373"
   },
   "benutzer.mail.fehler_titel": {
     "de": "Passwort konnte nicht versendet werden",
-    "en": "Password could not be sent"
+    "en": "Password could not be sent",
+    "ts": "2026-07-15 10:46",
+    "h": "91b4fa9c0f1c"
   },
   "benutzer.mail.gesendet": {
     "de": "Das Passwort wurde an {empfaenger} versendet.",
-    "en": "The password was sent to {empfaenger}."
+    "en": "The password was sent to {empfaenger}.",
+    "ts": "2026-07-15 10:46",
+    "h": "95a8e9b2823d"
   },
   "benutzer.mail.gesendet_titel": {
     "de": "Passwort versendet",
-    "en": "Password sent"
+    "en": "Password sent",
+    "ts": "2026-07-15 10:46",
+    "h": "d98a26bfd059"
   },
   "benutzer.mail.initial_betreff": {
     "de": "Ihr Zugang zur Auftragsabwicklung",
-    "en": "Your access to the order management system"
+    "en": "Your access to the order management system",
+    "ts": "2026-07-15 10:46",
+    "h": "3faf81168d18"
   },
   "benutzer.mail.initial_text": {
     "de": "Guten Tag,\n\nfür Sie wurde ein Zugang zur Auftragsabwicklung eingerichtet.\n\nBenutzer: {login}\nPasswort: {passwort}\n\nBitte ändern Sie das Passwort bei der ersten Anmeldung — Sie werden automatisch dazu aufgefordert.",
-    "en": "Hello,\n\nan account has been created for you in the order management system.\n\nUser: {login}\nPassword: {passwort}\n\nPlease change the password when you first sign in — you will be prompted automatically."
+    "en": "Hello,\n\nan account has been created for you in the order management system.\n\nUser: {login}\nPassword: {passwort}\n\nPlease change the password when you first sign in — you will be prompted automatically.",
+    "ts": "2026-07-15 10:46",
+    "h": "4ad643718675"
   },
   "benutzer.mail.keine_absender_firma": {
     "de": "Es ist keine Absender-Firma für Passwort-Mails eingestellt.",
-    "en": "No sender company is configured for password emails."
+    "en": "No sender company is configured for password emails.",
+    "ts": "2026-07-15 10:46",
+    "h": "01a0fad9cd54"
   },
   "benutzer.mail.keine_adresse": {
     "de": "Der Benutzer hat keine E-Mail-Adresse.",
-    "en": "The user has no email address."
+    "en": "The user has no email address.",
+    "ts": "2026-07-15 10:46",
+    "h": "5b5b8818b8f4"
   },
   "benutzer.mail.reset_betreff": {
     "de": "Ihr Passwort wurde zurückgesetzt",
-    "en": "Your password has been reset"
+    "en": "Your password has been reset",
+    "ts": "2026-07-15 10:46",
+    "h": "e66dc52e882c"
   },
   "benutzer.mail.reset_text": {
     "de": "Guten Tag,\n\nIhr Passwort für die Auftragsabwicklung wurde zurückgesetzt.\n\nBenutzer: {login}\nNeues Passwort: {passwort}\n\nBitte ändern Sie das Passwort bei der nächsten Anmeldung — Sie werden automatisch dazu aufgefordert.",
-    "en": "Hello,\n\nyour password for the order management system has been reset.\n\nUser: {login}\nNew password: {passwort}\n\nPlease change the password at your next sign-in — you will be prompted automatically."
+    "en": "Hello,\n\nyour password for the order management system has been reset.\n\nUser: {login}\nNew password: {passwort}\n\nPlease change the password at your next sign-in — you will be prompted automatically.",
+    "ts": "2026-07-15 10:46",
+    "h": "641c61cfed7e"
   },
   "benutzer.nein": {
     "de": "nein",
-    "en": "no"
+    "en": "no",
+    "ts": "2026-07-15 10:46",
+    "h": "9be555096bdd"
   },
   "benutzer.neu_titel": {
     "de": "Neuer Benutzer",
-    "en": "New user"
+    "en": "New user",
+    "ts": "2026-07-15 10:46",
+    "h": "fe0b16632018"
   },
   "benutzer.nicht_selbst_loeschen": {
     "de": "Sie können Ihren eigenen Benutzer nicht löschen.",
-    "en": "You cannot delete your own user account."
+    "en": "You cannot delete your own user account.",
+    "ts": "2026-07-15 10:46",
+    "h": "a46bb69c8e11"
   },
   "benutzer.recht_bv_hinweis": {
     "de": "darf Benutzer anlegen und Rechte vergeben",
-    "en": "may create users and assign permissions"
+    "en": "may create users and assign permissions",
+    "ts": "2026-07-15 10:46",
+    "h": "3bbbf98aaf2b"
   },
   "benutzer.rechte_firma": {
     "de": "Rechte für Firma",
-    "en": "Permissions for company"
+    "en": "Permissions for company",
+    "ts": "2026-07-15 10:46",
+    "h": "30d422355181"
   },
   "benutzer.reset_frage": {
     "de": "Für „{login}“ ein neues Passwort erzeugen und per E-Mail versenden?",
-    "en": "Generate a new password for “{login}” and send it by email?"
+    "en": "Generate a new password for “{login}” and send it by email?",
+    "ts": "2026-07-15 10:46",
+    "h": "2f4a7e2da71d"
   },
   "benutzer.reset_nur_passwort": {
     "de": "Dieser Benutzer meldet sich über die Windows-Anmeldung an und hat kein Passwort.",
-    "en": "This user signs in via the Windows login and has no password."
+    "en": "This user signs in via the Windows login and has no password.",
+    "ts": "2026-07-15 10:46",
+    "h": "2ea0558dc6eb"
+  },
+  "benutzer.restore_frage": {
+    "de": "Der Login „{login}“ gehört zu einem gelöschten Benutzer ({name}).\n\nDiesen Benutzer wiederherstellen? Er erhält seine früheren Rechte zurück und wird anschließend zum Bearbeiten geöffnet.\n\nNein: Bitte einen anderen Login wählen — „{login}“ bleibt belegt.",
+    "en": "The login “{login}” belongs to a deleted user ({name}).\n\nRestore this user? They get their previous permissions back and will then be opened for editing.\n\nNo: please choose a different login — “{login}” stays taken.",
+    "ts": "2026-07-15 10:46",
+    "h": "7414b07dcf6a"
+  },
+  "benutzer.restore_titel": {
+    "de": "Gelöschten Benutzer wiederherstellen",
+    "en": "Restore deleted user",
+    "ts": "2026-07-15 10:46",
+    "h": "923d101431aa"
   },
   "benutzer.rolle.admin": {
     "de": "Administrator",
-    "en": "Administrator"
+    "en": "Administrator",
+    "ts": "2026-07-15 10:46",
+    "h": "57f5b9cec5ed"
   },
   "benutzer.rolle.benutzer": {
     "de": "Benutzer",
-    "en": "User"
+    "en": "User",
+    "ts": "2026-07-15 10:46",
+    "h": "9d3de98e5e98"
   },
   "benutzer.rolle.benutzerverwaltung": {
     "de": "Benutzerverwaltung",
-    "en": "User management"
+    "en": "User management",
+    "ts": "2026-07-15 10:46",
+    "h": "d315161e2066"
   },
   "benutzer.uebernehmen_von": {
     "de": "Rechte übernehmen von:",
-    "en": "Copy permissions from:"
+    "en": "Copy permissions from:",
+    "ts": "2026-07-15 10:46",
+    "h": "7d6254607053"
   },
   "btn.abb": {
     "de": "Abbrechen",
@@ -1269,7 +1395,9 @@
   },
   "col.lock_seit": {
     "de": "Gesperrt seit",
-    "en": "Locked since"
+    "en": "Locked since",
+    "ts": "2026-07-15 10:46",
+    "h": "d0dd8016eed3"
   },
   "col.locks": {
     "de": "Sperre",
@@ -5886,7 +6014,9 @@
   },
   "firma.loeschen.erste_firma": {
     "de": "Die erste Firma (ID=1) kann nicht gelöscht werden.",
-    "en": "The first company (ID=1) cannot be deleted."
+    "en": "The first company (ID=1) cannot be deleted.",
+    "ts": "2026-07-15 10:46",
+    "h": "959dbe529da1"
   },
   "firma.loeschen.fehlgeschlagen": {
     "de": "Löschung fehlgeschlagen:\n{err}",
@@ -5920,7 +6050,9 @@
   },
   "firma.loeschen.hinweis_dateien": {
     "de": "Hinweis: Dateien im Export- und Archivpfad (Ausdrucke, E-Rechnungen, E-Mails, Artikelbilder, Archiv) werden NICHT entfernt. Bitte nach Ablauf der Aufbewahrungsfristen manuell löschen.",
-    "en": "Note: Files in the export and archive paths (printouts, e-invoices, emails, article images, archive) are NOT removed. Please delete them manually once the retention periods have expired."
+    "en": "Note: Files in the export and archive paths (printouts, e-invoices, emails, article images, archive) are NOT removed. Please delete them manually once the retention periods have expired.",
+    "ts": "2026-07-15 10:46",
+    "h": "da6cf3a405a6"
   },
   "firma.loeschen.loesche": {
     "de": "Lösche Daten...",
@@ -5954,23 +6086,33 @@
   },
   "firma.loeschen.step_belege": {
     "de": "Lösche Belege...",
-    "en": "Deleting documents..."
+    "en": "Deleting documents...",
+    "ts": "2026-07-15 10:46",
+    "h": "b42322c40726"
   },
   "firma.loeschen.step_einstellungen": {
     "de": "Lösche Einstellungen...",
-    "en": "Deleting settings..."
+    "en": "Deleting settings...",
+    "ts": "2026-07-15 10:46",
+    "h": "32d413e75d9e"
   },
   "firma.loeschen.step_fertig": {
     "de": "Fertig",
-    "en": "Done"
+    "en": "Done",
+    "ts": "2026-07-15 10:46",
+    "h": "507159acd0e9"
   },
   "firma.loeschen.step_firma": {
     "de": "Lösche Firmendatensatz...",
-    "en": "Deleting company record..."
+    "en": "Deleting company record...",
+    "ts": "2026-07-15 10:46",
+    "h": "a5e404c7c177"
   },
   "firma.loeschen.step_stammdaten": {
     "de": "Lösche Stammdaten...",
-    "en": "Deleting master data..."
+    "en": "Deleting master data...",
+    "ts": "2026-07-15 10:46",
+    "h": "ed7e23e646bb"
   },
   "firma.loeschen.warnung": {
     "de": "ACHTUNG: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
@@ -7862,7 +8004,9 @@
   },
   "firma.weich.nicht_loeschbar": {
     "de": "Diese Firma kann nicht gelöscht werden (erste Firma oder aktuell aktiv).",
-    "en": "This company cannot be deleted (first company or currently active)."
+    "en": "This company cannot be deleted (first company or currently active).",
+    "ts": "2026-07-15 10:46",
+    "h": "9b3fbbba73e0"
   },
   "firma.weich.titel": {
     "de": "Wiederherstellbar löschen",
@@ -8286,75 +8430,111 @@
   },
   "login.bootstrap_titel": {
     "de": "Benutzerverwaltung eingerichtet",
-    "en": "User management set up"
+    "en": "User management set up",
+    "ts": "2026-07-15 10:46",
+    "h": "931b178d09d8"
   },
   "login.bootstrap_text": {
     "de": "Es war noch kein Benutzer angelegt. Der Benutzer „{login}“ wurde als Administrator eingerichtet und meldet sich künftig automatisch über die Windows-Anmeldung an.\n\nWeitere Benutzer legen Sie im Menü unter „Benutzerverwaltung“ an.",
-    "en": "No user existed yet. The user “{login}” has been set up as an administrator and will sign in automatically via the Windows login from now on.\n\nYou can add further users from the “User management” menu entry."
+    "en": "No user existed yet. The user “{login}” has been set up as an administrator and will sign in automatically via the Windows login from now on.\n\nYou can add further users from the “User management” menu entry.",
+    "ts": "2026-07-15 10:46",
+    "h": "8017487e90ea"
   },
   "login.btn_anmelden": {
     "de": "Anmelden",
-    "en": "Sign in"
+    "en": "Sign in",
+    "ts": "2026-07-15 10:46",
+    "h": "4cd632949a56"
   },
   "login.feld_login": {
     "de": "Benutzer",
-    "en": "User"
+    "en": "User",
+    "ts": "2026-07-15 10:46",
+    "h": "9d3de98e5e98"
   },
   "login.feld_passwort": {
     "de": "Passwort",
-    "en": "Password"
+    "en": "Password",
+    "ts": "2026-07-15 10:46",
+    "h": "631a16d62ab2"
   },
   "login.fehlgeschlagen": {
     "de": "Benutzer oder Passwort ist falsch. Noch {rest} Versuch(e).",
-    "en": "Incorrect user or password. {rest} attempt(s) remaining."
+    "en": "Incorrect user or password. {rest} attempt(s) remaining.",
+    "ts": "2026-07-15 10:46",
+    "h": "216010f046cd"
   },
   "login.gesperrt_titel": {
     "de": "Anmeldung abgebrochen",
-    "en": "Sign-in cancelled"
+    "en": "Sign-in cancelled",
+    "ts": "2026-07-15 10:46",
+    "h": "b7ab3b8a98d0"
   },
   "login.gesperrt_text": {
     "de": "Die Anmeldung wurde nach {anzahl} Fehlversuchen abgebrochen. Das Programm wird beendet.",
-    "en": "Sign-in was cancelled after {anzahl} failed attempts. The program will close."
+    "en": "Sign-in was cancelled after {anzahl} failed attempts. The program will close.",
+    "ts": "2026-07-15 10:46",
+    "h": "c06f0aebd78e"
   },
   "login.kopf": {
     "de": "Bitte melden Sie sich an, um das Programm zu starten.",
-    "en": "Please sign in to start the program."
+    "en": "Please sign in to start the program.",
+    "ts": "2026-07-15 10:46",
+    "h": "22326b9449cc"
   },
   "login.pw_erzwungen": {
     "de": "Ihr Passwort wurde neu vergeben. Bitte legen Sie jetzt ein eigenes Passwort fest — ohne Änderung können Sie nicht fortfahren.",
-    "en": "Your password was newly assigned. Please set your own password now — you cannot continue without changing it."
+    "en": "Your password was newly assigned. Please set your own password now — you cannot continue without changing it.",
+    "ts": "2026-07-15 10:46",
+    "h": "819e76c3e34b"
   },
   "login.pw_kopf": {
     "de": "Bitte geben Sie Ihr neues Passwort ein.",
-    "en": "Please enter your new password."
+    "en": "Please enter your new password.",
+    "ts": "2026-07-15 10:46",
+    "h": "a6b802b1f329"
   },
   "login.pw_neu": {
     "de": "Neues Passwort",
-    "en": "New password"
+    "en": "New password",
+    "ts": "2026-07-15 10:46",
+    "h": "34f7c1e0330a"
   },
   "login.pw_regel": {
     "de": "Das Passwort muss mindestens {min} Zeichen lang sein.",
-    "en": "The password must be at least {min} characters long."
+    "en": "The password must be at least {min} characters long.",
+    "ts": "2026-07-15 10:46",
+    "h": "89b695bc943c"
   },
   "login.pw_titel": {
     "de": "Passwort ändern",
-    "en": "Change password"
+    "en": "Change password",
+    "ts": "2026-07-15 10:46",
+    "h": "238939b4db5f"
   },
   "login.pw_ungleich": {
     "de": "Die beiden Passwörter stimmen nicht überein.",
-    "en": "The two passwords do not match."
+    "en": "The two passwords do not match.",
+    "ts": "2026-07-15 10:46",
+    "h": "edfbc91f60d8"
   },
   "login.pw_wdh": {
     "de": "Wiederholen",
-    "en": "Repeat"
+    "en": "Repeat",
+    "ts": "2026-07-15 10:46",
+    "h": "fd504560f149"
   },
   "login.pw_zu_kurz": {
     "de": "Das Passwort muss mindestens {min} Zeichen lang sein.",
-    "en": "The password must be at least {min} characters long."
+    "en": "The password must be at least {min} characters long.",
+    "ts": "2026-07-15 10:46",
+    "h": "89b695bc943c"
   },
   "login.titel": {
     "de": "Anmeldung",
-    "en": "Sign in"
+    "en": "Sign in",
+    "ts": "2026-07-15 10:46",
+    "h": "a926d304150b"
   },
   "mahnung.lbl.mahnstufe": {
     "de": "Mahnstufe:",
@@ -8544,7 +8724,9 @@
   },
   "menu.benutzerverwaltung": {
     "de": "Benutzerverwaltung",
-    "en": "User management"
+    "en": "User management",
+    "ts": "2026-07-15 10:46",
+    "h": "d315161e2066"
   },
   "menu.darkmode": {
     "de": "Dark Mode",
@@ -8626,7 +8808,9 @@
   },
   "menu.passwort_aendern": {
     "de": "Passwort ändern",
-    "en": "Change password"
+    "en": "Change password",
+    "ts": "2026-07-15 10:46",
+    "h": "238939b4db5f"
   },
   "menu.sprachdatei": {
     "de": "App-Sprache erstellen/aktualisieren …",
@@ -8966,7 +9150,9 @@
   },
   "msg.aktive_firma_weg": {
     "de": "Die zuletzt aktive Firma existiert nicht mehr oder wurde gelöscht.\nDie Firma „{firma}“ wurde aktiviert.",
-    "en": "The most recently active company no longer exists or was deleted.\nCompany “{firma}” has been activated."
+    "en": "The most recently active company no longer exists or was deleted.\nCompany “{firma}” has been activated.",
+    "ts": "2026-07-15 10:46",
+    "h": "c8820f747c51"
   },
   "msg.hinweis": {
     "de": "Hinweis",
@@ -8988,15 +9174,21 @@
   },
   "msg.kein_recht": {
     "de": "Sie haben keine Berechtigung für diesen Programmteil.",
-    "en": "You do not have permission for this part of the program."
+    "en": "You do not have permission for this part of the program.",
+    "ts": "2026-07-15 10:46",
+    "h": "cebb5a25c225"
   },
   "msg.kein_recht_titel": {
     "de": "Kein Zugriff",
-    "en": "No access"
+    "en": "No access",
+    "ts": "2026-07-15 10:46",
+    "h": "934ef11c4715"
   },
   "msg.keine_firma_recht": {
     "de": "Ihnen ist keine Firma zugeordnet. Bitte wenden Sie sich an einen Administrator.",
-    "en": "No company is assigned to you. Please contact an administrator."
+    "en": "No company is assigned to you. Please contact an administrator.",
+    "ts": "2026-07-15 10:46",
+    "h": "756fa2b07c38"
   },
   "msg.keine_mahnkondition": {
     "de": "Keine Mahnkondition beim Kunden oder der Rechnung zugewiesen.",
@@ -9024,27 +9216,39 @@
   },
   "msg.lock_admin_titel": {
     "de": "Nicht erlaubt",
-    "en": "Not permitted"
+    "en": "Not permitted",
+    "ts": "2026-07-15 10:46",
+    "h": "373edfc08820"
   },
   "msg.lock_admin": {
     "de": "Nur Administratoren dürfen Sperren aufheben.\n\nTrage Deinen Benutzernamen in settings.json unter multiuser → admins ein.",
-    "en": "Only administrators may release locks.\n\nAdd your user name to settings.json under multiuser → admins."
+    "en": "Only administrators may release locks.\n\nAdd your user name to settings.json under multiuser → admins.",
+    "ts": "2026-07-15 10:46",
+    "h": "2214f60f295d"
   },
   "msg.lock_gesperrt_titel": {
     "de": "Datensatz gesperrt",
-    "en": "Record locked"
+    "en": "Record locked",
+    "ts": "2026-07-15 10:46",
+    "h": "d89dc37c7a5c"
   },
   "msg.lock_gesperrt": {
     "de": "Der Datensatz wird im Modul {modul} vom Benutzer {user} bearbeitet.\n\nBitte versuche es später noch einmal.",
-    "en": "The record is being edited in module {modul} by user {user}.\n\nPlease try again later."
+    "en": "The record is being edited in module {modul} by user {user}.\n\nPlease try again later.",
+    "ts": "2026-07-15 10:46",
+    "h": "a5928e849595"
   },
   "msg.lock_konflikt_titel": {
     "de": "Datensatz zwischenzeitlich geändert",
-    "en": "Record changed in the meantime"
+    "en": "Record changed in the meantime",
+    "ts": "2026-07-15 10:46",
+    "h": "b56485b9d445"
   },
   "msg.lock_konflikt_frage": {
     "de": "Der Datensatz wurde am {zeit} vom Benutzer {user} im Modul {modul} geändert.\n\nDeine Eingaben würden diese Änderung überschreiben. Trotzdem speichern?",
-    "en": "The record was changed on {zeit} by user {user} in module {modul}.\n\nYour entries would overwrite that change. Save anyway?"
+    "en": "The record was changed on {zeit} by user {user} in module {modul}.\n\nYour entries would overwrite that change. Save anyway?",
+    "ts": "2026-07-15 10:46",
+    "h": "6a8348e00b14"
   },
   "msg.loeschen": {
     "de": "Löschen",
@@ -9120,7 +9324,9 @@
   },
   "msg.nur_lesen": {
     "de": "Sie dürfen „{modul}“ nur ansehen, nicht ändern.",
-    "en": "You may only view “{modul}”, not change it."
+    "en": "You may only view “{modul}”, not change it.",
+    "ts": "2026-07-15 10:46",
+    "h": "2a1521831abf"
   },
   "msg.original_veraltet": {
     "de": "Der erste Ausdruck des Beleges ist veraltet.",
@@ -9424,83 +9630,123 @@
   },
   "rechte.modul.angebote": {
     "de": "Angebote",
-    "en": "Quotations"
+    "en": "Quotations",
+    "ts": "2026-07-15 10:46",
+    "h": "b22d6aff556f"
   },
   "rechte.modul.artikel": {
     "de": "Artikelstamm",
-    "en": "Articles"
+    "en": "Articles",
+    "ts": "2026-07-15 10:46",
+    "h": "64e22cb07f6b"
   },
   "rechte.modul.auftraege": {
     "de": "Aufträge",
-    "en": "Orders"
+    "en": "Orders",
+    "ts": "2026-07-15 10:46",
+    "h": "998700f5c692"
   },
   "rechte.modul.auswertungen": {
     "de": "Auswertungen",
-    "en": "Reports"
+    "en": "Reports",
+    "ts": "2026-07-15 10:46",
+    "h": "2b71e7b17af3"
   },
   "rechte.modul.buchungsexport": {
     "de": "Buchungsbeleg-Export",
-    "en": "Accounting export"
+    "en": "Accounting export",
+    "ts": "2026-07-15 10:46",
+    "h": "5f1bfe8d2511"
   },
   "rechte.modul.e_rechnung_spool": {
     "de": "E-Rechnung-Spool",
-    "en": "E-invoice spool"
+    "en": "E-invoice spool",
+    "ts": "2026-07-15 10:46",
+    "h": "9a41cf29ab6f"
   },
   "rechte.modul.einstellungen": {
     "de": "Einstellungen/Admin",
-    "en": "Settings/Admin"
+    "en": "Settings/Admin",
+    "ts": "2026-07-15 10:46",
+    "h": "b5f4a9c3234c"
   },
   "rechte.modul.emails": {
     "de": "E-Mail-Postausgang",
-    "en": "Email outbox"
+    "en": "Email outbox",
+    "ts": "2026-07-15 10:46",
+    "h": "5a8b44703161"
   },
   "rechte.modul.fallback_protokoll": {
     "de": "Fehler-Nachverfolgung",
-    "en": "Error tracking"
+    "en": "Error tracking",
+    "ts": "2026-07-15 10:46",
+    "h": "a85165b911f8"
   },
   "rechte.modul.firma": {
     "de": "Firmenstamm",
-    "en": "Company data"
+    "en": "Company data",
+    "ts": "2026-07-15 10:46",
+    "h": "80b63f36dc12"
   },
   "rechte.modul.kunden": {
     "de": "Kundenstamm",
-    "en": "Customers"
+    "en": "Customers",
+    "ts": "2026-07-15 10:46",
+    "h": "1ae2064a485b"
   },
   "rechte.modul.lieferscheine": {
     "de": "Lieferscheine",
-    "en": "Delivery notes"
+    "en": "Delivery notes",
+    "ts": "2026-07-15 10:46",
+    "h": "f1e29a40337c"
   },
   "rechte.modul.mahnungen": {
     "de": "Mahnungen",
-    "en": "Reminders"
+    "en": "Reminders",
+    "ts": "2026-07-15 10:46",
+    "h": "71571cc56f73"
   },
   "rechte.modul.mwst": {
     "de": "MwSt-Verwaltung",
-    "en": "VAT management"
+    "en": "VAT management",
+    "ts": "2026-07-15 10:46",
+    "h": "fb7efd8330ba"
   },
   "rechte.modul.rechnungen": {
     "de": "Rechnungen",
-    "en": "Invoices"
+    "en": "Invoices",
+    "ts": "2026-07-15 10:46",
+    "h": "c5f045fc96c0"
   },
   "rechte.modul.token_verbrauch": {
     "de": "Token-Verbrauch",
-    "en": "Token usage"
+    "en": "Token usage",
+    "ts": "2026-07-15 10:46",
+    "h": "78934f37f1f3"
   },
   "rechte.stufe.0": {
     "de": "kein Zugriff",
-    "en": "no access"
+    "en": "no access",
+    "ts": "2026-07-15 10:46",
+    "h": "f85b1241e42c"
   },
   "rechte.stufe.1": {
     "de": "lesen",
-    "en": "read"
+    "en": "read",
+    "ts": "2026-07-15 10:46",
+    "h": "675f4ded66ea"
   },
   "rechte.stufe.2": {
     "de": "ändern",
-    "en": "change"
+    "en": "change",
+    "ts": "2026-07-15 10:46",
+    "h": "27b5717ed732"
   },
   "rechte.stufe.3": {
     "de": "löschen",
-    "en": "delete"
+    "en": "delete",
+    "ts": "2026-07-15 10:46",
+    "h": "c631928dc25b"
   },
   "settings.developer_email": {
     "de": "Entwickler E-Mail:",
