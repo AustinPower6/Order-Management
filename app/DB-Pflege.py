@@ -81,7 +81,11 @@ v71 (2026-07-13): Secrets aus der DB in verschlüsselte Pro-Firma-Dateien verlag
                   firma.api_keys_passwort (auto, nie sichtbar); die 11 firma-Secret-
                   Spalten + firma_ki_lokal.api_key werden geleert. Backup .db.70
                   enthält letztmals Klartext-Keys (lokal, gitignoriert).
-Nächste freie Version: v72.
+v75 (2026-07-15): benutzer — Spalte geloescht entfernt. Löschen ist endgültig, weil
+                  der UNIQUE-Login sonst durch soft-gelöschte Zeilen dauerhaft
+                  blockiert blieb. Bereits soft-gelöschte Benutzer werden dadurch
+                  wieder sichtbar (siehe _to_v75).
+Nächste freie Version: v76.
 """
 import os
 import shutil
@@ -1764,7 +1768,29 @@ def _to_v74(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 74
+def _to_v75(conn):
+    """benutzer: Spalte geloescht entfernen — Löschen ist ab jetzt endgültig.
+
+    `benutzer.login` ist UNIQUE. Der bisherige Soft-Delete ließ die Zeile stehen
+    und blockierte den Login damit dauerhaft: ein gelöschter Benutzer konnte
+    unter demselben Login nie wieder angelegt werden („Der Login ist bereits
+    vergeben"). `delete_benutzer` löscht deshalb jetzt hart (samt Rechte-Matrix),
+    und die Spalte verliert ihren Zweck.
+
+    Nebenwirkung, bewusst in Kauf genommen: Bereits soft-gelöschte Benutzer
+    werden durch den Wegfall der Spalte wieder zu normalen, sichtbaren Benutzern
+    (mit ihren Rechten). Sie werden hier NICHT hart gelöscht — die
+    Benutzerverwaltung ist erst seit v74 im Feld, ein stiller Datenverlust wäre
+    die schlechtere Überraschung als ein wieder auftauchender Benutzer, den ein
+    Admin sichtbar erneut löschen kann. Idempotent über die PRAGMA-Prüfung.
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(benutzer)").fetchall()}
+    if "geloescht" in cols:
+        conn.execute("ALTER TABLE benutzer DROP COLUMN geloescht")
+    conn.commit()
+
+
+CURRENT_VERSION = 75
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1840,6 +1866,7 @@ MIGRATIONEN: dict = {
     72: _to_v72,
     73: _to_v73,
     74: _to_v74,
+    75: _to_v75,
 }
 
 

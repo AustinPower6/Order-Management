@@ -499,6 +499,10 @@
     "de": "Bitte wählen Sie einen Benutzer aus.",
     "en": "Please select a user."
   },
+  "benutzer.btn_alle_stufe": {
+    "de": "Alle: {stufe}",
+    "en": "All: {stufe}"
+  },
   "benutzer.btn_pw_reset": {
     "de": "Passwort zurücksetzen",
     "en": "Reset password"
@@ -568,8 +572,8 @@
     "en": "This is the last active administrator — otherwise nobody could sign in and assign permissions any more."
   },
   "benutzer.loeschen_frage": {
-    "de": "Benutzer „{login}“ wirklich löschen?",
-    "en": "Really delete user “{login}”?"
+    "de": "Benutzer „{login}“ endgültig löschen?\n\nDer Benutzer wird mit allen Rechten unwiderruflich entfernt. Der Login „{login}“ ist danach wieder frei und kann neu vergeben werden.",
+    "en": "Permanently delete user “{login}”?\n\nThe user and all their permissions are removed for good. The login “{login}” becomes available again afterwards."
   },
   "benutzer.login_pflicht": {
     "de": "Bitte geben Sie einen Benutzernamen (Login) ein.",

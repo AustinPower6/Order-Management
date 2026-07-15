@@ -13,30 +13,28 @@ import passwort_util
 class DBBenutzerMixin:
 
     # ─── Benutzer lesen ─────────────────────────────────────────────────────
-    def get_benutzer_alle(self, inkl_geloescht=False):
-        where = "" if inkl_geloescht else "WHERE COALESCE(geloescht,0)=0"
-        return self.conn.execute(
-            f"SELECT * FROM benutzer {where} ORDER BY login").fetchall()
+    def get_benutzer_alle(self):
+        return self.conn.execute("SELECT * FROM benutzer ORDER BY login").fetchall()
 
     def get_benutzer(self, benutzer_id):
         return self.conn.execute(
             "SELECT * FROM benutzer WHERE id=?", (benutzer_id,)).fetchone()
 
     def get_benutzer_by_login(self, login):
-        """Aktiver, nicht gelöschter Benutzer zu einem Login — case-insensitive.
+        """Aktiver Benutzer zu einem Login — case-insensitive.
 
         Windows-Usernamen kommen je nach Quelle unterschiedlich groß/klein an,
-        deshalb wird immer normalisiert verglichen. Inaktive und gelöschte
-        Benutzer liefern None (die Anmeldung behandelt sie wie eine
-        Falscheingabe — keine Preisgabe, dass es den Login gibt).
+        deshalb wird immer normalisiert verglichen. Inaktive Benutzer liefern
+        None (die Anmeldung behandelt sie wie eine Falscheingabe — keine
+        Preisgabe, dass es den Login gibt).
         """
         return self.conn.execute(
             "SELECT * FROM benutzer WHERE LOWER(login)=LOWER(?) "
-            "AND COALESCE(aktiv,0)=1 AND COALESCE(geloescht,0)=0",
+            "AND COALESCE(aktiv,0)=1",
             ((login or "").strip(),)).fetchone()
 
     def login_existiert(self, login, ausser_id=None) -> bool:
-        """True, wenn der Login schon vergeben ist (inkl. inaktiver/gelöschter —
+        """True, wenn der Login schon vergeben ist (inkl. inaktiver —
         die UNIQUE-Regel auf `benutzer.login` kennt keine Ausnahme)."""
         sql = "SELECT 1 FROM benutzer WHERE LOWER(login)=LOWER(?)"
         params = [(login or "").strip()]
@@ -46,15 +44,14 @@ class DBBenutzerMixin:
         return self.conn.execute(sql + " LIMIT 1", params).fetchone() is not None
 
     def anzahl_benutzer(self) -> int:
-        """Zahl der nicht gelöschten Benutzer — 0 löst den Bootstrap aus."""
-        return self.conn.execute(
-            "SELECT COUNT(*) FROM benutzer WHERE COALESCE(geloescht,0)=0").fetchone()[0]
+        """Zahl der Benutzer — 0 löst den Bootstrap aus."""
+        return self.conn.execute("SELECT COUNT(*) FROM benutzer").fetchone()[0]
 
     def anzahl_aktive_admins(self, ausser_id=None) -> int:
         """Aktive Admins — verhindert, dass der letzte Admin deaktiviert oder
         gelöscht wird (Selbst-Aussperrung)."""
         sql = ("SELECT COUNT(*) FROM benutzer WHERE COALESCE(ist_admin,0)=1 "
-               "AND COALESCE(aktiv,0)=1 AND COALESCE(geloescht,0)=0")
+               "AND COALESCE(aktiv,0)=1")
         params = []
         if ausser_id is not None:
             sql += " AND id<>?"
@@ -97,12 +94,24 @@ class DBBenutzerMixin:
         self.conn.commit()
 
     def delete_benutzer(self, benutzer_id):
-        """Soft-Delete. Der Aufrufer stellt sicher, dass es weder der eigene
-        Account noch der letzte aktive Admin ist."""
-        self.conn.execute(
-            "UPDATE benutzer SET geloescht=1, lock_aktiv=0, lock_seit='' WHERE id=?",
-            (benutzer_id,))
-        self.conn.commit()
+        """Endgültiges Löschen samt Rechte-Matrix. Der Aufrufer stellt sicher,
+        dass es weder der eigene Account noch der letzte aktive Admin ist.
+
+        Kein Soft-Delete: `login` ist UNIQUE, eine liegengebliebene Zeile würde
+        den Login dauerhaft blockieren. Die Rechte müssen zuerst weg, weil
+        benutzer_firmen_rechte.benutzer_id ohne ON DELETE CASCADE auf benutzer(id)
+        verweist — beides in EINER Transaktion, damit kein Benutzer ohne Rechte
+        oder verwaiste Rechte ohne Benutzer zurückbleiben.
+        """
+        try:
+            self.conn.execute("BEGIN")
+            self.conn.execute(
+                "DELETE FROM benutzer_firmen_rechte WHERE benutzer_id=?", (benutzer_id,))
+            self.conn.execute("DELETE FROM benutzer WHERE id=?", (benutzer_id,))
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
 
     # ─── Rechte-Matrix ──────────────────────────────────────────────────────
     def get_rechte_map(self, benutzer_id, firma_id) -> dict:

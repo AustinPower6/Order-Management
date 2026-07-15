@@ -1033,6 +1033,9 @@ CREATE TABLE IF NOT EXISTS archiv_dateien (
 -- ─── Benutzerverwaltung ─────────────────────────────────────────────────────
 -- Benutzer sind bewusst OHNE firma_id: Betreiber-Ebene (wie adress_attestierungen).
 -- Ein Benutzer arbeitet je nach Rechte-Matrix in mehreren Firmen.
+-- Ebenfalls bewusst OHNE geloescht (kein Soft-Delete, anders als die übrigen
+-- Tabellen): login ist UNIQUE, eine soft-gelöschte Zeile würde den Login für
+-- immer blockieren. `delete_benutzer` löscht daher hart (samt Rechte-Matrix).
 CREATE TABLE IF NOT EXISTS benutzer (
     id                       INTEGER PRIMARY KEY AUTOINCREMENT,
     login                    TEXT NOT NULL UNIQUE,
@@ -1045,7 +1048,6 @@ CREATE TABLE IF NOT EXISTS benutzer (
     ist_admin                INTEGER DEFAULT 0,
     recht_benutzerverwaltung INTEGER DEFAULT 0,
     aktiv                    INTEGER DEFAULT 1,
-    geloescht                INTEGER DEFAULT 0,
     lock_aktiv               INTEGER DEFAULT 0,
     lock_modul               TEXT DEFAULT '',
     lock_seit                TEXT DEFAULT '',

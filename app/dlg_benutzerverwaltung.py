@@ -300,6 +300,18 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
         matrix_bar.addWidget(self._btn_uebernehmen)
         lay.addLayout(matrix_bar)
 
+        # Alle Programmteile auf einmal auf eine Stufe setzen — wirkt wie die
+        # Matrix nur auf die oben gewählte Firma.
+        stufen_bar = QHBoxLayout()
+        stufen_bar.addStretch()
+        self._btn_stufen = []
+        for st in rechte.STUFEN:
+            b = QPushButton(_("benutzer.btn_alle_stufe", stufe=rechte.stufe_label(st)))
+            b.clicked.connect(lambda _checked=False, s=st: self._alle_stufe_setzen(s))
+            stufen_bar.addWidget(b)
+            self._btn_stufen.append(b)
+        lay.addLayout(stufen_bar)
+
         self._matrix = QTableWidget()
         self._matrix.setColumnCount(2)
         self._matrix.setHorizontalHeaderLabels(
@@ -395,6 +407,14 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
         self._matrix.setEnabled(not ist_admin)
         self._btn_uebernehmen.setEnabled(not ist_admin)
         self._firma.setEnabled(not ist_admin)
+        for b in self._btn_stufen:
+            b.setEnabled(not ist_admin)
+
+    def _alle_stufe_setzen(self, stufe):
+        """Setzt alle Programmteile der gewählten Firma auf eine Rechtestufe."""
+        for cb in self._stufen_combos.values():
+            cb.setCurrentIndex(cb.findData(stufe))
+        self._mark_dirty()
 
     def _rechte_uebernehmen(self):
         if not self.benutzer_id:

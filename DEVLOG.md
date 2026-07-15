@@ -8150,3 +8150,30 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
 **Verifikation:** `ruff check app` grün; `py_compile` aller geänderten Dateien; `test_key_store.py` 9/9; `test_address_validation.py` 22/22; `audit_firma_id.py` Exit 0 (keine FEHLER). Migration v71 auf **Kopie** der echten DB verifiziert (Firma 990: 6 Secrets verschlüsselt, keine Klartext-Leaks, alle Quell-Spalten leer, idempotent). db_firma-Umleitung + Reset-Weg end-to-end auf migrierter Kopie verifiziert (get/save/lokal-Roundtrip, DB-Spalten bleiben leer, Reset erzeugt neues Passwort). Export key-frei; Import strippt Secrets + bewahrt Ziel-Passwort (isoliert verifiziert). Migration wurde bewusst **nicht** auf der echten DB ausgeführt — läuft bei Walters nächstem App-Start (`python Order-Management.py`); das Auto-Backup `…db.70` enthält letztmals Klartext-Keys (lokal, gitignoriert).
 
 **Hinweis (vorbestehend, out of scope):** `import_json` löscht/inserted mit `foreign_keys=ON` in fester Reihenfolge — bei echten, querverketteten Belegdaten schlägt der Import mit FK-Fehler fehl (unabhängig von dieser Änderung; nicht angefasst).
+
+
+## 2026-07-15 10:25 — Passwort-Mail-Absender, Benutzer endgültig löschen (DB v75), Rechte-Matrix-Buttons
+
+**Auslöser (3 Meldungen aus dem Betrieb):**
+1. Beim Anlegen eines Benutzers scheiterte die Passwort-Mail trotz korrekt konfiguriertem SMTP-Server.
+2. Ein gelöschter Benutzer konnte nicht erneut angelegt werden („Der Login „David" ist bereits vergeben").
+3. Wunsch: je ein Button, um alle Programmteile der Rechte-Matrix auf eine Stufe zu setzen.
+
+**Diagnose zu 1 (harte Daten statt Vermutung):** Die Fehler-Nachverfolgung (ERROR.DB, Eintrag 311) lieferte den echten Serverbefund: `SMTP: (550, 'Requested action not taken: mailbox unavailable / Sender address is not allowed.', 'wirlieferalles@gmx.de')`. Die SMTP-Anmeldung funktionierte (sonst 535); GMX wies das **From** zurück. `email_direkt.py::_smtp` setzte als Absender `firma.email` (Reiter Adresse, `wirlieferalles@gmx.de`) mit Vorrang vor dem SMTP-Benutzer (`walterhome@gmx.de`) — die Adresse gehört nicht zum angemeldeten Konto. Der Postausgang (`modul/email_provider_mixin.py::_smtp_kern`) machte es schon immer richtig (`From = SMTP-Benutzer`); nur der Systemmail-Weg wich ab.
+
+**Diagnose zu 2:** `benutzer.login` ist `UNIQUE`, `delete_benutzer` machte aber einen Soft-Delete (`geloescht=1`). Die Zeile blieb liegen und blockierte den Login dauerhaft — `login_existiert` prüft bewusst inkl. gelöschter, sonst wäre erst das INSERT am Constraint gescheitert. Der Zustand war eine Sackgasse ohne Ausweg in der Oberfläche.
+
+**Umgesetzt:**
+- `app/email_direkt.py`: `From` **und** Envelope-Sender sind jetzt immer der SMTP-Benutzer (Commit `ba5217d`). Anzeigename (Firmenname) unverändert; Brevo-Zweig unberührt (kein SMTP-Benutzer, eigene verifizierte Absender).
+- **DB v75** (beide Pflichtstellen): `app/DB-Pflege.py::_to_v75` + `app/db/db_schema.py` — Spalte `benutzer.geloescht` entfernt (`ALTER TABLE … DROP COLUMN`, idempotent über PRAGMA-Prüfung). Header-Changelog + `CURRENT_VERSION=75` + `MIGRATIONEN`. Kommentar an der Tabelle begründet, warum `benutzer` als einzige Tabelle keinen Soft-Delete hat.
+- `app/db/db_benutzer.py`: `delete_benutzer` löscht endgültig — erst `benutzer_firmen_rechte`, dann `benutzer`, in EINER Transaktion mit Rollback (der FK hat kein `ON DELETE CASCADE`). `geloescht`-Filter aus `get_benutzer_alle` (samt ungenutztem Parameter `inkl_geloescht`), `get_benutzer_by_login`, `anzahl_benutzer`, `anzahl_aktive_admins` entfernt.
+- `app/dlg_benutzerverwaltung.py` + `app/language.json`: Lösch-Rückfrage `benutzer.loeschen_frage` auf „endgültig" geschärft (DE+EN) — das Löschen ist unwiderruflich, das muss vor dem Klick dranstehen.
+- `app/dlg_benutzerverwaltung.py` + `app/language.json`: Leiste über der Rechte-Matrix mit vier Buttons „Alle: kein Zugriff / lesen / ändern / löschen" (`_alle_stufe_setzen`), beschriftet über den bestehenden `rechte.stufe_label` (ein neuer Key `benutzer.btn_alle_stufe` = „Alle: {stufe}"). Wirken wie die Matrix nur auf die oben gewählte Firma; bei Admins mitgesperrt (`_admin_umschalten`), setzen den Dirty-Punkt.
+
+**Verifikation:** `ruff check app` grün; `py_compile` der geänderten Dateien; `audit_firma_id.py` Exit 0 („FEHLER: keine", die 7 Warnungen sind Bestand und betreffen `benutzer` nicht); `language.json` lädt (1790 Keys). Migration v74 → v75 beim App-Start real gefahren (Auto-Backup `…db.74`): Spalte weg, wie angekündigt ist der soft-gelöschte David (id 3) samt seiner 3 Rechte-Zeilen wieder sichtbar. Auf **Kopie** der echten DB end-to-end: anlegen → Rechte setzen → löschen (Benutzer weg, 0 Rechte-Zeilen, `login_existiert` False) → **gleicher Login erneut anlegbar** (der ursprüngliche Fehlerfall). Matrix-Buttons headless (offscreen) geklickt: alle 16 Programmteile auf 0/1/2/3, Dirty-Punkt gesetzt, bei Admin deaktiviert.
+
+**Bewusste Entscheidungen:**
+- Endgültiges Löschen statt partiellem UNIQUE-Index oder „Wiederherstellen"-Dialog (Nutzerentscheidung). Ein zweiter Datensatz mit gleichem Login hätte denselben Login-String für zwei Personen in `letzter_bearbeiter`/Protokollen mehrdeutig gemacht.
+- `_to_v75` löscht soft-gelöschte Benutzer **nicht** hart, sie werden durch den Spaltenwegfall wieder sichtbar. Stiller Datenverlust wäre die schlechtere Überraschung als ein wieder auftauchender Benutzer, den ein Admin sichtbar erneut löschen kann. Die Benutzerverwaltung ist erst seit v74 (Vortag) im Feld.
+
+**Hinweis (vorbestehend, nicht angefasst):** Die Versionshistorie im Docstring von `DB-Pflege.py` hatte eine Lücke — v72–v74 sind dort nie eingetragen worden, „Nächste freie Version" stand noch auf v72. Die Angabe ist jetzt auf v76 korrigiert und v75 dokumentiert; die fehlenden v72–v74 wurden bewusst nicht nachgetragen (out of scope).
