@@ -10,6 +10,7 @@ from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 import rechte
+import ui_widgets
 from uebersetzung import KONTEXT_EINHEIT, UebersetzungTextDialog
 
 
@@ -589,7 +590,7 @@ class EinheitenVerwaltung(QWidget):
 
     def _bearbeiten(self):
         if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
-                                         rechte.AENDERN):
+                                         rechte.LESEN):
             return
         e_id = self._sel_id()
         if not e_id:
@@ -602,6 +603,9 @@ class EinheitenVerwaltung(QWidget):
         alt = (self.table.item(row, 0).data(Qt.ItemDataRole.UserRole + 1)
                or self.table.item(row, 0).text())
         dlg = _EinheitDialog(self, e_id, alt)
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: OK ist gesperrt, exec() liefert damit 0.
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
         if dlg.exec():
             neu = dlg.value()
             if not neu:

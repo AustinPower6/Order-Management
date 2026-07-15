@@ -8,6 +8,7 @@ from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
 from i18n import _
 import rechte
+import ui_widgets
 import settings
 import theme
 
@@ -40,10 +41,13 @@ class WarengruppenTab(QWidget):
         lay.addWidget(wg_titel)
 
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu),
-                             ("btn.bearbeiten", self._bearbeiten),
-                             ("btn.loeschen", self._loeschen)]:
+        for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.LESEN),
+                                   ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, _RECHT_KEY, stufe):
+                b.setEnabled(False)
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(_RECHT_KEY)))
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
@@ -256,9 +260,20 @@ class WarengruppenTab(QWidget):
                     return
                 self._refresh()
 
+    def _exec_bearbeiten_dialog(self, dlg):
+        """Bearbeiten-Dialog anzeigen — ohne Änderungsrecht nur zur Ansicht.
+
+        Der Baum hat drei Ebenen mit je eigenem Dialog; dieser Helfer hält die
+        Rechteprüfung an einer Stelle. Im Lese-Modus ist OK gesperrt, `exec()`
+        liefert 0 und der Speicherzweig des Aufrufers läuft nicht an.
+        """
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
+        return dlg.exec()
+
     def _bearbeiten(self):
         if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
-                                         rechte.AENDERN):
+                                         rechte.LESEN):
             return
         self._remember_position()
         ebene, rec_id = self._sel_node()
@@ -273,7 +288,7 @@ class WarengruppenTab(QWidget):
                            if w["id"] == rec_id), None)
             kto = wg_raw["erloeskonto"] if wg_raw else ""
             dlg = _WarengruppenDialog(self, rec_id, bez, kto, self._get_rahmen_name())
-            if dlg.exec():
+            if self._exec_bearbeiten_dialog(dlg):
                 n_bez, n_kto = dlg.values()
                 if not n_bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.wgr.bezeichnung_pflicht"))
@@ -295,7 +310,7 @@ class WarengruppenTab(QWidget):
                                     ag_raw["bezeichnung"] if ag_raw else "",
                                     parent_bez=parent_bez,
                                     parent_id=ag_raw["warengruppe_id"] if ag_raw else None)
-            if dlg.exec():
+            if self._exec_bearbeiten_dialog(dlg):
                 n_bez = dlg.value()
                 if not n_bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.wgr.bezeichnung_pflicht"))
@@ -318,7 +333,7 @@ class WarengruppenTab(QWidget):
                                     ug_raw["bezeichnung"] if ug_raw else "",
                                     parent_bez=parent_bez,
                                     parent_id=ug_raw["artikelgruppe_id"] if ug_raw else None)
-            if dlg.exec():
+            if self._exec_bearbeiten_dialog(dlg):
                 n_bez = dlg.value()
                 if not n_bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.wgr.bezeichnung_pflicht"))
@@ -341,7 +356,7 @@ class WarengruppenTab(QWidget):
                                     g_raw["bezeichnung"] if g_raw else "",
                                     parent_bez=parent_bez,
                                     parent_id=g_raw["untergruppe_id"] if g_raw else None)
-            if dlg.exec():
+            if self._exec_bearbeiten_dialog(dlg):
                 n_bez = dlg.value()
                 if not n_bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.wgr.bezeichnung_pflicht"))

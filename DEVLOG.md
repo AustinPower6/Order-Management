@@ -8274,3 +8274,20 @@ Enter-Logik mit **sichtbarem** Dialog geprüft (der erste Testlauf ohne `show()`
 **Eigenes Loch geschlossen:** Beim Umstellen von „Bearbeiten" auf `LESEN` konnten Zahlungskonditionen, Mahnkonditionen und Basiszinssatz kurzzeitig über OK doch speichern — die Dialoge waren noch nicht schreibgeschützt. Vor dem Commit über `dialog_readonly` geschlossen und einzeln nachgewiesen. Bei den Mahnkonditionen hatte ein Skript zudem nur die *Button*-Stufe umgestellt, der Methoden-Guard stand noch auf `AENDERN` (Button aktiv, Klick weist ab) — ebenfalls korrigiert.
 
 **Noch offen (bewusst, kein Loch):** In den Reitern Marken, Einheiten, Sprachen/Länder, Warengruppen und Kontenrahmen steht „Bearbeiten" weiterhin auf `AENDERN`. Mit reinem Leserecht ist der Datensatz dort also noch nicht einsehbar (Punkt 2 unvollständig); geschrieben werden kann nichts — die Guards greifen. Nachzuziehen.
+
+
+## 2026-07-15 12:37 — „lesen" nachgezogen: Marken, Einheiten, Sprachen/Länder, Warengruppen, Kontenrahmen
+
+**Auslöser:** Restpunkt aus dem Eintrag von 12:28 — in diesen fünf Reitern hing „Bearbeiten" noch an `AENDERN`, der Datensatz war mit reinem Leserecht nicht einsehbar (kein Loch, aber Punkt 2 der Vorgabe unvollständig).
+
+**Umgesetzt** (Muster wie zuvor: Guard auf `LESEN`, Dialog im Lese-Modus über `ui_widgets.dialog_readonly` — dort ist OK gesperrt, `exec()` liefert 0 und der Speicherzweig des Aufrufers läuft nicht an):
+- `mod_firma_marken.py`, `mod_firma_einheiten.py`: je ein Bearbeiten-Weg.
+- `mod_firma_laender.py`: beide Klassen (Sprachen + Länder).
+- `mod_firma_warengruppen.py`: Der Baum hat vier Ebenen mit je eigenem Dialog — neuer Helfer `_exec_bearbeiten_dialog(dlg)` hält die Rechteprüfung an einer Stelle; die vier `dlg.exec()` **innerhalb** von `_bearbeiten` laufen darüber, die vier in `_neu`/`_neu_kind` bleiben unverändert (dort ist `AENDERN` ohnehin Pflicht). Zusätzlich die Button-Leiste an die Rechte gehängt — sie graute bisher als einzige gar nichts aus.
+- `modul/mod_kontenrahmen.py`: Guard auf `LESEN`, `KontoEditDialog` im Lese-Modus schreibgeschützt.
+
+**Gefundener Fehler (nur durch Ausführen sichtbar):** Der Guard im Kontenrahmen griff auf `self._db` zu — die Klasse hält die App-DB aber als `self._app_db` (gesetzt über `set_db`). Das hätte beim ersten Klick einen `AttributeError` geworfen; `ruff` kann so etwas nicht finden (Attribut existiert erst zur Laufzeit). Korrigiert und per Aufruf nachgewiesen.
+
+**Verifikation:** `ruff check app` grün, `py_compile`. Headless (offscreen) auf **Kopie** der echten DB mit `firma_parameter=lesen` / `firma_kontenrahmen=lesen`: Warengruppen → Neu/Löschen gesperrt, **Bearbeiten aktiv**; Marken, Sprachen, Länder, Kontenrahmen → `_bearbeiten` wird **nicht** mehr am Recht abgewiesen (und der Kontenrahmen läuft ohne AttributeError). Beim ersten Testlauf blockierte der Prozess: `_bearbeiten` ohne Auswahl öffnet eine modale `QMessageBox.information`, die headless nie beantwortet wird — im Nachtest abgefangen.
+
+Damit ist Punkt 2 der Vorgabe („lesen = Datensatz vollständig lesen") in allen Programmteilen umgesetzt.

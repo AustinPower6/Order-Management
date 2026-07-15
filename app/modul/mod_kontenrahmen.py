@@ -15,6 +15,7 @@ import theme
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from i18n import _
 import rechte
+import ui_widgets
 
 _DB_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -259,9 +260,10 @@ class KontenrahmenFenster(QWidget):
 
     # ── Bearbeiten ────────────────────────────────────────────────────
     def _bearbeiten(self):
-        # Einziger Weg zum KontoEditDialog — ein Guard hier deckt das Ändern ab.
-        if not rechte.pruefe_mit_hinweis(self, self._db, "firma_kontenrahmen",
-                                         rechte.AENDERN):
+        # Einziger Weg zum KontoEditDialog. Leserecht genügt zum Öffnen — ohne
+        # Änderungsrecht ist der Dialog dann schreibgeschützt (OK gesperrt).
+        if not rechte.pruefe_mit_hinweis(self, self._app_db, "firma_kontenrahmen",
+                                         rechte.LESEN):
             return
         rows = self.table.selectedItems()
         if not rows:
@@ -271,6 +273,9 @@ class KontenrahmenFenster(QWidget):
             return
         konto_id  = self._ids[row]
         dlg = KontoEditDialog(self, self._conn, konto_id, self._rahmen_id)
+        if not rechte.darf(self._app_db, "firma_kontenrahmen", rechte.AENDERN):
+            # Nur ansehen: OK ist gesperrt, exec() liefert damit 0.
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label("firma_kontenrahmen"))
         if dlg.exec():
             self._refresh()
 

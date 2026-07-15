@@ -13,6 +13,7 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
 from i18n import _
 import rechte
+import ui_widgets
 import ki_client
 import theme
 import settings
@@ -188,7 +189,7 @@ class SprachenVerwaltung(QWidget):
 
     def _bearbeiten(self):
         if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
-                                         rechte.AENDERN):
+                                         rechte.LESEN):
             return
         sid = self._sel_id()
         if not sid:
@@ -196,6 +197,9 @@ class SprachenVerwaltung(QWidget):
             return
         aktuell = dict(self.db.get_sprache(sid) or {})
         dlg = _SpracheDialog(self, aktuell, self.db.get_sprachen())
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: OK ist gesperrt, exec() liefert damit 0.
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
         if dlg.exec():
             data = dlg.value()
             if not data["bezeichnung"]:
@@ -383,7 +387,7 @@ class LaenderVerwaltung(QWidget):
 
     def _bearbeiten(self):
         if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
-                                         rechte.AENDERN):
+                                         rechte.LESEN):
             return
         lid = self._sel_id()
         if not lid:
@@ -391,6 +395,9 @@ class LaenderVerwaltung(QWidget):
             return
         aktuell = dict(self.db.get_land(lid) or {})
         dlg = _LandDialog(self, aktuell, self.db.get_sprachen())
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: OK ist gesperrt, exec() liefert damit 0.
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
         if dlg.exec():
             data = dlg.value()
             if not data["iso_code"] or not data["bezeichnung"]:
