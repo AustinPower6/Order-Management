@@ -114,8 +114,12 @@ def _brevo(firma, empfaenger, betreff, text):
 
 
 def _smtp(firma, host, port, tls_mode, user, passwort, empfaenger, betreff, text):
-    mail, name = _absender(firma)
-    absender = mail or user
+    # Absenderadresse ist immer der SMTP-Benutzer, nicht die E-Mail-Adresse der
+    # Firma: Mailserver weisen ein From zurück, das nicht zum angemeldeten Konto
+    # gehört (GMX: 550 „Sender address is not allowed"). Gleiche Regel wie im
+    # Postausgang (modul/email_provider_mixin.py::_smtp_kern).
+    _mail, name = _absender(firma)
+    absender = user
     msg = MIMEText(text, "plain", "utf-8")
     msg["From"] = formataddr((name, absender)) if name else absender
     msg["To"] = empfaenger
