@@ -8482,6 +8482,10 @@
     "ts": "2026-07-15 10:46",
     "h": "22326b9449cc"
   },
+  "login.kopf_windows": {
+    "de": "Angemeldet als „{login}“ — zum Starten einfach Enter drücken.\nUm als jemand anderes zu arbeiten: Benutzer überschreiben und dessen Passwort eingeben.",
+    "en": "Signed in as “{login}” — just press Enter to start.\nTo work as someone else: overwrite the user and enter their password."
+  },
   "login.pw_erzwungen": {
     "de": "Ihr Passwort wurde neu vergeben. Bitte legen Sie jetzt ein eigenes Passwort fest — ohne Änderung können Sie nicht fortfahren.",
     "en": "Your password was newly assigned. Please set your own password now — you cannot continue without changing it.",

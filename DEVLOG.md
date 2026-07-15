@@ -8225,3 +8225,22 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
 - `app/language.json`: `rechte.modul.firma` → „Firma anlegen/löschen"; neuer Key `rechte.modul.firma_praefix` („Firmenstamm").
 
 **Verifikation:** `ruff check app` grün; `audit_firma_id.py` Exit 0 („FEHLER: keine"). Migration v76 → v77 real beim App-Start gefahren (Backup `…db.76`): DB-Version 77, David hat statt `firma=1` jetzt 19 Firmenstamm-Rechte; 2. Lauf auf Kopie ändert nichts (idempotent). Abdeckungsprüfung: alle 18 Keys werden außerhalb von `mod_firma_base.py` geprüft (kein Reiter nur sichtbarkeitsgesteuert). Headless (offscreen) auf DB-Kopie mit gefälschter Session: Rechte `{firma_adresse:2, firma_pfade:1}` → **exakt** die Reiter „Adresse", „Pfade"; keine Rechte → 0 Reiter + `firmenstamm_sichtbar` False; nur `firma=2` → 0 Reiter, aber Fenster sichtbar (Neu-Button erreichbar); Davids Rechte → alle 19 Reiter. Guard-Gegentest: Adresse mit nur LESEN → Speichern abgelehnt („Sie dürfen „Firmenstamm → Adresse" nur ansehen, nicht ändern."), Steuern mit AENDERN → speichert.
+
+
+## 2026-07-15 11:58 — Login-Dialog immer vorschalten (kein Auto-Login mehr)
+
+**Auslöser:** Bisher meldete die App den Windows-Benutzer ohne Dialog an (`session.py`), sobald er als Benutzer mit `anmeldeart='windows'` existierte. Damit ließ sich nicht als jemand anderes arbeiten. Gewünscht: immer ein Login-Dialog, vorausgefüllt mit dem Windows-Benutzer — Enter genügt, oder anderen Benutzer + Passwort eingeben.
+
+**Sicherheitsentscheidung (wichtig):** Windows-Benutzer haben kein Passwort — ihr Ausweis ist die Windows-Anmeldung selbst. Der Dialog ließ sie deshalb bisher bewusst *gar nicht* durch (`dlg_login.py` prüfte nur `anmeldeart='passwort'`). Sie jetzt einfach zuzulassen, hätte ein Scheunentor geöffnet: Jeder am Rechner hätte den Login eines beliebigen Windows-Benutzers — auch eines Admins — eintippen und wäre ohne Nachweis drin gewesen. Umgesetzt ist daher die Bindung an das Windows-Konto: **Ohne Passwort kommt nur herein, wer den Login seines eigenen, gerade angemeldeten Windows-Kontos eingibt** (`_ist_eigener_windows_login`, case-insensitive). Ein fremder Windows-Benutzer lässt sich nicht auswählen — er hat kein Passwort, mit dem er sich ausweisen könnte. Für Passwort-Benutzer ändert sich nichts: Passwort zählt, unabhängig vom Windows-Konto.
+
+**Umgesetzt:**
+- `app/session.py`: `initialisiere` ruft immer `_login_dialog(db)`; der Auto-Login-Zweig (Schritt 2) ist entfallen. Bootstrap und Passwort-Zwangsänderung unverändert.
+- `app/dlg_login.py`: `_anmelden` akzeptiert zusätzlich `anmeldeart='windows'`, aber nur via `_ist_eigener_windows_login`. Neuer Helfer `_braucht_passwort(login)` steuert die Enter-Logik: **Enter im Login-Feld** meldet bei der eigenen Windows-Anmeldung sofort an, springt sonst erst ins Passwortfeld (sonst hätte Enter die Eingabe direkt mit „fehlgeschlagen" quittiert); **Enter im Passwortfeld** meldet an. Kopftext ist dynamisch: `login.kopf_windows` („Angemeldet als „…" — zum Starten einfach Enter drücken.") bei eigener Windows-Anmeldung, sonst der bisherige `login.kopf`.
+- `app/language.json`: neuer Key `login.kopf_windows` (DE+EN).
+- Unverändert: Fehlversuchszähler (`MAX_FEHLVERSUCHE`) und die Nicht-Preisgabe — falscher Login und falsches Passwort ergeben weiter dieselbe Meldung. Auch ein abgelehnter fremder Windows-Benutzer bekommt genau diese generische Meldung (sonst wäre erkennbar, dass der Login existiert).
+
+**Verifikation:** `ruff check app` grün. Headless (offscreen) auf **Kopie** der echten DB, mit Testlage Walter=Windows/Admin, David=Passwort, Chef=Windows/Admin — 8 Fälle:
+- Windows-User „Walter": Walter ohne Passwort → angemeldet; „walter" klein geschrieben → angemeldet (case-insensitive); David + richtiges Passwort → angemeldet; David + falsches → abgelehnt.
+- **Sicherheit:** Chef (fremdes Windows-Konto, Admin) ohne Passwort → **abgelehnt**; mit geratenem Passwort → **abgelehnt**.
+- Am PC von „Chef": Chef ohne Passwort → angemeldet; Walter (fremdes Windows-Konto) → **abgelehnt**.
+Enter-Logik mit **sichtbarem** Dialog geprüft (der erste Testlauf ohne `show()` war wertlos — `setFocus()` greift auf unsichtbaren Widgets nicht, das Ergebnis stimmte nur zufällig): Login-Feld + Enter bei „David" → nicht angemeldet, Fokus im Passwortfeld; Passwort + Enter → angemeldet. Bei „Walter" → Enter im Login-Feld meldet sofort an. Kopftext: Windows-Variante bei bekanntem Windows-Benutzer, generisch bei unbekanntem.

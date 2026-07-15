@@ -34,7 +34,11 @@ class LoginDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
 
-        kopf = QLabel(_("login.kopf"))
+        win_user = settings.get_current_username()
+        # Ist der Windows-Benutzer als Windows-Anmeldung eingetragen, genügt Enter —
+        # das sagt der Kopftext dann auch, sonst bliebe das leere Passwortfeld rätselhaft.
+        kopf = QLabel(_("login.kopf_windows", login=win_user)
+                      if not self._braucht_passwort(win_user) else _("login.kopf"))
         kopf.setWordWrap(True)
         lay.addWidget(kopf)
 
@@ -42,7 +46,7 @@ class LoginDialog(settings.DialogSizeMixin, QDialog):
         form = QFormLayout(form_widget)
         form.setVerticalSpacing(6)
         self._login = QLineEdit()
-        self._login.setText(settings.get_current_username())
+        self._login.setText(win_user)
         form.addRow(_("login.feld_login"), self._login)
         self._passwort = QLineEdit()
         self._passwort.setEchoMode(QLineEdit.EchoMode.Password)
@@ -75,9 +79,34 @@ class LoginDialog(settings.DialogSizeMixin, QDialog):
         # Enter bestätigt die Anmeldung (bewusste Ausnahme vom Feld-Durchlauf);
         # für alles andere gilt die zentrale Navigation aus DialogSizeMixin.
         if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            # Im Login-Feld: Wer ein Passwort braucht, kommt erst ins Passwortfeld —
+            # sonst quittierte Enter die Eingabe sofort mit „fehlgeschlagen".
+            if (self._login.hasFocus() and not self._passwort.text()
+                    and self._braucht_passwort(self._login.text())):
+                self._passwort.setFocus()
+                return
             self._anmelden()
             return
         super().keyPressEvent(event)
+
+    def _ist_eigener_windows_login(self, login) -> bool:
+        """True, wenn `login` das gerade angemeldete Windows-Konto ist.
+
+        Windows-Benutzer haben kein Passwort — ihr Ausweis ist die Windows-Anmeldung
+        selbst. Deshalb dürfen sie nur an ihrem eigenen Konto ohne Passwort herein;
+        sonst könnte jeder den Login eines Windows-Kollegen (womöglich eines Admins)
+        eintippen und wäre ohne Nachweis drin.
+        """
+        return login.strip().lower() == (settings.get_current_username() or "").strip().lower()
+
+    def _braucht_passwort(self, login) -> bool:
+        """True, wenn für diesen Login ein Passwort einzugeben ist (steuert, ob
+        Enter im Login-Feld direkt anmeldet oder erst ins Passwortfeld springt)."""
+        row = self.db.get_benutzer_by_login(login)
+        if row is None:
+            return True
+        return not ((dict(row).get("anmeldeart") or "") == "windows"
+                    and self._ist_eigener_windows_login(login))
 
     def _anmelden(self):
         login = self._login.text().strip()
@@ -86,9 +115,12 @@ class LoginDialog(settings.DialogSizeMixin, QDialog):
         ok = False
         if row is not None:
             d = dict(row)
-            if (d.get("anmeldeart") or "") == "passwort":
+            art = (d.get("anmeldeart") or "")
+            if art == "passwort":
                 ok = passwort_util.pruefe_passwort(
                     passwort, d.get("passwort_hash") or "", d.get("passwort_salt") or "")
+            elif art == "windows":
+                ok = self._ist_eigener_windows_login(login)
         if ok:
             self._benutzer = dict(row)
             self.accept()

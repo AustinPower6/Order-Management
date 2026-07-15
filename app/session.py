@@ -93,20 +93,16 @@ def initialisiere(db) -> bool:
 
     Ablauf:
     1. Leere Benutzertabelle → Bootstrap: der aktuelle Windows-User wird Admin.
-    2. Windows-Benutzer mit passendem Login → Auto-Login ohne Dialog.
-    3. Sonst Login-Dialog (Login + Passwort).
-    4. `muss_passwort_aendern` → Zwangsänderung, Abbruch = kein Start.
+    2. Login-Dialog — immer, damit man sich auch als jemand anderes anmelden kann.
+       Er ist mit dem Windows-Benutzer vorbelegt; ist der als Windows-Anmeldung
+       eingetragen, genügt Enter (kein Auto-Login mehr ohne Dialog).
+    3. `muss_passwort_aendern` → Zwangsänderung, Abbruch = kein Start.
     """
     if db.anzahl_benutzer() == 0:
         _bootstrap_admin(db)
 
-    win_user = settings.get_current_username()
-    row = db.get_benutzer_by_login(win_user)
-    if row is not None and (dict(row).get("anmeldeart") or "") == "windows":
-        _setze(row)
-    else:
-        if not _login_dialog(db):
-            return False
+    if not _login_dialog(db):
+        return False
 
     if _benutzer.get("muss_passwort_aendern"):
         if not _passwort_aendern_erzwingen(db):
