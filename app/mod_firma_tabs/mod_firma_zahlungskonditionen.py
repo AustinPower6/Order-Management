@@ -11,6 +11,8 @@ from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 import rechte
+import ui_widgets
+
 
 _RECHT_KEY = "firma_zahlungskonditionen"
 
@@ -66,7 +68,7 @@ class ZahlungskonditionenTab(QWidget):
 
         btn_bar = QHBoxLayout()
         for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
-                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.LESEN),
                                    ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, _RECHT_KEY, stufe):
@@ -105,6 +107,9 @@ class ZahlungskonditionenTab(QWidget):
         self._save_bar = SaveBar(self)
         self._save_bar.set_callbacks(self._speichern, self._abbrechen)
         lay.addWidget(self._save_bar)
+        self._save_bar.set_speichern_gesperrt(
+            not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN),
+            rechte.modul_label(_RECHT_KEY))
 
     # ─── Tabelle ──────────────────────────────────────────────────────────────
 
@@ -202,17 +207,32 @@ class ZahlungskonditionenTab(QWidget):
             self._refresh()
 
     def _bearbeiten(self):
-        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY, rechte.AENDERN):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY, rechte.LESEN):
             return
         zk_id = self._sel_id()
         if not zk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.zk.bitte_auswaehlen"))
             return
+
+        row = self.table.currentRow()
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: ohne Sperre (ein Leser darf keine Kollegen blockieren)
+            # und mit schreibgeschütztem Dialog — OK ist dort gesperrt, es kann
+            # also nichts zurückkommen, was zu speichern wäre.
+            dlg = _ZahlungskonditionDialog(
+                self,
+                bezeichnung=self.table.item(row, 1).text(),
+                tage=int(self.table.item(row, 2).text()),
+                bearbeiten=True)
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
+            dlg.exec()
+            dlg.deleteLater()
+            return
+
         ok, _ignored = lock_manager.try_lock(self.db, "zahlungskonditionen", zk_id, Module.ZAHLKOND, self)
         if not ok:
             return
 
-        row = self.table.currentRow()
         dlg = _ZahlungskonditionDialog(
             self,
             bezeichnung=self.table.item(row, 1).text(),

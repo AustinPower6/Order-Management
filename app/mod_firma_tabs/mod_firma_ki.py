@@ -44,6 +44,9 @@ _EFFORT_OPTIONEN = (
 
 class KiAnbindungTab(SimpleFormTab):
     RECHT_KEY = "firma_ki"
+    # Wählt nur aus, welcher lokale Slot im Formular angezeigt wird (die Slot-Combos
+    # der LLM-Gruppen sind dagegen echte Datenfelder und bleiben gesperrt).
+    READONLY_AUSNAHMEN = ("_cmb_lok_edit",)
     HELP_ANCHOR = "firma-ki"
 
     def _firma_nr(self) -> str:

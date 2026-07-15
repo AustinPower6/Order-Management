@@ -13,6 +13,7 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckLineEdit
 from i18n import _
+import ui_widgets
 from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay, resolve_iban_in_felder
 import theme
 import bank
@@ -87,7 +88,7 @@ class KundenFenster(QWidget):
         # DSGVO = lesen (die Auskunft darf jeder; Anonymisieren/Einschränken
         # sind im Menü selbst an die Löschstufe gebunden).
         for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
-                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.LESEN),
                                    ("btn.loeschen", self._loeschen, rechte.LOESCHEN),
                                    ("btn.dsgvo", self._dsgvo, rechte.LESEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
@@ -322,11 +323,19 @@ class KundenFenster(QWidget):
 
     def _bearbeiten(self):
         # Auch über Doppelklick erreichbar — Guard hier, nicht nur am Button.
-        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.AENDERN):
+        # Leserecht genügt: Der Datensatz muss vollständig einsehbar sein.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.LESEN):
             return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"), _("msg.bitte_kunde_w"))
+            return
+        if not rechte.darf(self.db, "kunden", rechte.AENDERN):
+            # Nur ansehen: ohne Sperre (ein Leser darf keine Kollegen blockieren)
+            # und mit schreibgeschütztem Dialog.
+            dlg = KundeDialog(self, self.db, id_)
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label("kunden"))
+            dlg.exec()
             return
         k = dict(self.db.get_kunde(id_))
         ok, _ignored = lock_manager.try_lock(self.db, "kunden", id_, Module.KUNDEN, self)

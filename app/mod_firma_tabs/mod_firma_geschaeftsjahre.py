@@ -5,6 +5,7 @@ from ui_widgets import SaveBar, zeige_fehler
 import theme
 from i18n import _
 import rechte
+import ui_widgets
 
 
 class GeschaeftjahresTab(QWidget):
@@ -38,6 +39,12 @@ class GeschaeftjahresTab(QWidget):
         self._db = db
         self._firma_id = firma_id
         self._on_saved = on_saved
+
+        # Ohne Änderungsrecht reine Ansicht (Recht „lesen" = vollständig lesen).
+        if not rechte.darf(db, "firma_geschaeftsjahre", rechte.AENDERN):
+            ui_widgets.setze_formular_readonly(self)
+            self._save_bar.set_speichern_gesperrt(
+                True, rechte.modul_label("firma_geschaeftsjahre"))
 
     def _build(self, on_new_year, on_set_active):
         main_lay = QVBoxLayout(self)

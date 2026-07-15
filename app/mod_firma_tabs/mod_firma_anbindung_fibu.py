@@ -12,6 +12,7 @@ from lock_manager import Module
 import settings
 import theme
 import rechte
+import ui_widgets
 
 
 class AnbindungFibuTab(QWidget):
@@ -34,6 +35,12 @@ class AnbindungFibuTab(QWidget):
         self._on_saved = on_saved
 
     # ── UI-Aufbau ──────────────────────────────────────────────────────────────
+
+        # Ohne Änderungsrecht reine Ansicht (Recht „lesen" = vollständig lesen).
+        if not rechte.darf(db, "firma_anbindung_fibu", rechte.AENDERN):
+            ui_widgets.setze_formular_readonly(self)
+            self._save_bar.set_speichern_gesperrt(
+                True, rechte.modul_label("firma_anbindung_fibu"))
 
     def _build(self):
         main_lay = QVBoxLayout(self)

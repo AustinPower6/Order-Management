@@ -5,6 +5,7 @@ import settings
 from helpers import fmt_datum
 import lock_manager
 import rechte
+import ui_widgets
 import theme
 from modul.mod_mwst import KlasseDialog, SatzDialog
 from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
@@ -30,7 +31,7 @@ class MwStTab(QWidget):
         lay = QVBoxLayout(self)
         btn_bar = QHBoxLayout()
         for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
-                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.LESEN),
                                    ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, "mwst", stufe):
@@ -103,6 +104,9 @@ class MwStTab(QWidget):
     def _build_savebar(self):
         self._save_bar = SaveBar(self)
         self._save_bar.set_callbacks(self._speichern, self._abbrechen)
+        self._save_bar.set_speichern_gesperrt(
+            not rechte.darf(self.db, "mwst", rechte.AENDERN),
+            rechte.modul_label("mwst"))
         self.layout().addWidget(self._save_bar)
 
     def _refresh(self):
@@ -277,11 +281,18 @@ class MwStTab(QWidget):
             self._refresh()
 
     def _bearbeiten(self):
-        if not rechte.pruefe_mit_hinweis(self, self.db, "mwst", rechte.AENDERN):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "mwst", rechte.LESEN):
             return
         kid = self._sel_klasse_id()
         if not kid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mwst.bitte_klasse"))
+            return
+        if not rechte.darf(self.db, "mwst", rechte.AENDERN):
+            # Nur ansehen: ohne Sperre (ein Leser darf keine Kollegen blockieren)
+            # und mit schreibgeschütztem Dialog.
+            dlg = KlasseDialog(self, self.db, kid, commit=False)
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label("mwst"))
+            dlg.exec()
             return
         ok, _ignored = lock_manager.try_lock(self.db, "mwst_klassen", kid, lock_manager.Module.MWST, self)
         if not ok:

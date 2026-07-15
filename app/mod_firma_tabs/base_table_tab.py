@@ -39,8 +39,11 @@ class SimpleTableTab(QWidget):
         lay = QVBoxLayout(self)
         self._build_header(lay)
         btn_bar = QHBoxLayout()
+        # „Bearbeiten" braucht nur Leserecht: Der Datensatz muss vollständig
+        # einsehbar sein, die Liste allein reicht nicht. Gespeichert wird über die
+        # SaveBar — die ist ohne Änderungsrecht gesperrt.
         for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
-                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.LESEN),
                                    ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, self.RECHT_KEY, stufe):
@@ -51,6 +54,9 @@ class SimpleTableTab(QWidget):
         self._build_table(lay)
         self._save_bar = SaveBar(self)
         self._save_bar.set_callbacks(self._speichern, self._abbrechen)
+        self._save_bar.set_speichern_gesperrt(
+            not rechte.darf(self.db, self.RECHT_KEY, rechte.AENDERN),
+            rechte.modul_label(self.RECHT_KEY))
         lay.addWidget(self._save_bar)
 
     # --- von Subklassen zu implementieren ------------------------------
@@ -87,7 +93,7 @@ class SimpleTableTab(QWidget):
             self._refresh()
 
     def _bearbeiten(self):
-        if not rechte.pruefe_mit_hinweis(self, self.db, self.RECHT_KEY, rechte.AENDERN):
+        if not rechte.pruefe_mit_hinweis(self, self.db, self.RECHT_KEY, rechte.LESEN):
             return
         id_ = self._sel_id()
         if not id_:

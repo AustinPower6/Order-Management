@@ -15,9 +15,11 @@ import lock_manager
 from lock_manager import Module
 from i18n import _
 import rechte
+import ui_widgets
+import theme
+
 
 _RECHT_KEY = "firma_parameter"
-import theme
 
 
 class SteuerungTab(QWidget):
@@ -114,6 +116,12 @@ class SteuerungTab(QWidget):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         lay.addWidget(self._save_bar)
+
+        # Ohne Änderungsrecht reine Ansicht (Recht „lesen" = vollständig lesen).
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            ui_widgets.setze_formular_readonly(self)
+            self._save_bar.set_speichern_gesperrt(
+                True, rechte.modul_label(_RECHT_KEY))
 
     def _aktueller_zustand(self):
         """Momentaner Zustand aller Eingabefelder — Basis des Dirty-Vergleichs."""

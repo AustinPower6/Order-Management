@@ -15,6 +15,9 @@ from .base_form_tab import SimpleFormTab
 
 class DrucktexteTab(SimpleFormTab):
     RECHT_KEY = "firma_drucktexte"
+    # Sprachauswahl schaltet nur die Anzeige um — ohne sie wären die Texte der
+    # übrigen Sprachen mit reinem Leserecht nicht einsehbar.
+    READONLY_AUSNAHMEN = ("_sprache_combo",)
     HELP_ANCHOR = "firma-drucktexte"
 
     def __init__(self):

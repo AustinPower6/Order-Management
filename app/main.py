@@ -639,6 +639,11 @@ class MainWindow(QMainWindow):
             modul_key = self.SIDEBAR_RECHTE_KEYS.get(key)
             if modul_key is None or key == "fallback_protokoll":
                 continue  # kein Programmteil bzw. Alarm-Indikator
+            if key == "firma":
+                # Der Firmenstamm hängt nicht am Recht „firma" (das steuert nur
+                # Firma anlegen/löschen), sondern an den Rechten seiner Reiter.
+                btn.setVisible(rechte.firmenstamm_sichtbar(self.db))
+                continue
             btn.setVisible(rechte.darf(self.db, modul_key, rechte.LESEN))
         self._update_fallback_indicator()
 

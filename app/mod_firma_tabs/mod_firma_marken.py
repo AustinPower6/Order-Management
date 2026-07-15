@@ -12,6 +12,7 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from i18n import _
 import rechte
 
+
 _RECHT_KEY = "firma_parameter"
 
 

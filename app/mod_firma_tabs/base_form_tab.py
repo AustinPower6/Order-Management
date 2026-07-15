@@ -15,6 +15,7 @@ Optional ueberschreibbar:
     _validate(data)     Fehlermeldung (str) bei ungueltigen Daten, sonst None
 """
 from PyQt6.QtWidgets import QWidget
+import ui_widgets
 from ui_widgets import zeige_fehler
 import lock_manager
 import rechte
@@ -26,6 +27,11 @@ class SimpleFormTab(QWidget):
     # Programmteil dieses Reiters für die Rechteprüfung — jede Subklasse setzt ihn
     # auf ihr `firma_*`-Recht (siehe rechte.FIRMA_TAB_KEYS).
     RECHT_KEY = "firma"
+
+    # Attributnamen von Widgets, die auch ohne Änderungsrecht bedienbar bleiben:
+    # Auswahlfelder, die nur die *Anzeige* umschalten (z. B. die Sprachauswahl der
+    # Drucktexte). Ohne sie ließe sich der Datensatz nicht mehr vollständig lesen.
+    READONLY_AUSNAHMEN = ()
 
     def __init__(self):
         super().__init__()
@@ -41,6 +47,16 @@ class SimpleFormTab(QWidget):
         self._db = db
         self._firma_id = firma_id
         self._on_saved = on_saved
+        # Erst hier möglich: Beim Bauen im __init__ ist die db noch nicht bekannt.
+        # Ohne Änderungsrecht ist der Reiter reine Ansicht — Felder schreibgeschützt,
+        # Speichern gesperrt (das Recht „lesen" heißt: vollständig lesen dürfen).
+        if not rechte.darf(db, self.RECHT_KEY, rechte.AENDERN):
+            ausser = tuple(w for w in (getattr(self, n, None)
+                                       for n in self.READONLY_AUSNAHMEN) if w is not None)
+            ui_widgets.setze_formular_readonly(self, ausser=ausser)
+            if getattr(self, "_save_bar", None) is not None:
+                self._save_bar.set_speichern_gesperrt(
+                    True, rechte.modul_label(self.RECHT_KEY))
 
     # --- von Subklassen zu implementieren ------------------------------
     def _build(self):

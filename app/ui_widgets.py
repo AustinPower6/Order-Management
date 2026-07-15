@@ -533,6 +533,61 @@ class FlowWidget(QWidget):
         return super().minimumSizeHint()
 
 
+def setze_formular_readonly(root, ausser=()):
+    """Alle Eingabefelder unter `root` schreibgeschützt schalten (Rechtestufe „lesen").
+
+    Der Datensatz bleibt vollständig lesbar — nur ändern lässt sich nichts:
+    - Text-/Zahlenfelder: `setReadOnly(True)`. Bewusst nicht `setEnabled(False)`,
+      sonst wäre der Inhalt nicht mehr markier- und kopierbar. Das graue Aussehen
+      kommt global aus `theme.py` (`QLineEdit:read-only`).
+    - Auswahlfelder/Checkboxen: `setEnabled(False)` — sie kennen kein read-only,
+      ihr Wert bleibt aber lesbar.
+
+    Buttons bleiben unberührt: Sie schaltet der Aufrufer gezielt (Speichern über
+    `SaveBar.set_speichern_gesperrt`), und die Methoden dahinter haben ohnehin
+    ihre eigenen Rechte-Guards. `ausser` nimmt Widgets aus, die bedienbar bleiben
+    müssen (z. B. eine Sprachauswahl, die nur die Anzeige umschaltet).
+    """
+    for w in root.findChildren(QWidget):
+        if w in ausser:
+            continue
+        if isinstance(w, (QLineEdit, QTextEdit)):
+            w.setReadOnly(True)
+        elif isinstance(w, QAbstractSpinBox):
+            w.setReadOnly(True)
+            w.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        elif isinstance(w, (QComboBox, QCheckBox)):
+            w.setEnabled(False)
+
+
+def dialog_readonly(dlg, modul_label=""):
+    """Dialog nur zum Ansehen öffnen (Rechtestufe „lesen").
+
+    Felder werden schreibgeschützt, und jeder Weg, der die Eingabe übernehmen
+    würde, wird gesperrt: „Speichern"/„OK" als QDialogButtonBox-Standardbutton
+    ebenso wie als eigener QPushButton. „Abbrechen"/„Schließen" bleibt bedienbar —
+    sonst käme man aus dem Dialog nur noch über ESC heraus.
+
+    Vor `exec()` aufrufen, nachdem der Dialog gebaut und gefüllt ist.
+    """
+    setze_formular_readonly(dlg)
+    tipp = _("msg.nur_lesen", modul=modul_label)
+
+    for bb in dlg.findChildren(QDialogButtonBox):
+        for sb in (QDialogButtonBox.StandardButton.Ok,
+                   QDialogButtonBox.StandardButton.Save,
+                   QDialogButtonBox.StandardButton.Apply):
+            b = bb.button(sb)
+            if b is not None:
+                b.setEnabled(False)
+                b.setToolTip(tipp)
+
+    for b in dlg.findChildren(QPushButton):
+        if b.text() in (_("btn.speichern"), _("btn.ok")):
+            b.setEnabled(False)
+            b.setToolTip(tipp)
+
+
 class SaveBar(QWidget):
     """Zeilen-Widget mit Speichern/Abbrechen-Buttons und dirty-Punkt."""
 
@@ -587,6 +642,16 @@ class SaveBar(QWidget):
         self._dot.hide()
         self._grace = True
         QTimer.singleShot(100, lambda: setattr(self, '_grace', False))
+
+    def set_speichern_gesperrt(self, gesperrt, modul_label=""):
+        """Speichern ausgrauen und funktionslos machen (Rechtestufe „lesen").
+
+        Nur die Anzeige — die Methoden dahinter haben ihre eigenen Guards; wer
+        über Tastatur o. Ä. doch auslöst, läuft dort auf.
+        """
+        self._btn_save.setEnabled(not gesperrt)
+        self._btn_save.setToolTip(
+            _("msg.nur_lesen", modul=modul_label) if gesperrt else "")
 
 
 class _MsgDialog(QDialog):

@@ -13,6 +13,8 @@ from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 import rechte
+import ui_widgets
+
 
 _RECHT_KEY = "firma_mahnkonditionen"
 
@@ -121,7 +123,7 @@ class MahnkonditionenTab(QWidget):
         lay = QVBoxLayout(self)
         btn_bar = QHBoxLayout()
         for lbl_key, fn, stufe in [("btn.neu", self._mahnkond_neu, rechte.AENDERN),
-                                   ("btn.bearbeiten", self._mahnkond_bearbeiten, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._mahnkond_bearbeiten, rechte.LESEN),
                                    ("btn.loeschen", self._mahnkond_loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, _RECHT_KEY, stufe):
@@ -179,7 +181,7 @@ class MahnkonditionenTab(QWidget):
         stufe_btn_bar = QHBoxLayout()
         for lbl_key, fn, stufe in [
                 ("firma.mahn.btn_stufe_neu", self._mahnstufe_neu, rechte.AENDERN),
-                ("firma.mahn.btn_stufe_bearbeiten", self._mahnstufe_bearbeiten, rechte.AENDERN),
+                ("firma.mahn.btn_stufe_bearbeiten", self._mahnstufe_bearbeiten, rechte.LESEN),
                 ("firma.mahn.btn_stufe_loeschen", self._mahnstufe_loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); stufe_btn_bar.addWidget(b)
             if not rechte.darf(self.db, _RECHT_KEY, stufe):
@@ -192,6 +194,9 @@ class MahnkonditionenTab(QWidget):
     def _build_savebar(self):
         self._save_bar = SaveBar(self)
         self._save_bar.set_callbacks(self._speichern, self._abbrechen)
+        self._save_bar.set_speichern_gesperrt(
+            not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN),
+            rechte.modul_label(_RECHT_KEY))
         self.layout().addWidget(self._save_bar)
 
     def _refresh(self):
@@ -344,18 +349,29 @@ class MahnkonditionenTab(QWidget):
 
     def _mahnkond_bearbeiten(self):
         if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
-                                         rechte.AENDERN):
+                                         rechte.LESEN):
             return
         mk_id = self._sel_mahnkond_id()
         if not mk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_kond"))
             return
-        ok, _ignored = lock_manager.try_lock(self.db, "mahnkonditionen", mk_id, Module.MAHNKOND, self)
-        if not ok:
-            return
         row = self.mahnkond_table.currentRow()
         stufen = self.db.get_mahnstufen(mk_id)
         alte_anz = len(stufen)
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: ohne Sperre und mit gesperrtem OK — es kann nichts
+            # zurückkommen, was zu speichern wäre.
+            dlg = _MahnkonditionDialog(
+                self,
+                bezeichnung=self.mahnkond_table.item(row, 0).text(),
+                anz_stufen=alte_anz, stufen_min=0, bearbeiten=True)
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
+            dlg.exec()
+            dlg.deleteLater()
+            return
+        ok, _ignored = lock_manager.try_lock(self.db, "mahnkonditionen", mk_id, Module.MAHNKOND, self)
+        if not ok:
+            return
         dlg = _MahnkonditionDialog(
             self,
             bezeichnung=self.mahnkond_table.item(row, 0).text(),
@@ -451,7 +467,7 @@ class MahnkonditionenTab(QWidget):
 
     def _mahnstufe_bearbeiten(self):
         if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
-                                         rechte.AENDERN):
+                                         rechte.LESEN):
             return
         row = self.mahnstufen_table.currentRow()
         if row < 0:
@@ -469,18 +485,30 @@ class MahnkonditionenTab(QWidget):
                 break
         if not st_data:
             return
+
+        def _dialog():
+            return _MahnstufeDialog(
+                self,
+                stufe=st_data["stufe"],
+                bezeichnung=st_data["bezeichnung"],
+                tage=st_data["falligkeitstage"],
+                zinssatz=str(st_data["zinssatz"]),
+                gebuehr=f"{(st_data.get('mahngebuehr') or 0):.2f}",
+                bearbeiten=True)
+
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: ohne Sperre und mit gesperrtem OK.
+            dlg = _dialog()
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(_RECHT_KEY))
+            dlg.exec()
+            dlg.deleteLater()
+            return
+
         # Lock auf Mahnstufe
         ok, _ignored = lock_manager.try_lock(self.db, "mahnstufen", stufe_id, Module.MAHNKOND, self)
         if not ok:
             return
-        dlg = _MahnstufeDialog(
-            self,
-            stufe=st_data["stufe"],
-            bezeichnung=st_data["bezeichnung"],
-            tage=st_data["falligkeitstage"],
-            zinssatz=str(st_data["zinssatz"]),
-            gebuehr=f"{(st_data.get('mahngebuehr') or 0):.2f}",
-            bearbeiten=True)
+        dlg = _dialog()
         erfolgreich = False
         try:
             if dlg.exec():

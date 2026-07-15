@@ -10,10 +10,10 @@ from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 import rechte
+from uebersetzung import KONTEXT_EINHEIT, UebersetzungTextDialog
+
 
 _RECHT_KEY = "firma_parameter"
-
-from uebersetzung import KONTEXT_EINHEIT, UebersetzungTextDialog
 
 
 def _ist_langer_text(text: str) -> bool:

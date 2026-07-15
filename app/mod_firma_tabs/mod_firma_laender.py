@@ -13,11 +13,12 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
 from i18n import _
 import rechte
-
-_RECHT_KEY = "firma_parameter"
 import ki_client
 import theme
 import settings
+
+
+_RECHT_KEY = "firma_parameter"
 
 
 # ─────────────────────────────────────────────────────────────────────────────

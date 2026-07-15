@@ -12,6 +12,7 @@ from i18n import _
 import settings
 import theme
 import rechte
+import ui_widgets
 
 _SCHRIFTGRADE = [6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48]
 
@@ -562,6 +563,12 @@ class LayoutTab(QWidget):
         self._db = db
         self._firma_id = firma_id
         self._on_saved = on_saved
+
+        # Ohne Änderungsrecht reine Ansicht (Recht „lesen" = vollständig lesen).
+        if not rechte.darf(db, "firma_layout", rechte.AENDERN):
+            ui_widgets.setze_formular_readonly(self)
+            self._save_bar.set_speichern_gesperrt(
+                True, rechte.modul_label("firma_layout"))
 
     def _build(self):
         main_lay = QVBoxLayout(self)

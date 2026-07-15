@@ -15,10 +15,13 @@ import lock_manager
 from lock_manager import Module, ist_admin
 from i18n import _
 import rechte
-
-_RECHT_KEY = "firma_parameter"
+import ui_widgets
 import settings
 import theme
+
+
+_RECHT_KEY = "firma_parameter"
+
 
 KEY_MASKE = "********"   # feste Länge, verrät die Key-Länge nicht
 
@@ -82,6 +85,12 @@ class AdressPruefungTab(QWidget):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         lay.addWidget(self._save_bar)
+
+        # Ohne Änderungsrecht reine Ansicht (Recht „lesen" = vollständig lesen).
+        if not rechte.darf(self.db, _RECHT_KEY, rechte.AENDERN):
+            ui_widgets.setze_formular_readonly(self)
+            self._save_bar.set_speichern_gesperrt(
+                True, rechte.modul_label(_RECHT_KEY))
 
     def _aktueller_zustand(self):
         return (

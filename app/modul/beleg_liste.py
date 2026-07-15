@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
                              QHBoxLayout, QLabel, QLineEdit, QMessageBox,
                              QPushButton, QTableWidget, QTableWidgetItem,
                              QVBoxLayout, QWidget)
+import ui_widgets
 from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QFont, QColor
@@ -710,7 +711,8 @@ class BelegListeFenster(QWidget):
 
     def _bearbeiten(self):
         # Auch über Doppelklick erreichbar — Guard hier, nicht nur am Button.
-        if not self._pruefe_recht(rechte.AENDERN):
+        # Leserecht genügt: Der Beleg muss vollständig einsehbar sein.
+        if not self._pruefe_recht(rechte.LESEN):
             return
         id_ = self._sel_id()
         if not id_:
@@ -742,13 +744,20 @@ class BelegListeFenster(QWidget):
             QMessageBox.information(self, _("msg.hinweis"), self._locked_msg())
             return
 
+        # Nur ansehen: ohne Sperre (ein Leser darf keine Kollegen blockieren) und
+        # mit schreibgeschütztem Dialog.
+        nur_lesen = not self._darf(rechte.AENDERN)
+
         # Multiuser: Lock setzen (der Dialog lädt den Satz ohnehin frisch)
         modul = _MODUL_FROM_TABLE.get(table, "")
-        if table:
+        if table and not nur_lesen:
             ok, _ignored = lock_manager.try_lock(self.db, table, id_, modul, self)
             if not ok:
                 return
-        self._open_edit_dialog(id_).exec()
+        dlg = self._open_edit_dialog(id_)
+        if nur_lesen:
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(self.RECHTE_KEY))
+        dlg.exec()
 
     def _loeschen(self):
         id_ = self._sel_id()

@@ -8244,3 +8244,33 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
 - **Sicherheit:** Chef (fremdes Windows-Konto, Admin) ohne Passwort → **abgelehnt**; mit geratenem Passwort → **abgelehnt**.
 - Am PC von „Chef": Chef ohne Passwort → angemeldet; Walter (fremdes Windows-Konto) → **abgelehnt**.
 Enter-Logik mit **sichtbarem** Dialog geprüft (der erste Testlauf ohne `show()` war wertlos — `setFocus()` greift auf unsichtbaren Widgets nicht, das Ergebnis stimmte nur zufällig): Login-Feld + Enter bei „David" → nicht angemeldet, Fokus im Passwortfeld; Passwort + Enter → angemeldet. Bei „Walter" → Enter im Login-Feld meldet sofort an. Kopftext: Windows-Variante bei bekanntem Windows-Benutzer, generisch bei unbekanntem.
+
+
+## 2026-07-15 12:28 — Rechtestufe „lesen": Datensatz voll einsehbar, Speichern gesperrt
+
+**Auslöser (drei Vorgaben des Anwenders):**
+1. Der Firmenstamm muss in Sidebar **und** Hamburger-Menü erscheinen, sobald ein *Reiter*-Recht besteht.
+2. „lesen" heißt: **Der Datensatz kann vollständig gelesen werden** — die Ansicht in der Vorauswahl (Liste) reicht nicht.
+3. Gespeichert wird über „Speichern"; dieser Button muss ausgegraut und ohne Funktion sein. **Gilt für alle Programmteile.**
+
+**Befund:** Punkt 2 war systemweit falsch umgesetzt — „Bearbeiten" hing überall an `AENDERN` (Kunden, Artikel, Beleglisten, MwSt, Konditionen …). Mit reinem Leserecht kam man an den Datensatz gar nicht heran. Punkt 1 lag an `SIDEBAR_RECHTE_KEYS["firma"] → darf("firma", LESEN)`; seit v77 steuert `firma` aber nur noch Firma anlegen/löschen.
+
+**Umgesetzt:**
+- `app/ui_widgets.py` (zentral, deckt den Großteil ab):
+  - `setze_formular_readonly(root, ausser=())` — Text-/Zahlenfelder `setReadOnly(True)` (bewusst **nicht** `setEnabled(False)`: sonst wäre der Inhalt nicht mehr markier-/kopierbar; das graue Aussehen kommt global aus `theme.py`), Auswahlfelder/Checkboxen `setEnabled(False)`.
+  - `SaveBar.set_speichern_gesperrt(gesperrt, modul_label)` — Speichern ausgegraut + Tooltip.
+  - `dialog_readonly(dlg, modul_label)` — Felder schreibgeschützt **und** jeder Übernahme-Weg gesperrt: „Speichern"/„OK" als QDialogButtonBox-Standardbutton wie als eigener QPushButton. „Abbrechen"/„Schließen" bleibt bedienbar (sonst käme man nur noch per ESC heraus).
+- `app/main.py`: `_apply_rechte_sichtbarkeit` schaltet den Sidebar-Button „firma" über `rechte.firmenstamm_sichtbar` (Punkt 1; das Menü lief bereits darüber).
+- **Punkt 2** — „Bearbeiten" braucht nur noch `LESEN`, und der Lese-Weg läuft **ohne Sperre** (ein Leser darf keine Kollegen blockieren) mit schreibgeschütztem Dialog: `mod_kunden.py`, `mod_artikel.py`, `beleg_liste.py`, `mod_firma_mwst.py`, `base_table_tab.py` (+ `mod_firma_basiszinssatz.py::_edit`), `mod_firma_zahlungskonditionen.py`, `mod_firma_mahnkonditionen.py` (Kondition + Stufe).
+- **Punkt 3** — Speichern gesperrt: `base_form_tab.py` erledigt es in `set_db_and_firma_id` für alle 10 Formular-Reiter zentral (dort ist die db erstmals bekannt — im `__init__` beim Bauen noch nicht) inkl. `setze_formular_readonly`; `base_table_tab.py`, Geschäftsjahre, Anbindung FiBu, Layout, Steuerung, Adressprüfung, Zahlungs-/Mahnkonditionen, MwSt je einzeln.
+- Neues Klassenattribut `SimpleFormTab.READONLY_AUSNAHMEN`: Auswahlfelder, die nur die **Anzeige** umschalten, bleiben bedienbar — sonst wäre der Datensatz *nicht* vollständig lesbar. Gesetzt für `DrucktexteTab` (`_sprache_combo` — sonst wären die Texte der anderen Sprachen unerreichbar) und `KiAnbindungTab` (`_cmb_lok_edit`; die Slot-Combos der LLM-Gruppen sind dagegen echte Datenfelder und bleiben gesperrt).
+
+**Verifikation:** `ruff check app` grün, `py_compile` aller geänderten Module. Headless (offscreen) auf **Kopie** der echten DB mit gefälschter Session:
+- Firmenstamm-Sichtbarkeit (Punkt 1): `firma_adresse=lesen` → True; `firma_pfade=lesen` → True; `mwst=lesen` → True; `firma=ändern` (nur anlegen) → True; ohne alles → False; `firma=lesen` ohne Reiterrechte → False.
+- Kunden mit nur `lesen`: **Bearbeiten aktiv**, Neu/Löschen gesperrt; KundeDialog → 18/18 Textfelder read-only, Speichern aus.
+- Adresse-Reiter: `lesen` → 23/23 Felder read-only + Speichern aus; `ändern` → nur die 2 vorbestehenden Anzeigefelder read-only, Speichern aktiv. Drucktexte `lesen` → 186/186 Felder read-only, **Sprachauswahl weiterhin bedienbar**.
+- Zahlungskonditionen/Basiszinssatz mit `lesen`: Speichern aus, Neu/Löschen aus, Bearbeiten an; Dialog im Lese-Modus: **OK gesperrt**, Abbrechen bedienbar, Felder read-only.
+
+**Eigenes Loch geschlossen:** Beim Umstellen von „Bearbeiten" auf `LESEN` konnten Zahlungskonditionen, Mahnkonditionen und Basiszinssatz kurzzeitig über OK doch speichern — die Dialoge waren noch nicht schreibgeschützt. Vor dem Commit über `dialog_readonly` geschlossen und einzeln nachgewiesen. Bei den Mahnkonditionen hatte ein Skript zudem nur die *Button*-Stufe umgestellt, der Methoden-Guard stand noch auf `AENDERN` (Button aktiv, Klick weist ab) — ebenfalls korrigiert.
+
+**Noch offen (bewusst, kein Loch):** In den Reitern Marken, Einheiten, Sprachen/Länder, Warengruppen und Kontenrahmen steht „Bearbeiten" weiterhin auf `AENDERN`. Mit reinem Leserecht ist der Datensatz dort also noch nicht einsehbar (Punkt 2 unvollständig); geschrieben werden kann nichts — die Guards greifen. Nachzuziehen.

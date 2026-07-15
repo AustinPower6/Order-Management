@@ -8,10 +8,12 @@ from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
 from i18n import _
 import rechte
-
-_RECHT_KEY = "firma_parameter"
 import settings
 import theme
+
+
+_RECHT_KEY = "firma_parameter"
+
 
 # Ebene-Konstanten (werden im UserRole der TreeItems gespeichert)
 EBE_WG = 0  # Warengruppe

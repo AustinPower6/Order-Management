@@ -9,6 +9,8 @@ from modul.mod_belege import _apply_saved_columns, _connect_save_columns, DatumE
 from ui_widgets import zeige_warnung
 from helpers import fmt_datum, parse_datum
 from i18n import _
+import rechte
+import ui_widgets
 from .base_table_tab import SimpleTableTab
 
 
@@ -61,6 +63,10 @@ class BasiszinssatzTab(SimpleTableTab):
         if not row:
             return False
         dlg = BasiszinsDialog(self, self.db, dict(row))
+        if not rechte.darf(self.db, self.RECHT_KEY, rechte.AENDERN):
+            # Nur ansehen: OK ist gesperrt, exec() liefert damit immer 0 —
+            # gespeichert wird nichts.
+            ui_widgets.dialog_readonly(dlg, rechte.modul_label(self.RECHT_KEY))
         if dlg.exec():
             self.db.save_basiszinsatz(dlg.result_data, commit=False)
             return True
