@@ -53,9 +53,20 @@ The following packages are installed:
 - **pyenchant** — spell checking (needs Hunspell dictionaries)
 - **pywin32** — COM automation for Outlook 365 Classic
 - **factur-x** — ZUGFeRD e-invoice (PDF/A-3 hybrid format)
+- **PyMuPDF** — PDF post-processing (page numbers, delivery address, test-print watermark)
+- **lxml** — XSD validation of the DATEV invoice data service (accounting export)
+- **pyhanko** — digital PDF signature (PAdES) of the document PDFs
+- **cryptography** — self-signed certificate (`.p12`) for the PDF signature
+- **schwifty** — IBAN validation (MOD-97) plus BIC/bank name offline
+- **httpx** — address validation (Google Address Validation / Nominatim)
+
+> **Signature feature:** **pyhanko** and **cryptography** must be installed for the
+> digital signature of document PDFs. If they are missing, the program keeps running
+> normally — documents are simply not signed, and the case is recorded in the error
+> tracking.
 
 **For development** (optional): also install the linter and enable the pre-commit
-hook. The hook runs `ruff check app tools` before every `git commit` and aborts
+hook. The hook runs `ruff check app` before every `git commit` and aborts
 the commit on problems.
 
 ```bash
@@ -67,13 +78,15 @@ Enabling the hook (`core.hooksPath`) is required **once per clone**. Emergency b
 
 ### 2.3 Set up spell checking (optional)
 
-The application uses `pyenchant` with Hunspell dictionaries. The spell-check language switches automatically with the app language (German ↔ English).
+The application uses `pyenchant` with Hunspell dictionaries. The spell-check language switches automatically with the app language.
 
-**One click (recommended):** just double-click `Install_Woerterbuecher.cmd`. The batch file locates a Python installation itself, installs `pyenchant` automatically if missing, and then downloads the dictionaries (DE + EN) — no further step required. The only prerequisite is an existing Python 3 installation.
+**One click (recommended):** just double-click `Install_Woerterbuecher.cmd`. The batch file locates a Python installation itself, installs `pyenchant` automatically if missing, and then downloads the dictionaries — no further step required. The only prerequisite is an existing Python 3 installation.
+
+**Which languages are installed:** The installer takes **all configured app languages** — not just German and English. The list lives in `installed_languages.txt` (maintained by the language generator); the download sources are held centrally in `app/dict_quellen.py`. App languages without an available Hunspell dictionary (e.g. Sinhala) are skipped cleanly. If you add a new app language, simply run the installer again.
 
 Alternatively via the Python script directly:
 ```bash
-python Install_Woerterbuecher.py        # all languages
+python Install_Woerterbuecher.py        # all configured app languages
 python Install_Woerterbuecher.py de     # German only
 python Install_Woerterbuecher.py en     # English only
 ```
@@ -89,8 +102,27 @@ Dictionaries come from LibreOffice / wooorm. If no source is reachable, the scri
 On the very first start:
 1. Run `Start.cmd` (or `python Order-Management.py`).
 2. The SQLite database is created automatically in `app/daten/`.
-3. The schema is migrated to the current level (v25).
-4. The main window appears.
+3. The schema is migrated to the current level (the target version is `CURRENT_VERSION` in `app/DB-Pflege.py`).
+4. The sign-in dialog appears, then the main window.
+
+### Users: first start and rollout
+
+On the first start after updating to the user administration, no user exists yet. The
+program therefore sets up the **currently signed-in Windows user as an administrator**
+automatically and points this out.
+
+> **Important in multi-workstation operation:** All other workstations only get back in
+> **once their users have been created**. So create them *before* you roll the new
+> version out to further workstations — otherwise nobody can sign in there any more.
+
+There are two sign-in methods: **Windows sign-in** (no password; only works on the
+user's own Windows account) and **login + password** (required for everyone who also
+needs to sign in on other people's machines).
+
+The program can only send password emails via a **server-side** email client —
+**Brevo**, **Gmail** or **SMTP**. With *Outlook 365 Classic*, *New Outlook* or *none*,
+automatic sending is not possible; the password is then shown once and must be passed
+on personally. You set the sender company at the top of the user administration.
 
 ### Required: enter company data
 
@@ -288,3 +320,8 @@ pip install -r requirements.txt
 ```
 
 On the next start the database migrations are applied automatically (with backup).
+
+> **When updating to the user administration:** The first start makes the signed-in
+> Windows user an administrator. Create all further users afterwards **before** you
+> roll the new version out to the remaining workstations — see
+> [Users: first start and rollout](#users-first-start-and-rollout).

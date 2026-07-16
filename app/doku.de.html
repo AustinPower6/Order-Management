@@ -148,6 +148,7 @@
   <div class="sep"></div>
   <a href="#benutzerverwaltung">Benutzerverwaltung</a>
   <a href="#benutzer-anmeldung" class="sub">Anmeldung</a>
+  <a href="#benutzer-zustaende" class="sub">Anlegen, deaktivieren, l&ouml;schen</a>
   <a href="#benutzer-rechte" class="sub">Rechte vergeben</a>
   <a href="#benutzer-passwort" class="sub">Passw&ouml;rter</a>
   <div class="sep"></div>
@@ -174,6 +175,10 @@
   <li>Tab schlie&szlig;en (Alternative): <strong>Doppelklick</strong> auf den Tab</li>
 </ul>
 <p>Das Hauptfenster speichert automatisch seine Position und Gr&ouml;&szlig;e. Beim n&auml;chsten Start wird es am selben Ort wiederhergestellt.</p>
+
+<h3>Aktive Firma beim Start</h3>
+<p>Das Programm startet mit der Firma, in der Sie zuletzt gearbeitet haben. Die aktive Firma wird <strong>je Benutzer</strong> gemerkt &mdash; an einem gemeinsam genutzten Rechner arbeitet also jeder dort weiter, wo er aufgeh&ouml;rt hat.</p>
+<p>Existiert die zuletzt aktive Firma nicht mehr &mdash; etwa weil sie von jemand anderem gel&ouml;scht wurde &mdash;, wechselt das Programm automatisch auf die erste Firma und meldet: &bdquo;Die zuletzt aktive Firma existiert nicht mehr oder wurde gel&ouml;scht. Die Firma &bdquo;&hellip;&ldquo; wurde aktiviert.&ldquo; Pr&uuml;fen Sie in diesem Fall, ob Sie wirklich in der angezeigten Firma arbeiten wollen.</p>
 
 <h3>Fokus-Hervorhebung</h3>
 <p>Das Eingabefeld, in dem der Cursor steht und das eine Eingabe erwartet, wird <strong>invers</strong> dargestellt &mdash; Vorder- und Hintergrundfarbe sind vertauscht. So ist auf einen Blick erkennbar, wo gerade eine Eingabe erwartet wird. Schreibgesch&uuml;tzte Anzeigefelder werden dabei nicht hervorgehoben.</p>
@@ -1151,15 +1156,29 @@
 </table>
 
 <h4>Wie der Z&auml;hler funktioniert</h4>
+<p>Der Z&auml;hler wird f&uuml;r <strong>alle f&uuml;nf</strong> Belegtypen gef&uuml;hrt &mdash; auch f&uuml;r <strong>Mahnungen</strong>.</p>
 <ul>
   <li>Der Z&auml;hler speichert die <strong>letzte vergebene Nummer</strong> (nicht die n&auml;chste).</li>
   <li>Die <strong>Vorschau</strong> zeigt die Nummer, die Sie erhalten werden &mdash; <strong>ohne</strong> den Z&auml;hler zu erh&ouml;hen.</li>
   <li>Der Z&auml;hler erh&ouml;ht sich erst beim <strong>Speichern</strong> des Belegs.</li>
   <li>Wenn Sie einen Beleg erstellen und dann nicht speichern, wird die Nummer <strong>nicht</strong> verbraucht.</li>
+  <li>Die Anzeige <strong>&bdquo;N&auml;chste &hellip;-Nr.&ldquo;</strong> im Reiter <em>Gesch&auml;ftsjahre</em> zeigt f&uuml;r das aktive Gesch&auml;ftsjahr die Nummer, die <strong>tats&auml;chlich</strong> als N&auml;chstes vergeben wird: bereits belegte Nummern werden dabei &uuml;bersprungen.</li>
 </ul>
 
 <div class="tip">
   <strong>Praxis-Tipp:</strong> Wenn Sie die Vorschau ansehen (z.&nbsp;B. &bdquo;RE2026-0015&ldquo;), bedeutet das: &bdquo;Wenn Sie jetzt speichern, erhalten Sie diese Nummer.&ldquo; Solange Sie nicht speichern, bleibt der Z&auml;hler unver&auml;ndert.
+</div>
+
+<h4>Z&auml;hler von Hand &auml;ndern</h4>
+<p>Sie k&ouml;nnen den Z&auml;hler im Reiter <em>Gesch&auml;ftsjahre</em> setzen. Liegt der neue Wert <strong>unter</strong> einer bereits vergebenen Nummer, fragt das Programm nach:</p>
+<p><em>&bdquo;F&uuml;r &hellip; sind im Gesch&auml;ftsjahr bereits Nummern bis &hellip; vergeben. Z&auml;hler trotzdem auf &hellip; setzen?&ldquo;</em></p>
+<p>Erlaubt bleibt es &mdash; die Vergabe &uuml;berspringt belegte Nummern anschlie&szlig;end automatisch, es entstehen also keine Dubletten.</p>
+
+<h4>Wenn zwei Benutzer gleichzeitig speichern</h4>
+<p>Vergeben zwei Arbeitspl&auml;tze im selben Moment dieselbe Nummer, weicht das Programm automatisch auf die <strong>n&auml;chste freie</strong> aus &mdash; Sie merken davon nichts. Nur wenn auch das nicht gelingt, erscheint der Hinweis <em>&bdquo;Die Belegnummer wurde soeben anderweitig vergeben. Bitte erneut speichern.&ldquo;</em>; ein zweiter Klick auf Speichern gen&uuml;gt dann.</p>
+
+<div class="warn">
+  <strong>Nach dem Jahreswechsel:</strong> Die Jahreszahl der Belegnummer stammt aus dem <strong>aktiven Gesch&auml;ftsjahr</strong> &mdash; nicht aus dem Belegdatum. Passt beides nicht zusammen, fragt das Programm beim Speichern eines neuen Belegs nach: <em>&bdquo;Das Belegdatum liegt im Jahr &hellip;, das aktive Gesch&auml;ftsjahr ist &hellip;. Die Belegnummer erh&auml;lt die Jahreszahl &hellip;. Trotzdem speichern?&ldquo;</em> Kommt diese Meldung im Januar, haben Sie das neue Gesch&auml;ftsjahr vermutlich noch nicht angelegt oder aktiviert.
 </div>
 
 <h4>Gesch&auml;ftsjahre</h4>
@@ -1357,7 +1376,7 @@
 <h4>Was geht, was nicht</h4>
 <ul>
   <li><strong>Entwurf-Status:</strong> Jeder neu angelegte Beleg startet mit dem Status <strong>&bdquo;Entwurf&ldquo;</strong>. Beim ersten echten Druck wechselt er automatisch auf <strong>&bdquo;offen&ldquo;</strong> und das Erstellungsdatum wird eingefroren. Testdrucke &auml;ndern den Status nicht.</li>
-  <li><strong>Neue Belegnummer:</strong> Wird beim ersten Druck (nicht beim Speichern) vergeben. Die Vorschau im Dialog zeigt nur, was Sie <em>w&uuml;rden</em>. Solange Sie nicht drucken, verbraucht der Beleg keine Nummer.</li>
+  <li><strong>Neue Belegnummer:</strong> Wird beim <strong>Speichern</strong> aus dem Z&auml;hler vergeben. Die Vorschau im Dialog zeigt nur, was Sie <em>bekommen w&uuml;rden</em>. Solange Sie nicht speichern, verbraucht der Beleg keine Nummer. Siehe <a href="#belegnummern">Belegnummern &amp; Gesch&auml;ftsjahre</a>.</li>
   <li><strong>Bestehende Belegnummer:</strong> Nicht &auml;nderbar. Sie bleibt &uuml;ber die gesamte Lebensdauer fest.</li>
   <li><strong>Bezahlte Rechnungen:</strong> Sind gesperrt und k&ouml;nnen nicht mehr bearbeitet werden (Hinweis erscheint).</li>
   <li><strong>Belege mit Nachfolger:</strong> Sind teils gesperrt &mdash; ein Angebot, aus dem ein Auftrag entstand, ist im Status &bdquo;angenommen&ldquo; und kann nicht mehr bearbeitet werden.</li>
@@ -1967,27 +1986,49 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <hr>
 
 <h2 id="sperren">Sperren-System</h2>
-<p>Das Sperren-System sch&uuml;tzt Stammdaten vor ungewollten &Auml;nderungen.</p>
+<p>Arbeiten mehrere Personen gleichzeitig mit dem Programm, verhindert das Sperren-System, dass zwei Benutzer denselben Datensatz &auml;ndern und sich gegenseitig &uuml;berschreiben.</p>
 
 <h3>So funktioniert es</h3>
+<p>Gesperrt wird <strong>je Datensatz</strong> &mdash; nicht das ganze Modul. Wer auf <strong>Bearbeiten</strong> klickt (oder doppelklickt), holt sich den Satz; alle anderen sehen ihn so lange nur an:</p>
 <ul>
-  <li>Im Firmenstamm (Tab <strong>Sperren</strong>) k&ouml;nnen Sie einzelne Module sperren</li>
-  <li>Ein gesperrtes Modul zeigt die Daten an, aber erlaubt <strong>keine &Auml;nderungen</strong></li>
-  <li>Die Sperre gilt f&uuml;r alle offenen Tabs des Moduls</li>
-  <li>Die Sperre wird in Echtzeit &uuml;berwacht &mdash; wenn jemand eine Sperre setzt, werden alle anderen Tabs sofort benachrichtigt</li>
+  <li>Ist der Satz bereits in Arbeit, kommt die Meldung <em>&bdquo;Der Datensatz wird im Modul &hellip; vom Benutzer &hellip; bearbeitet.&ldquo;</em> und der Dialog &ouml;ffnet nicht.</li>
+  <li>Klicken zwei Benutzer <strong>gleichzeitig</strong> auf Bearbeiten, bekommt genau einer den Satz &mdash; der andere erh&auml;lt zuverl&auml;ssig die Meldung.</li>
+  <li>Die Sperre endet, sobald Sie <strong>speichern</strong> oder den Dialog <strong>schlie&szlig;en</strong>.</li>
+  <li>Beim reinen <strong>Ansehen</strong> (Rechtestufe <a href="#benutzer-rechte">lesen</a>) wird <strong>keine</strong> Sperre gesetzt &mdash; wer nur liest, blockiert niemanden.</li>
 </ul>
 
-<h3>Sperren-Tabelle</h3>
-<p>In der Sperren-&Uuml;bersicht sehen Sie:</p>
+<h3>Der Firmenstamm: R&uuml;ckfrage statt Sperre</h3>
+<p>Der Firmenstamm wird beim Bearbeiten <strong>nicht gesperrt</strong> &mdash; seine Reiter bleiben oft lange offen, und niemand soll dadurch ausgesperrt werden. Stattdessen pr&uuml;ft das Programm <strong>beim Speichern</strong>, ob ein <em>anderer</em> Benutzer den Firmenstamm zwischenzeitlich gespeichert hat. Ist das so, kommt die R&uuml;ckfrage:</p>
+<p><em>&bdquo;Der Datensatz wurde am &hellip; vom Benutzer &hellip; im Modul &hellip; ge&auml;ndert. Deine Eingaben w&uuml;rden diese &Auml;nderung &uuml;berschreiben. Trotzdem speichern?&ldquo;</em></p>
+<ul>
+  <li><strong>Nein</strong> bricht das Speichern ab &mdash; Ihre Eingaben bleiben im Formular stehen. Mit <em>Abbrechen</em> k&ouml;nnen Sie sie verwerfen und den aktuellen Stand neu laden.</li>
+  <li><strong>Ja</strong> speichert und &uuml;berschreibt die fremde &Auml;nderung.</li>
+  <li>Eigene &Auml;nderungen aus einem anderen Reiter l&ouml;sen die R&uuml;ckfrage <strong>nicht</strong> aus.</li>
+</ul>
+
+<h3>Sperren-&Uuml;bersicht (Firmenstamm &rarr; Sperren)</h3>
+<p>Die &Uuml;bersicht zeigt alle aktiven Sperren. Sie ist <strong>Administratoren</strong> vorbehalten &mdash; nur sie k&ouml;nnen eine Sperre aufheben.</p>
 <table>
   <tr><th>Spalte</th><th>Beschreibung</th></tr>
-  <tr><td>Modul</td><td>Der Name des Moduls (Kunden, Artikel, etc.)</td></tr>
-  <tr><td>Gesperrt</td><td>Ob das Modul gesperrt ist</td></tr>
-  <tr><td>Sperre bis</td><td>Wann die Sperre automatisch aufgehoben wird</td></tr>
+  <tr><td>Tabelle</td><td>Datenbereich, in dem der Satz liegt (Kunden, Artikel, Rechnungen, &hellip;)</td></tr>
+  <tr><td>ID</td><td>Interne Nummer des gesperrten Satzes</td></tr>
+  <tr><td>User</td><td>Wer den Satz gerade bearbeitet</td></tr>
+  <tr><td>Modul</td><td>Programmteil, aus dem heraus gesperrt wurde</td></tr>
+  <tr><td>Gesperrt seit</td><td>Zeitpunkt, an dem die Sperre <strong>gesetzt</strong> wurde &mdash; daran erkennen Sie das <strong>Alter</strong> einer h&auml;ngenden Sperre</td></tr>
+  <tr><td>Anzahl der &Auml;nderungen</td><td>Wie oft der Satz insgesamt gespeichert wurde</td></tr>
+  <tr><td>Ge&auml;ndert am</td><td>Zeitpunkt der letzten <strong>Speicherung</strong> (nicht der Sperre)</td></tr>
 </table>
 
+<div class="info">
+  Sperren, die vor der Einf&uuml;hrung dieser Spalte gesetzt wurden, zeigen bei <em>Gesperrt seit</em> ein &bdquo;&mdash;&ldquo;.
+</div>
+
+<h3>H&auml;ngende Sperren aufheben</h3>
+<p>St&uuml;rzt ein Rechner ab, w&auml;hrend ein Satz in Bearbeitung ist, bleibt die Sperre stehen. Ein Administrator hebt sie in der &Uuml;bersicht auf &mdash; pr&uuml;fen Sie vorher anhand von <em>User</em> und <em>Gesperrt seit</em>, ob wirklich niemand mehr daran arbeitet.</p>
+<p>Scheitert das Freigeben einer Sperre beim Schlie&szlig;en eines Dialogs, wird der Fall in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> festgehalten (Modul &bdquo;Multiuser-Sperre&ldquo;) und kann hier aufgehoben werden.</p>
+
 <div class="warn">
-  <strong>Achtung:</strong> Wenn Sie ein Modul sperren, k&ouml;nnen Sie auch selbst keine &Auml;nderungen mehr vornehmen. Die Sperre muss explizit aufgehoben werden.
+  <strong>Achtung:</strong> Heben Sie eine Sperre auf, w&auml;hrend jemand den Satz wirklich bearbeitet, k&ouml;nnen dessen &Auml;nderungen verloren gehen. Im Zweifel kurz nachfragen.
 </div>
 
 <hr>
@@ -2475,24 +2516,51 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 </div>
 
 <h3 id="benutzer-anmeldung">Anmeldung</h3>
+<p>Beim Programmstart erscheint <strong>immer</strong> der Anmeldedialog &mdash; auch f&uuml;r Benutzer mit Windows-Anmeldung. Der Dialog ist mit dem gerade angemeldeten Windows-Benutzer vorausgef&uuml;llt.</p>
 <p>Es gibt zwei Anmeldearten. Sie legen sie je Benutzer fest:</p>
 <table>
   <tr><th>Anmeldeart</th><th>Bedeutung</th></tr>
-  <tr><td>Windows-Anmeldung</td><td>Das Programm erkennt den Benutzer automatisch an seiner Windows-Anmeldung. Es erscheint <strong>kein</strong> Anmeldedialog und es gibt <strong>kein</strong> Passwort. Der Login muss dem Windows-Benutzernamen entsprechen (Gro&szlig;-/Kleinschreibung ist egal).</td></tr>
-  <tr><td>Login + Passwort</td><td>Beim Programmstart erscheint ein Anmeldedialog. Nach f&uuml;nf Fehlversuchen wird die Anmeldung abgebrochen und das Programm beendet.</td></tr>
+  <tr><td>Windows-Anmeldung</td><td>Der Benutzer weist sich durch seine Windows-Anmeldung aus und hat <strong>kein</strong> Passwort. Steht sein Login schon im Dialog, gen&uuml;gt <strong>Enter</strong>. Der Login muss dem Windows-Benutzernamen entsprechen (Gro&szlig;-/Kleinschreibung ist egal).</td></tr>
+  <tr><td>Login + Passwort</td><td>Benutzer und Passwort werden eingetippt. Nach f&uuml;nf Fehlversuchen wird die Anmeldung abgebrochen und das Programm beendet.</td></tr>
 </table>
+<p><strong>Als jemand anderes arbeiten:</strong> Benutzer &uuml;berschreiben, Passwort eingeben, Enter. <strong>Enter</strong> im Feld <em>Benutzer</em> springt dabei zuerst ins Passwortfeld, wenn f&uuml;r den eingetragenen Benutzer ein Passwort n&ouml;tig ist &mdash; und meldet nur dann direkt an, wenn es sich um Ihre eigene Windows-Anmeldung handelt.</p>
+
+<div class="info">
+  <strong>Windows-Anmeldung gilt nur am eigenen Rechner:</strong> Ein Benutzer mit Anmeldeart <em>Windows-Anmeldung</em> kann sich nur an <strong>seinem eigenen Windows-Konto</strong> anmelden. Man kann sich nicht als ein anderer Windows-Benutzer ausgeben, denn dieser hat kein Passwort, mit dem er sich ausweisen k&ouml;nnte &mdash; sonst gen&uuml;gte der blo&szlig;e Name eines Kollegen (wom&ouml;glich eines Administrators), um hereinzukommen. Wer sich auch an <strong>fremden Rechnern</strong> anmelden k&ouml;nnen soll, braucht die Anmeldeart <strong>Login + Passwort</strong>.
+</div>
+
 <p>Aus Sicherheitsgr&uuml;nden meldet der Anmeldedialog bei falschem Benutzernamen und bei falschem Passwort denselben Text &mdash; so ist von au&szlig;en nicht erkennbar, welche Benutzernamen es gibt. Benutzer, die auf <em>nicht aktiv</em> gesetzt oder gel&ouml;scht sind, k&ouml;nnen sich nicht anmelden.</p>
+
+<h3 id="benutzer-zustaende">Benutzer anlegen, deaktivieren, l&ouml;schen</h3>
+<p>Ein Benutzer hat drei Zust&auml;nde:</p>
+<table>
+  <tr><th>Zustand</th><th>Bedeutung</th></tr>
+  <tr><td>aktiv</td><td>Steht in der Liste, Anmeldung ist m&ouml;glich.</td></tr>
+  <tr><td>inaktiv</td><td>Haken <em>Aktiv</em> entfernt: weiterhin in der Liste sichtbar, aber <strong>keine Anmeldung</strong> mehr. Geeignet f&uuml;r eine vor&uuml;bergehende Pause.</td></tr>
+  <tr><td>gel&ouml;scht</td><td>Verschwindet aus der Liste, keine Anmeldung. Der Datensatz <strong>bleibt erhalten</strong>, damit sp&auml;tere Auswertungen und Protokolle den Namen weiterhin aufl&ouml;sen k&ouml;nnen.</td></tr>
+</table>
+<p>Benutzer werden also <strong>nie endg&uuml;ltig entfernt</strong>. Gel&ouml;schte blenden Sie &uuml;ber die Checkbox <strong>Gel&ouml;schte anzeigen</strong> ein &mdash; sie erscheinen grau und kursiv mit dem Zusatz &bdquo;(gel&ouml;scht)&ldquo;. Bearbeiten, L&ouml;schen und Passwort zur&uuml;cksetzen sind bei ihnen nicht m&ouml;glich.</p>
+
+<p><strong>Gel&ouml;schten Benutzer wiederherstellen:</strong> Weil der Login eines gel&ouml;schten Benutzers belegt bleibt, kommt beim Anlegen desselben Logins die R&uuml;ckfrage &bdquo;Der Login &bdquo;&hellip;&ldquo; geh&ouml;rt zu einem gel&ouml;schten Benutzer (&hellip;). Diesen Benutzer wiederherstellen?&ldquo;. Bei <strong>Ja</strong> wird er zur&uuml;ckgeholt, erh&auml;lt <strong>seine fr&uuml;heren Rechte zur&uuml;ck</strong> und wird direkt zum Bearbeiten ge&ouml;ffnet. Bei <strong>Nein</strong> bleibt der Login belegt und Sie w&auml;hlen einen anderen.</p>
 
 <h3 id="benutzer-rechte">Rechte vergeben</h3>
 <p>Rechte gelten immer <strong>je Firma und Programmteil</strong>. In der Benutzerverwaltung w&auml;hlen Sie im Bearbeiten-Dialog oben die Firma und stellen darunter f&uuml;r jeden Programmteil eine Stufe ein:</p>
 <table>
   <tr><th>Stufe</th><th>Der Benutzer darf&hellip;</th></tr>
   <tr><td>kein Zugriff</td><td>nichts &mdash; der Programmteil erscheint gar nicht erst (weder in der Sidebar noch im Men&uuml;)</td></tr>
-  <tr><td>lesen</td><td>&ouml;ffnen, ansehen und drucken. Neu, Bearbeiten und L&ouml;schen sind gesperrt.</td></tr>
-  <tr><td>&auml;ndern</td><td>zus&auml;tzlich neue S&auml;tze anlegen und bestehende bearbeiten</td></tr>
+  <tr><td>lesen</td><td>den Datensatz <strong>vollst&auml;ndig</strong> &ouml;ffnen, ansehen und drucken. <strong>Neu</strong> und <strong>L&ouml;schen</strong> sind gesperrt, <strong>Speichern</strong> ebenfalls.</td></tr>
+  <tr><td>&auml;ndern</td><td>zus&auml;tzlich neue S&auml;tze anlegen und speichern</td></tr>
   <tr><td>l&ouml;schen</td><td>zus&auml;tzlich l&ouml;schen und wiederherstellen</td></tr>
 </table>
 <p>Jede Stufe schlie&szlig;t die niedrigeren ein: Wer &bdquo;&auml;ndern&ldquo; darf, darf auch lesen und drucken.</p>
+
+<div class="info">
+  <strong>Was &bdquo;lesen&ldquo; genau hei&szlig;t:</strong> Der Datensatz l&auml;sst sich <strong>ganz &ouml;ffnen</strong> &mdash; nicht nur die Liste. <em>Bearbeiten</em> bzw. der Doppelklick auf eine Zeile funktioniert also auch mit Leserecht. Im ge&ouml;ffneten Datensatz sind dann alle Felder <strong>schreibgesch&uuml;tzt</strong> und der Button <strong>Speichern ist ausgegraut</strong> (Tooltip: &bdquo;Sie d&uuml;rfen &bdquo;&hellip;&ldquo; nur ansehen, nicht &auml;ndern.&ldquo;). Feldinhalte bleiben markier- und kopierbar; Auswahlfelder, die nur die Anzeige umschalten &mdash; etwa die Sprachauswahl in den Drucktexten &mdash; bleiben bedienbar. Das gilt in <strong>allen</strong> Programmteilen, auch in Marken, Einheiten, Sprachen/L&auml;ndern, Warengruppen und im Kontenrahmen.
+</div>
+
+<div class="info">
+  <strong>Gut f&uuml;r den Mehrplatzbetrieb:</strong> Beim reinen Ansehen wird <strong>keine Sperre</strong> gesetzt. Ein Benutzer, der einen Datensatz nur liest, blockiert seine Kolleginnen und Kollegen also nicht &mdash; sie k&ouml;nnen ihn gleichzeitig bearbeiten.
+</div>
 
 <p><strong>Was die Stufen im Alltag bedeuten:</strong></p>
 <ul>
@@ -2503,6 +2571,23 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Im Kundenstamm bleibt die <strong>DSGVO-Auskunft</strong> ab der Stufe &bdquo;lesen&ldquo; m&ouml;glich. <strong>Anonymisieren</strong> und <strong>Verarbeitung einschr&auml;nken</strong> verlangen dagegen die Stufe &bdquo;l&ouml;schen&ldquo;, weil sie Kundendaten dauerhaft ver&auml;ndern.</li>
   <li>Der <strong>Datei-Import</strong> und der <strong>DSGVO-Sammellauf</strong> verlangen ebenfalls die Stufe &bdquo;l&ouml;schen&ldquo;, weil sie vorhandene Daten &uuml;berschreiben bzw. unwiderruflich anonymisieren.</li>
 </ul>
+
+<h4>Der Firmenstamm: jeder Reiter einzeln</h4>
+<p>Die Rechte-Matrix f&uuml;hrt <strong>34</strong> Programmteile &mdash; darunter jeden Haupt-Reiter des Firmenstamms einzeln (&bdquo;Firmenstamm &rarr; Adresse&ldquo;, &bdquo;Firmenstamm &rarr; Steuern&ldquo;, &bdquo;Firmenstamm &rarr; Pfade&ldquo;, &hellip;). So bekommt z.&nbsp;B. die Buchhaltung Zugriff auf die Konten, ohne die Drucktexte &auml;ndern zu k&ouml;nnen.</p>
+<ul>
+  <li><strong>Ohne Leserecht erscheint der Reiter gar nicht.</strong> Mit &bdquo;lesen&ldquo; ist er sichtbar, aber Speichern, Neu und L&ouml;schen sind gesperrt.</li>
+  <li>Der Firmenstamm &ouml;ffnet sich, sobald <strong>mindestens ein Reiter</strong> lesbar ist &mdash; und erscheint dann in Sidebar und Men&uuml;.</li>
+  <li>Der Reiter <strong>Parameter</strong> wird als Ganzes gesteuert: sein Recht gilt f&uuml;r alle sieben Unter-Reiter (Steuerung, Adresspr&uuml;fung, Warengruppen, Einheiten, Marken, Sprachen, L&auml;nder).</li>
+  <li>Zwei Ausnahmen: <strong>MwSt.-Klassen</strong> h&auml;ngen weiterhin am eigenen Programmteil &bdquo;MwSt-Verwaltung&ldquo; (nicht an einem Reiter-Recht), und <strong>Sperren</strong> bleibt Administratoren vorbehalten.</li>
+</ul>
+<p>Der Eintrag <strong>Firma anlegen/l&ouml;schen</strong> (fr&uuml;her &bdquo;Firmenstamm&ldquo;) steuert <strong>nur noch</strong> das Anlegen, Kopieren, L&ouml;schen und Wiederherstellen von Firmen &mdash; nicht mehr den Zugang zu den Reitern. Wer Firmen anlegen darf, kommt in den Firmenstamm hinein, weil der <em>Neu</em>-Button dort sitzt.</p>
+
+<div class="info">
+  <strong>Hinweis zum Update:</strong> Wer bisher das Recht &bdquo;Firmenstamm&ldquo; hatte, hat automatisch <strong>dieselbe Stufe auf allen Reitern</strong> bekommen. Es &auml;ndert sich also zun&auml;chst nichts; die Feinsteuerung k&ouml;nnen Sie danach in Ruhe setzen.
+</div>
+
+<h4>Rechte schnell setzen</h4>
+<p>&Uuml;ber der Rechte-Tabelle stehen vier Schaltfl&auml;chen &mdash; <strong>Alle: kein Zugriff</strong>, <strong>Alle: lesen</strong>, <strong>Alle: &auml;ndern</strong> und <strong>Alle: l&ouml;schen</strong> &mdash;, die alle Programmteile auf einmal auf die jeweilige Stufe setzen. Praktisch als Ausgangspunkt: erst alles auf &bdquo;lesen&ldquo;, dann die wenigen Ausnahmen h&ouml;her oder auf &bdquo;kein Zugriff&ldquo; stellen. Sie wirken &mdash; wie die Tabelle selbst &mdash; nur auf die oben gew&auml;hlte <strong>Firma</strong>; f&uuml;r weitere Firmen die Firma umstellen und erneut klicken. Bei Administratoren sind sie gesperrt, weil die Matrix dort ohnehin nicht ausgewertet wird.</p>
 
 <p><strong>Rechte von einer Firma &uuml;bernehmen:</strong> Arbeitet jemand in mehreren Firmen gleich, stellen Sie die Rechte einmal ein, wechseln oben die Firma und klicken auf <strong>Rechte von Firma &uuml;bernehmen&hellip;</strong>. Die Rechte der gew&auml;hlten Firma werden dann &uuml;bernommen.</p>
 
@@ -2526,7 +2611,16 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Sein Passwort &auml;ndern kann jeder Benutzer selbst jederzeit &uuml;ber den Men&uuml;punkt <strong>Passwort &auml;ndern</strong>. Bei Windows-Anmeldung erscheint dieser Punkt nicht &mdash; dort gibt es kein Passwort.</li>
 </ul>
 
-<p><strong>Absender-Firma:</strong> Damit Passwort-Mails verschickt werden k&ouml;nnen, stellen Sie oben in der Benutzerverwaltung eine <strong>Absender-Firma</strong> ein. Deren E-Mail-Einstellungen werden f&uuml;r den Versand benutzt.</p>
+<p><strong>Absender-Firma:</strong> Damit Passwort-Mails verschickt werden k&ouml;nnen, stellen Sie oben in der Benutzerverwaltung eine <strong>Absender-Firma</strong> ein. Deren E-Mail-Einstellungen werden f&uuml;r den Versand benutzt &mdash; also die <em>dort gew&auml;hlte</em> Firma, nicht die gerade aktive.</p>
+
+<p><strong>Welche Adresse als Absender erscheint,</strong> h&auml;ngt vom E-Mail-Client der Absender-Firma ab:</p>
+<table>
+  <tr><th>Client</th><th>Absenderadresse</th></tr>
+  <tr><td>Brevo</td><td>die E-Mail-Adresse aus <em>Firmenstamm &rarr; Adresse</em></td></tr>
+  <tr><td>Gmail</td><td>der <strong>Gmail-Benutzer</strong> aus der E-Mail-Konfiguration</td></tr>
+  <tr><td>SMTP</td><td>der <strong>SMTP-Benutzer</strong> aus der E-Mail-Konfiguration</td></tr>
+</table>
+<p>Bei Gmail und SMTP wird also bewusst <strong>nicht</strong> die Firmen-Adresse verwendet: Mailserver lehnen einen Absender ab, der nicht zum angemeldeten Konto geh&ouml;rt (GMX etwa mit &bdquo;Sender address is not allowed&ldquo;). Der <strong>Firmenname</strong> bleibt in allen F&auml;llen als Anzeigename erhalten.</p>
 
 <div class="warn">
   <strong>Nicht jeder E-Mail-Client kann das:</strong> Automatisch versenden k&ouml;nnen nur <strong>Brevo</strong>, <strong>Gmail</strong> und <strong>SMTP</strong>. Bei <em>Outlook 365 classic</em>, <em>New Outlook</em> oder <em>keine</em> ist kein automatischer Versand m&ouml;glich &mdash; ebenso wenig bei einem Netzwerkfehler oder fehlender Absender-Firma. In all diesen F&auml;llen zeigt Ihnen das Programm das Passwort <strong>einmalig an</strong>, damit Sie es pers&ouml;nlich weitergeben k&ouml;nnen. Der Vorfall wird zus&auml;tzlich in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> festgehalten.
@@ -2558,7 +2652,12 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <tr><td>Mahnkonditionen</td><td>Alle Mahnkonditionen inkl. Mahnstufen (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
   <tr><td>Basiszinss&auml;tze</td><td>Alle historischen Bundesbank-Basiszinss&auml;tze</td></tr>
   <tr><td>Kunden</td><td>Alle Kunden mit remappierten Konditions-Fremdschl&uuml;sseln</td></tr>
-  <tr><td>Artikel</td><td>Alle Artikel mit remappierter MwSt-Klasse</td></tr>
+  <tr><td>Artikel</td><td>Alle Artikel mit remappierter MwSt-Klasse, Marke und Warengruppe</td></tr>
+  <tr><td>Marken</td><td>Alle Marken</td></tr>
+  <tr><td>Warengruppen</td><td>Warengruppen, Artikelgruppen, Untergruppen und Gruppen</td></tr>
+  <tr><td>Einheiten</td><td>Alle Einheiten samt ihren &Uuml;bersetzungen</td></tr>
+  <tr><td>Sprachen &amp; L&auml;nder</td><td>Alle Sprachen und L&auml;nderkennzeichen</td></tr>
+  <tr><td>Konten</td><td>Erl&ouml;s-/Steuerkonten (MwSt-Konten) und Nummernkreise</td></tr>
   <tr><td>Gesch&auml;ftsjahre &amp; Belegz&auml;hler</td><td>Alle Gesch&auml;ftsjahre und die zugeh&ouml;rigen Z&auml;hlerst&auml;nde</td></tr>
   <tr><td>Belege</td><td>Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen inkl. Positionen und Verkn&uuml;pfungen</td></tr>
 </table>
@@ -2568,7 +2667,11 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Die kopierte Firma bekommt eine <strong>neue, eigene ID</strong> sowie neue Firmen-Nr., Kurzbezeichnung und Name</li>
   <li>Alle Fremdschl&uuml;ssel (z.&nbsp;B. MwSt-Klasse an Artikel, Kondition an Kunden) werden auf die neuen IDs der Ziel-Firma umverdrahtet</li>
   <li>Belege erhalten <strong>neue Nummern</strong> (fortlaufend ab aktuellem Z&auml;hlerstand der Ziel-Firma)</li>
+  <li>Die Artikel der Kopie verweisen auf die <strong>Marken und Gruppen der Kopie</strong> &mdash; nicht mehr auf die der Quellfirma</li>
   <li>Sperren (<code>lock_aktiv</code>) und &Auml;nderungsz&auml;hler werden auf 0 zur&uuml;ckgesetzt</li>
+  <li>Die Belege der Kopie gelten <strong>nicht als &bdquo;exportiert&ldquo;</strong>: die Zuordnung zum <a href="#buchungsexport">Buchungsexport</a> wird nicht vererbt, die Kopie kann also regul&auml;r exportiert werden</li>
+  <li>Kopieren Sie eine <strong>gel&ouml;schte</strong> Firma, ist die Kopie selbst <strong>nicht gel&ouml;scht</strong> und sofort sichtbar. S&auml;tze, die in der Quelle schon <em>einzeln</em> gel&ouml;scht waren, bleiben auch in der Kopie gel&ouml;scht.</li>
+  <li>Hat die Quellfirma <a href="#datenbank-secrets">Zugangsdaten</a> hinterlegt, bekommt die Kopie eine <strong>eigene verschl&uuml;sselte Schl&uuml;sseldatei</strong> mit eigenem Passwort &mdash; die Datei der Quelle wird nicht mitbenutzt</li>
   <li><strong>Nicht</strong> kopiert wird: der E-Mail-Postausgang (Versandhistorie der Quellfirma)</li>
   <li>Vor dem Kopieren wird automatisch ein Datenbank-Backup erstellt; bei Fehler wird die DB vollst&auml;ndig zur&uuml;ckgerollt</li>
 </ul>
@@ -2581,7 +2684,12 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Die Firma wird als &bdquo;gel&ouml;scht&ldquo; markiert, aber die Daten bleiben in der Datenbank</li>
   <li>Gel&ouml;schte Firmen k&ouml;nnen bei Bedarf wiederhergestellt werden: Aktivieren Sie den Admin-Schalter <a href="#einstellungen">&bdquo;Gel&ouml;schte Firmen anzeigen&ldquo;</a>, w&auml;hlen Sie die Firma (sie erscheint in der Auswahl mit dem Zusatz &bdquo;(gel&ouml;scht)&ldquo;, auch hinter der <a href="#firma-adresse">Firmennummer</a>) und nutzen Sie die Auswahl <strong>&bdquo;Wiederherstellung von Firma:&ldquo;</strong>.</li>
   <li>Dies ist die Standardfunktion und erfordert keine Aktivierung</li>
+  <li>Nicht l&ouml;schbar sind die <strong>erste Firma</strong> und die <strong>gerade aktive</strong> Firma. Das Programm meldet dann: &bdquo;Diese Firma kann nicht gel&ouml;scht werden (erste Firma oder aktuell aktiv)&ldquo; &mdash; wechseln Sie zuerst in eine andere Firma.</li>
 </ul>
+
+<div class="info">
+  <strong>Was beim Wiederherstellen zur&uuml;ckkommt:</strong> Reaktiviert werden nur die Datens&auml;tze, die <strong>durch das L&ouml;schen der Firma</strong> mitgegangen sind. S&auml;tze &mdash; Kunden, Artikel, Belege, Konditionen &mdash;, die Sie schon <strong>vorher einzeln</strong> gel&ouml;scht hatten, bleiben gel&ouml;scht. Das Programm unterscheidet beides sauber; fr&uuml;her kamen einzeln gel&ouml;schte S&auml;tze f&auml;lschlich mit zur&uuml;ck.
+</div>
 
 <p><strong>Hard-Delete (Admin):</strong></p>
 <ul>
@@ -2589,10 +2697,23 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Diese Aktion ist <strong>unwiderruflich</strong></li>
   <li>Aktivieren Sie &bdquo;Firma l&ouml;schen aktivieren&ldquo; in den Admin-Einstellungen</li>
   <li>Beim Hard-Delete k&ouml;nnen Sie w&auml;hlen, welche Daten mitgel&ouml;scht werden sollen (Belege, Stammdaten oder alles)</li>
+  <li>Auch hier gilt: Die <strong>erste Firma</strong> und die <strong>aktive</strong> Firma lassen sich nicht endg&uuml;ltig l&ouml;schen</li>
 </ul>
 
+<p><strong>Was die einzelnen Optionen entfernen:</strong></p>
+<table>
+  <tr><th>Option</th><th>Wirkung</th></tr>
+  <tr><td>nur Belege</td><td>Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen und Mahnungen &mdash; und zus&auml;tzlich den <strong>E-Mail-Postausgang</strong> der Firma, weil dessen Eintr&auml;ge auf die gel&ouml;schten Belege zeigen und personenbezogene Daten enthalten. Das <strong>Buchungsexport-Protokoll</strong> und das <a href="#beleg-archiv">Beleg-Archiv</a> bleiben bewusst erhalten (Protokoll- und Revisionscharakter).</td></tr>
+  <tr><td>Stammdaten</td><td>Kunden und Artikel</td></tr>
+  <tr><td>komplett</td><td><strong>Alle</strong> Daten der Firma &mdash; auch E-Mail-Postausgang, Marken, Warengruppen, Sprachen, L&auml;nder, Konten und Nummernkreise &mdash; sowie den Firmendatensatz selbst. Die verschl&uuml;sselte <a href="#datenbank-secrets">Schl&uuml;sseldatei</a> der Firma wird danach ebenfalls entfernt. Fr&uuml;her blieben hier Reste liegen.</td></tr>
+</table>
+
 <div class="warn">
-  <strong>Achtung:</strong> Hard-Delete ist endg&uuml;ltig. Vor dem v&ouml;lligen L&ouml;schen sollten Sie ein Backup der Datenbank erstellen.
+  <strong>Achtung:</strong> Hard-Delete ist endg&uuml;ltig. Vor dem v&ouml;lligen L&ouml;schen sollten Sie ein Backup der Datenbank erstellen. (Das Programm legt zwar selbst eines an, ein eigenes schadet aber nicht.)
+</div>
+
+<div class="info">
+  <strong>Dateien werden nicht mitgel&ouml;scht:</strong> Das L&ouml;schen wirkt nur in der Datenbank. Die <strong>Dateien</strong> im Export- und Archivpfad &mdash; Ausdrucke, E-Rechnungen, E-Mails, Artikelbilder und das Beleg-Archiv &mdash; bleiben liegen. Nach Ablauf der Aufbewahrungsfristen k&ouml;nnen Sie sie bei Bedarf von Hand entfernen. Die Best&auml;tigung weist darauf hin.
 </div>
 
 <hr>

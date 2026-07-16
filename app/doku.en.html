@@ -112,7 +112,9 @@
   <div class="sep"></div>
   <a href="#drucken">Printing &amp; Journals</a>
   <a href="#drucken-beleg" class="sub">Printing Individual Documents</a>
+  <a href="#festschreiben" class="sub">Finalisation &amp; Frozen Values</a>
   <a href="#testdruck" class="sub">Test Print</a>
+  <a href="#drucken-signatur" class="sub">Digital Signature</a>
   <a href="#drucken-journal" class="sub">Printing Journals</a>
   <div class="sep"></div>
   <a href="#sperren">Locking System</a>
@@ -144,6 +146,12 @@
   <a href="#email-outlook-classic" class="sub">Outlook 365 Classic</a>
   <a href="#email-new-outlook" class="sub">New Outlook</a>
   <div class="sep"></div>
+  <a href="#benutzerverwaltung">User Administration</a>
+  <a href="#benutzer-anmeldung" class="sub">Signing in</a>
+  <a href="#benutzer-zustaende" class="sub">Create, deactivate, delete</a>
+  <a href="#benutzer-rechte" class="sub">Assigning rights</a>
+  <a href="#benutzer-passwort" class="sub">Passwords</a>
+  <div class="sep"></div>
   <a href="#firmenverwaltung">Company Administration</a>
   <a href="#importexport">Import / Export</a>
   <a href="#rechtschreibung">Spell Checker</a>
@@ -167,6 +175,10 @@
   <li>Close a tab (alternative): <strong>double-click</strong> the tab</li>
 </ul>
 <p>The main window automatically saves its position and size. On the next start it is restored at the same location.</p>
+
+<h3>Active company at start-up</h3>
+<p>The program starts with the company you last worked in. The active company is remembered <strong>per user</strong> &mdash; on a shared machine everyone therefore continues where they left off.</p>
+<p>If the last active company no longer exists &mdash; because someone else deleted it, for instance &mdash; the program automatically switches to the first company and reports: &ldquo;The last active company no longer exists or has been deleted. The company &ldquo;&hellip;&rdquo; has been activated.&rdquo; In that case, check whether you really want to work in the company shown.</p>
 
 <h3>Focus Highlighting</h3>
 <p>The input field that currently holds the cursor and expects input is displayed <strong>inverted</strong> &mdash; foreground and background colours are swapped. This makes it obvious at a glance where input is expected. Read-only display fields are not highlighted.</p>
@@ -214,7 +226,8 @@
 </ul>
 
 <h3 id="firma">Company</h3>
-<p>The company module is the central configuration. It is split into several tabs:</p>
+<p>The company master is the central configuration module. It contains all master data of your business as well as every setting that controls the behaviour of the whole application. The dialog is split into several tabs.</p>
+
 <h4 id="firma-adresse">Address &amp; Contact</h4>
 <p>Contains all contact data of your business that appears in the letterhead of every PDF printout:</p>
 <ul>
@@ -222,7 +235,7 @@
   <li><strong>Company name, short name, additional line</strong> &mdash; appear in the header of every document</li>
   <li><strong>Street, house number, house number suffix, ZIP, city</strong> &mdash; sender address in the PDF letterhead and as the sender line above the address window. House number and suffix are separate fields; they are required e.g. for the <a href="#zusammenfassende-meldung">ELMA XML of the EC Sales List</a>.</li>
   <li><strong>Phone, fax, email, website</strong> &mdash; appear on the right of the letterhead</li>
-  <li><strong>IBAN, BIC, bank name</strong> &mdash; in the footer and on reminders as the payment target</li>
+  <li><strong>IBAN, BIC, bank name</strong> &mdash; in the footer and on reminders as the payment target. Next to the IBAN there is the button <strong>&ldquo;Determine BIC/bank&rdquo;</strong>: it checks the IBAN entered and fills <strong>BIC</strong> and <strong>bank name</strong> from it &mdash; for German IBANs offline from the bank-code registry (GDPR-compliant, <em>no</em> internet lookup). When you leave the IBAN field, BIC/bank are filled automatically only if they are still empty; the button, by contrast, overwrites existing values. An invalid IBAN is shown as a notice. <em>Note:</em> resolving foreign IBANs is not active yet.</li>
   <li><strong>Currency, country code</strong> &mdash; control the currency symbol (&euro;, CHF &hellip;) on all documents</li>
   <li><strong>Company language</strong> &mdash; selected from the languages table (tab <em>Parameters &rarr; Languages</em>). It determines the language in which units and print texts are displayed in the application and is the starting point of the AI translation at print time. New companies default to <strong>&ldquo;German&rdquo;</strong>; the field may also stay empty, in which case no translation takes place. Details see <a href="#ki-uebersetzung">Translation at Print Time</a>.</li>
 </ul>
@@ -241,11 +254,18 @@
 <ul>
   <li><strong>Create e-invoice:</strong> Activates automatic generation of machine-readable XML files on the first print of an invoice (EN 16931).</li>
   <li><strong>E-invoice format:</strong> Default format for all customers without a customer-specific setting (UBL&nbsp;2.1, UN/CEFACT CII, XRechnung&nbsp;3.0, ZUGFeRD).</li>
-  <li><strong>Email client:</strong> Sets which service is used to send emails (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details see <a href="#emails">Email Outbox</a>.</li>
+  <li><strong>Email client:</strong> Sets which service is used to send emails (Brevo API, Gmail SMTP, Outlook&nbsp;365 Classic, New Outlook, SMTP). Depending on the choice, additional fields appear. Details see <a href="#emails">Email Outbox</a>.</li>
+  <li><strong>Email dispatch default per document type:</strong> preset for whether an outbox entry is created automatically on printing (0&nbsp;= none, 1&nbsp;= PDF only, 2&nbsp;= XML only, 3&nbsp;= PDF + XML).</li>
   <li><strong>Email signature &amp; privacy policy:</strong> Appended automatically to the email text.</li>
 </ul>
 <h4 id="firma-geschaeftsjahre">Fiscal Years &amp; Document Numbers</h4>
-<p>Manage fiscal years and configure counters for all document types here. Details see <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</p>
+<p>Manages fiscal years and the number ranges of all document types:</p>
+<ul>
+  <li>Select the <strong>active fiscal year</strong> or create a new one</li>
+  <li><strong>Booking month</strong> (1&ndash;12) &mdash; determines which month counts as current</li>
+  <li><strong>Next document number</strong> per document type (quote, order, delivery note, invoice, reminder) &mdash; editable, e.g. to start at 1000</li>
+</ul>
+<p>Details see <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</p>
 <h4>Payment Terms</h4>
 <p>Define the default payment terms offered to customers. Details see <a href="#zahlungskonditionen">Payment Terms</a>.</p>
 <h4>Reminder Terms</h4>
@@ -292,6 +312,11 @@
   <li><strong>Disclaimer for translated customer copy</strong> &mdash; editable notice text printed in the footer of the translated customer copy (red, regular font). Placeholders: <code>{firmensprache}</code>, <code>{kundensprache}</code> and <code>{LLM}</code> (= translation model used). If the field is left empty, the <strong>default text</strong> is used automatically when printing &mdash; the AI labelling required by the <a href="#ki-eu-ai-act">EU AI Act</a> cannot be omitted. See <a href="#ki-uebersetzung">Translation at Print Time</a>.</li>
   <li><strong>Retention period (years)</strong> &mdash; tax/commercial retention period (default 10), decisive for the GDPR anonymisation. As long as it is running for a customer's documents, deletion is blocked. See <a href="#dsgvo">Data Protection (GDPR)</a>.</li>
 </ul>
+<p>The Control tab also holds the setting <strong>&ldquo;Check document archive (years)&rdquo;</strong> (0&nbsp;= off; controls the background integrity check of the <a href="#beleg-archiv">document archive</a>), the actions for the <a href="#drucken-signatur">digital PDF signature</a> (create/import certificate, activate signing) as well as a status row <strong>&ldquo;Key file (API keys)&rdquo;</strong>:</p>
+<ul>
+  <li>It shows whether the company's encrypted key file is <em>present</em>, <em>missing</em> or <em>corrupt</em>. This file holds all secret credentials (API keys, SMTP/app/certificate passwords) encrypted outside the database &mdash; see <a href="#datenbank">Database &amp; Backup</a>.</li>
+  <li><strong>Reset:</strong> if the file is corrupt or you want to start over, delete it (<code>app\daten\api_keys_{company number}.json</code>) &mdash; a new key password is assigned automatically on the next save; you then re-enter the actual keys/passwords in the respective tab (AI connection, email, address verification).</li>
+</ul>
 
 <h4 id="firma-adresspruefung">Address Verification</h4>
 <p>The <strong>&ldquo;Address Verification&rdquo;</strong> sub-tab (Company master &rarr; Parameters) configures the verification of customer addresses via the <strong>&ldquo;Verify address&rdquo;</strong> button in the <a href="#kunden-adresse-pruefen">customer master</a>. Only the <strong>address</strong> is checked (street, additional line, ZIP, city, country) &mdash; name and company name are <strong>never</strong> transmitted to the service (data minimisation, Art.&nbsp;5 GDPR).</p>
@@ -311,8 +336,12 @@
 </div>
 
 <h4 id="firma-drucktexte">Print Texts</h4>
-<p>Configurable labels and captions in the PDF documents (e.g. &ldquo;Invoice no.:&rdquo;, &ldquo;Due on:&rdquo;, &ldquo;Total amount:&rdquo;). This way you can adapt documents to your needs.</p>
-<p>A language dropdown at the top of the tab lets you maintain the print texts <strong>per language</strong> (including the company language). When printing for a customer with a different language, the labels are taken from the matching language set. Details see <a href="#drucktexte-sprachen">Print Texts &amp; Units per Language</a>.</p>
+<p>The tab shows all labels of the PDF documents that can be captioned &mdash; divided into <strong>standard document texts</strong> (fixed) and <strong>condition labels</strong> (dynamic per company):</p>
+<ul>
+  <li><strong>Standard document texts</strong> (document info, line-item table, summary, footer, reminder, journal columns/names) are <strong>read-only</strong> here and only show the translation currently in force per language (from the app language file, keys <code>druck.*</code>). They are changed centrally in the <a href="#app-sprachen">language generator</a> via the <strong>&ldquo;Print texts only&rdquo;</strong> view &mdash; this way the same document texts apply consistently across all app languages.</li>
+  <li><strong>Condition labels</strong> (VAT classes, payment terms, reminder levels) remain <strong>editable and translatable per language</strong> here &mdash; they depend on the company and its master data and do not belong in the app language file.</li>
+</ul>
+<p>A language dropdown at the top of the tab lets you choose the language to display or &mdash; for conditions &mdash; to maintain. When printing for a customer with a different language, the labels are taken from the matching language set. A note at the top explains the split. Details see <a href="#drucktexte-sprachen">Print Texts &amp; Units per Language</a>.</p>
 
 <h4 id="firma-ki-kurz">AI Connection</h4>
 <p>Activates and configures the company's AI connection (OpenRouter, Anthropic or a local, OpenAI-compatible model). Basis for the AI spell check in the article master and the translation at print time. Described in detail under <a href="#firma-ki">Setting up the AI Connection</a>.</p>
@@ -372,6 +401,7 @@
   <tr><td>Customer number</td><td>Your internal reference</td><td>Optional, displayed on documents</td></tr>
   <tr><td>Payment terms</td><td>Default payment conditions</td><td>Applied to new invoices</td></tr>
   <tr><td>Reminder terms</td><td>Reminder level configuration</td><td>Used in reminders</td></tr>
+  <tr><td>Bank, IBAN, BIC</td><td>Bank details of the customer (e.g. for credit notes/refunds). The button <strong>&ldquo;Determine BIC/bank&rdquo;</strong> fills BIC and bank name from the IBAN (German IBANs offline via the bank-code registry, GDPR-compliant) and validates the IBAN &mdash; as in the <a href="#firma-adresse">company master</a></td><td>Internal record</td></tr>
 </table>
 
 <h4 id="kunden-adresse-pruefen">Verify Address</h4>
@@ -436,20 +466,69 @@
 <p>When you change a customer (e.g. address), this affects <strong>only future</strong> documents. Already created documents retain the address that was stored at the time of creation.</p>
 
 <h3 id="artikel">Articles</h3>
-<p>All products and services. Per article:</p>
+<p>All products and services. The article master consists of a two-part overview (category sidebar on the left, article list on the right) and an edit dialog.</p>
+
+<h4>Category sidebar</h4>
+<p>The tree on the left organises articles into a <strong>four-level hierarchy</strong>:</p>
+<p><strong>Product group &rarr; Article group &rarr; Subgroup &rarr; Group</strong></p>
+<p>Every node shows the number of articles in brackets. Clicking a node filters the article list to that category. &ldquo;All&rdquo; shows the entire stock. Product groups are created in the company master; article groups, subgroups and groups can be created directly in the article dialog by typing a new value.</p>
+
+<h4>Search and filter</h4>
+<ul>
+  <li><strong>Search article number</strong> and <strong>Search description</strong>: both fields use full-text search. Several words (separated by spaces) must all occur in the field (&ldquo;AND&rdquo; logic).</li>
+  <li><strong>Active only:</strong> hides deactivated articles from the list.</li>
+  <li><strong>Show deleted:</strong> also shows soft-deleted articles (with a visual marker).</li>
+  <li><span class="kbd">F5</span>: reloads the article cache (e.g. after an import or external changes).</li>
+</ul>
+
+<h4>Article list &mdash; columns</h4>
 <table>
-  <tr><th>Field</th><th>Description</th><th>Usage</th></tr>
-  <tr><td>Article number</td><td>Unique identifier</td><td>Shown on all documents</td></tr>
-  <tr><td>Description (short)</td><td>Short description</td><td>Shown in the line-item table on documents</td></tr>
-  <tr><td>Description (long)</td><td>Detailed description</td><td>Optional, may appear on documents</td></tr>
-  <tr><td>Unit price</td><td>Default price</td><td>Applied to new line items (can be adjusted per document)</td></tr>
-  <tr><td>VAT class</td><td>Tax class (e.g. Standard rate)</td><td>Determines the VAT rate for new line items</td></tr>
-  <tr><td>Unit</td><td>Quantity unit (pc, hr, kg, ml, etc.)</td><td>Shown in the line-item table on documents</td></tr>
-  <tr><td>Brand</td><td>Manufacturer brand, selected from the brands maintained in the company master (no free text; maintained under Parameters &rarr; Brands)</td><td>Brand logo can appear on documents</td></tr>
+  <tr><th>Column</th><th>Content</th></tr>
+  <tr><td>Article no.</td><td>Unique identifier; appears on all documents</td></tr>
+  <tr><td>Description</td><td>Short description; appears in the line-item table of every document</td></tr>
+  <tr><td>Unit</td><td>Quantity unit (pc, hr, kg, m&sup2;, &hellip;)</td></tr>
+  <tr><td>Unit price</td><td>Default price; applied to new line items, adjustable in the document</td></tr>
+  <tr><td>VAT class</td><td>Tax class (e.g. standard rate); determines the VAT rate for new line items</td></tr>
+  <tr><td>Product group / Article group / Subgroup / Group</td><td>Category hierarchy of the article</td></tr>
+  <tr><td>Active</td><td>&ldquo;Yes&rdquo; / &ldquo;No&rdquo; &mdash; inactive articles cannot be inserted into new line items</td></tr>
+  <tr><td>Freight goods</td><td>Marker for articles delivered by freight forwarder</td></tr>
+</table>
+<p>A double-click on a row opens the edit dialog. Column widths are saved automatically.</p>
+
+<h4>Article dialog &mdash; fields</h4>
+<p>The dialog has two columns. The column width can be adjusted via the splitter.</p>
+<p><strong>Left column &mdash; master data:</strong></p>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Article number</td><td>Mandatory; must be unique per company</td></tr>
+  <tr><td>Description</td><td>Short description for documents; with spell checking</td></tr>
+  <tr><td>Unit</td><td>Editable drop-down with common units (pc, hr, kg, m, m&sup2;, &hellip;); own values can be typed</td></tr>
+  <tr><td>Unit price</td><td>Default price; pre-filled on new line items</td></tr>
+  <tr><td>VAT class</td><td>Selection from the tax classes defined in the company master</td></tr>
+  <tr><td>Product group</td><td>Fixed selection (maintained in the company master)</td></tr>
+  <tr><td>Article group / Subgroup / Group</td><td>Editable drop-down fields &mdash; a new value can be typed directly and is created on save</td></tr>
+  <tr><td>Brand</td><td>Selection of the manufacturer brand from the brands maintained in the company master (no free text; maintained under Parameters &rarr; Brands)</td></tr>
+  <tr><td>EAN</td><td>European Article Number (barcode)</td></tr>
+  <tr><td>Manufacturer number</td><td>Article number of the manufacturer</td></tr>
+  <tr><td>Delivery time</td><td>Free text (e.g. &ldquo;3&ndash;5 working days&rdquo;)</td></tr>
+  <tr><td>Weight (kg)</td><td>Gross weight in kilograms</td></tr>
+  <tr><td>RRP</td><td>Recommended retail price of the manufacturer</td></tr>
+  <tr><td>Active</td><td>Inactive articles are hidden in the article picker when entering documents</td></tr>
+  <tr><td>Freight goods</td><td>Marks the article as freight goods</td></tr>
+</table>
+
+<p><strong>Right column &mdash; media &amp; notes:</strong></p>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td>Brand logo</td><td><strong>Preview</strong> of the logo of the selected brand (PNG/JPG). It is maintained in the company master (Parameters &rarr; Brands); here the logo is only displayed.</td></tr>
+  <tr><td>Long description</td><td>Detailed text; appears as an additional line below the description in the document line-item table; with spell checking</td></tr>
+  <tr><td>Image</td><td>Product photo (PNG/JPG); select/delete via button; <strong>live preview</strong> directly in the dialog</td></tr>
+  <tr><td>Safety information</td><td>Multi-line text for GHS/hazardous-substance notes or similar details</td></tr>
+  <tr><td>Manufacturer information</td><td>Multi-line text for data sheets, certificates or other manufacturer details</td></tr>
 </table>
 
 <div class="tip">
-  <strong>Important:</strong> The unit price is applied to a new line item, but you can change it per document. A later change to the article price only affects new line items.
+  <strong>Price inheritance:</strong> The unit price is applied as a suggestion to a new line item &mdash; you can change it individually per line item. A later price change on the article only affects <em>new</em> line items; existing documents stay unchanged.
 </div>
 
 <div class="tip">
@@ -461,7 +540,12 @@
 </div>
 
 <h4>AI Spell Check</h4>
-<p>Below the fields <strong>Description</strong> and <strong>Safety information</strong> there is a button <strong>&ldquo;Spell check&rdquo;</strong>. It is only active when the company's <a href="#firma-ki">AI connection</a> is set up. A click sends the field content to the model and shows the result in a dialog: <strong>original</strong> (top, read-only) and <strong>correction</strong> (bottom, still editable). Only <strong>Save</strong> applies the correction to the field; <strong>Cancel</strong> discards it.</p>
+<p>Below the fields <strong>Long description</strong> and <strong>Safety information</strong> there is a button <strong>&ldquo;Spell check&rdquo;</strong> each. It is only active when the company's <a href="#firma-ki">AI connection</a> is set up. A click sends the field content to the model. The application evaluates the answer and reports back clearly:</p>
+<ul>
+  <li>If the text is <strong>free of errors</strong>, the message <em>&ldquo;The AI found no errors.&rdquo;</em> appears &mdash; <strong>no</strong> correction dialog opens.</li>
+  <li>If the text <strong>could not be checked</strong>, <em>&ldquo;The text could not be checked.&rdquo;</em> appears.</li>
+  <li>Only for <strong>real corrections</strong> does the comparison dialog open, with the <strong>original</strong> (top, read-only) and the <strong>correction</strong> (bottom, still editable) &mdash; without technical markers in the text. Only <strong>Save</strong> applies the correction to the field; <strong>Cancel</strong> discards it.</li>
+</ul>
 
 <h4>Translate Switch per Field</h4>
 <p>Next to the four translatable fields (<strong>description</strong>, <strong>long description</strong>, <strong>safety information</strong>, <strong>manufacturer information</strong>) there is a small three-state switch that controls whether the field is translated into the customer language at print time:</p>
@@ -538,7 +622,7 @@
 <p>Below the LLM assignment sit the shared templates. Each prompt field is shown as a <strong>two-line</strong> preview; a <strong>click</strong> opens the large <strong>Markdown editor</strong> with the source text on the left and a <strong>live preview</strong> on the right. Prompts with placeholders show <strong>marker buttons</strong> in the editor that insert the respective placeholder at the cursor position.</p>
 <ul>
   <li><strong>Prompt for detecting languages</strong> &mdash; question for the &ldquo;Detect languages&rdquo; button.</li>
-  <li><strong>System prompt</strong> &mdash; applies to all translation calls (deliberately omitted for the rating).</li>
+  <li><strong>System prompt</strong> &mdash; contains only the <strong>role</strong> (&ldquo;specialist translator for commercial documents&rdquo;) and applies to all translation calls (deliberately omitted for the rating). The actual translation <em>rules</em> now live in the three translation prompts (see below), no longer in the system prompt.</li>
   <li><strong>Prompt for translations</strong> &mdash; template for the forward translation of single texts; markers <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>.</li>
   <li><strong>Prompt for back-translation</strong> &mdash; template for the cross-check, with the same markers.</li>
   <li><strong>Prompt for bulk/batch translation</strong> &mdash; translates several numbered texts in <em>one</em> AI call in the <a href="#app-sprachen">app language generator</a>; direction-neutral with the markers <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Anzahl}</code>, <code>{Kontext}</code>.</li>
@@ -549,8 +633,11 @@
 <div class="tip">
   <strong>Marker meaning:</strong> In the translation prompts, <code>{Sprache Kunde}</code> is the customer language (target of the forward translation or source of the back-translation) and <code>{Sprache Firma}</code> is the company language. <code>{Text}</code> is the text to translate, <code>{Kontext}</code> a short classification (e.g. &ldquo;unit for a quantity&rdquo;). In the app language generator, <code>{Quellsprache}</code>/<code>{Zielsprache}</code> take their place, since it translates freely between base and target language.
 </div>
+<div class="tip">
+  <strong>Format placeholders are preserved:</strong> If a text contains placeholders such as <code>{Rechnungsnummer}</code> or <code>{n}</code>, they are replaced by neutral markers of the form <code>&#10214;N&#10215;</code> before the AI call and reinserted after the translation &mdash; this way the model does not accidentally translate them along. A former prompt rule &ldquo;do not translate words in curly braces&rdquo; is thereby obsolete. Purely a quality gain for users, no change in operation.
+</div>
 <div class="warn">
-  <strong>Security note:</strong> API keys are stored unencrypted in the database. Protect the database file accordingly. The API key fields (OpenRouter, Anthropic, Local AI) are visible and editable for <strong>administrators only</strong>; all other users only see asterisks (<code>********</code>, read-only). Model, prompts and test/model retrieval remain usable for everyone.
+  <strong>Security note:</strong> API keys and other credentials are <strong>not</strong> stored in the database, but <strong>encrypted</strong> in a separate file per company (see <a href="#datenbank">Database &amp; Backup</a>). The API key fields (OpenRouter, Anthropic, Local AI) are visible and editable for <strong>administrators only</strong>; all other users only see asterisks (<code>********</code>, read-only). Model, prompts and test/model retrieval remain usable for everyone.
 </div>
 
 <h3 id="sprachen-laender">Languages &amp; Country Codes</h3>
@@ -573,30 +660,23 @@
 </ul>
 
 <h3 id="drucktexte-sprachen">Print Texts &amp; Units per Language</h3>
-<p>Fixed labels (print texts) and units are <strong>not</strong> translated by the AI at print time but are <strong>maintained per language</strong> &mdash; including the company language. The application displays them in the <strong>company language</strong>; printing uses the <strong>customer language</strong>. If a value is missing, the fallback chain applies: <em>customer language &rarr; company language &rarr; default text</em>. This also makes it possible to change the company language later.</p>
+<p>Fixed labels (print texts) and units are <strong>not</strong> translated by the AI at print time but are maintained per language. There are, however, <strong>two separate sources</strong>:</p>
+<ul>
+  <li><strong>Standard document texts</strong> (document info, line-item table, summary/footer, reminder, document type names, journal labels) live in the <strong>app language file</strong> under the key <code>druck.*</code> and are maintained <strong>centrally in the <a href="#app-sprachen">language generator</a></strong> (view &ldquo;Print texts only&rdquo;). They therefore apply uniformly to <em>all</em> companies; in the company tab <a href="#firma-drucktexte">Print Texts</a> they only appear <strong>read-only</strong> for display.</li>
+  <li><strong>Condition labels</strong> (VAT classes, payment terms, reminder levels) and <strong>units</strong> depend on the company and its master data and are still translated <strong>per company in the company master</strong> (tab Print Texts, or Parameters&nbsp;&rarr;&nbsp;Units).</li>
+</ul>
+<p>Printing uses the <strong>customer language</strong>. If the target-language translation of a <code>druck.*</code> text is missing, the <strong>company-language text</strong> is printed, marked <strong>yellow</strong> and logged (see <a href="#fallback-protokoll">error tracking</a>).</p>
 
-<h4>Print Texts (tab &ldquo;Print Texts&rdquo;)</h4>
+<h4>Condition labels per language (tab &ldquo;Print Texts&rdquo;)</h4>
+<p>The following controls of the tab concern the <strong>editable condition labels</strong>; the standard document texts above them are display only.</p>
 <ul>
   <li>At the top you pick the language to edit via the <strong>language dropdown</strong>. Empty fields appear as placeholders with the company-language value (= fallback).</li>
   <li>Each row shows the <strong>translation field</strong> on the left and a read-only <strong>back-translation column</strong> on the right for control. The back-translation is <strong>stored per language</strong> (no longer transient only).</li>
   <li>Each row has a <strong>&ldquo;translate&rdquo; check mark</strong> and a <strong>&ldquo;Translate&rdquo; button</strong> that translates exactly this row via AI.</li>
   <li>Above all rows: <strong>&ldquo;Translate from company language&rdquo;</strong> (translates all ticked fields at once), <strong>&ldquo;Translate all&rdquo;</strong> (see below), <strong>&ldquo;Back-translate&rdquo;</strong> (fills the control column) and <strong>&ldquo;Context&hellip;&rdquo;</strong> (adjusts the context text for the prompt).</li>
   <li><strong>Right-click</strong> on a field (only in a non-company language with active AI) offers <em>&ldquo;Edit&hellip;&rdquo;</em> (dialog with a large text field and the back-translation as cross-check) and <em>&ldquo;Take over from company language&rdquo;</em>.</li>
+  <li>The three groups <strong>VAT classes</strong>, <strong>payment terms</strong> and <strong>reminder levels</strong> only appear in a target language (not in the company-language view). The names themselves are maintained in the respective master tab (VAT / payment terms / reminder terms); here you only store the <strong>translation</strong>. Previously maintained (since renamed) VAT labels and those frozen on historical documents appear as well &mdash; this keeps reprints of old documents translatable. When printing the translated customer copy these labels are replaced automatically; the VAT class's tax note is still translated live separately.</li>
 </ul>
-
-<h4>Which Print Texts Are Configurable?</h4>
-<p>All customer-facing document labels are editable and translatable per language, grouped as follows:</p>
-<ul>
-  <li><strong>Document info</strong> &mdash; e.g. document number, creation date, delivery date, valid until, due on, reminder level, &ldquo;payable within&rdquo;, &ldquo;interest rate&rdquo;, e-invoice, customer VAT ID.</li>
-  <li><strong>Line item table</strong> &mdash; column headers plus &ldquo;safety information&rdquo; and &ldquo;manufacturer info&rdquo;.</li>
-  <li><strong>Summary / footer</strong> &mdash; net, VAT lines, gross, bank details prefix, IBAN/BIC and VAT ID labels.</li>
-  <li><strong>Reminder</strong> &mdash; reminder fee, late payment surcharge, total incl. surcharge, total default interest.</li>
-  <li><strong>Document type names</strong> &mdash; including <strong>&ldquo;cancellation invoice&rdquo;</strong> (used when printing a cancellation).</li>
-</ul>
-<div class="tip"><strong>Not here:</strong> Journal labels (&ldquo;FY&rdquo;, &ldquo;period&rdquo;, &ldquo;created&rdquo;) are app-internal (app language), not customer-facing, and therefore do not belong to the print texts.</div>
-
-<h4>Condition Names per Language</h4>
-<p>At the end of the tab &mdash; only in a target language, not in the company language &mdash; three dynamically filled groups appear: <strong>VAT classes</strong>, <strong>payment terms</strong> and <strong>reminder levels</strong>. The names themselves are still maintained in the respective master tab (VAT / payment terms / reminder terms); here you only store the <strong>translation</strong> (with red highlighting, filter and bulk translate like the other print texts). When printing the translated customer copy, these names are replaced automatically (payment term, VAT summary, reminder level text). The VAT class's tax note is still translated live separately.</p>
 
 <h4>Checking Mismatches and Targeted Translation</h4>
 <ul>
@@ -740,6 +820,7 @@
   <li><strong>&ldquo;Check semantic match&rdquo;</strong>: runs only the rating phase (phase&nbsp;3) for the open red rows.</li>
   <li><strong>&ldquo;Poor &ndash; retranslate&rdquo; / &ldquo;Good &ndash; retranslate&rdquo;</strong>: specifically retranslate all rows with the respective rating &mdash; taking the rating into account, up to 3&nbsp;attempts per row, the best result is kept (target &ldquo;very good&rdquo;).</li>
   <li><strong>&ldquo;Show all&rdquo;</strong>: shows <strong>all</strong> already translated entries of the language for review (including confirmed and consistent ones) &mdash; without AI calls.</li>
+  <li><strong>&ldquo;Print texts only&rdquo;</strong>: shows exclusively the document print texts (<code>druck.*</code>) &mdash; including the print-text defaults that are otherwise hidden &mdash; so that they can be translated into all app languages. This is how you maintain the standard document texts shown read-only under Company &rarr; <a href="#firma-drucktexte">Print Texts</a> <strong>centrally</strong>. The row counter reflects the reduced scope; the option works together with &ldquo;Show all&rdquo;.</li>
   <li><strong>&ldquo;Cancel&rdquo;</strong>: stops the run <strong>immediately</strong> &mdash; even in the middle of a running AI call, without waiting for its answer. Finished rows are kept (the intermediate state is saved continuously anyway).</li>
 </ul>
 
@@ -780,15 +861,7 @@
 
   <rect class="d-box" x="330" y="440" width="240" height="64" rx="6"/>
   <text class="d-text" x="450" y="464" text-anchor="middle">Apply suggested correction</text>
-  <text class="d-text-small" x="450" y="484" text-anchor="middle">+ fresh back-translation as control</text>
-
-  <rect class="d-box-warn" x="20" y="352" width="250" height="152" rx="6"/>
-  <text class="d-text-bold" x="145" y="378" text-anchor="middle">Grammar error in the source text</text>
-  <text class="d-text-small" x="145" y="400" text-anchor="middle">Marker guard checks {&hellip;} placeholders,</text>
-  <text class="d-text-small" x="145" y="418" text-anchor="middle">then you are asked. If you agree:</text>
-  <text class="d-text-small" x="145" y="436" text-anchor="middle">change the source text, adjust the</text>
-  <text class="d-text-small" x="145" y="454" text-anchor="middle">second source language via AI,</text>
-  <text class="d-text-small" x="145" y="472" text-anchor="middle">retranslate the row from scratch</text>
+  <text class="d-text-small" x="450" y="484" text-anchor="middle">&rarr; row confirmed (green)</text>
 
   <rect class="d-box-alt" x="330" y="536" width="240" height="54" rx="6"/>
   <text class="d-text" x="450" y="558" text-anchor="middle">Save after every row</text>
@@ -804,12 +877,11 @@
   <line class="d-arrow" x1="450" y1="408" x2="450" y2="440" marker-end="url(#ah-fl)"/>
   <text class="d-text-small" x="565" y="428" text-anchor="middle">for good/poor/suggestion</text>
   <line class="d-arrow" x1="450" y1="504" x2="450" y2="536" marker-end="url(#ah-fl)"/>
-  <line class="d-arrow-dashed" x1="330" y1="380" x2="270" y2="400" marker-end="url(#ah-fl-d)"/>
   <line class="d-arrow-dashed" x1="765" y1="306" x2="580" y2="550" marker-end="url(#ah-fl-d)"/>
 </svg>
-<div class="caption">Flow chart: the three phases of the batch run with rating, correction and source-text confirmation</div>
+<div class="caption">Flow chart: the three phases of the batch run with translation, back-translation and rating/correction</div>
 </div>
-<p>About phase&nbsp;3: the rating call (prompt <a href="#firma-ki">&ldquo;match check &amp; correction&rdquo;</a>) returns one of <strong>four grades</strong> &mdash; <em>identical</em> (complete &amp; exact), <em>very good</em>, <em>good</em>, <em>poor</em> &mdash; and, for a less-than-perfect translation, an improved version <strong>in the same call</strong>. This suggestion is <strong>applied automatically</strong> and cross-checked with a fresh back-translation; a separate second translation step is no longer needed (saving AI calls). If the fresh back-translation confirms the source text, the row counts as done &mdash; otherwise the grade decides (&ldquo;identical&rdquo;/&ldquo;very good&rdquo; = done, &ldquo;good&rdquo;/&ldquo;poor&rdquo; = stays open for rework).</p>
+<p>About phase&nbsp;3: each row gets exactly <strong>one back-translation</strong> (to detect a discrepancy). If it deviates, the rating call runs (prompt <a href="#firma-ki">&ldquo;match check &amp; correction&rdquo;</a>): in a fixed four-line form it returns one of the <strong>four accuracy grades</strong> &mdash; <em>identical</em>, <em>very good</em>, <em>good</em>, <em>poor</em> &mdash; and, for a less-than-perfect translation, an improved version right away (<code>@@KORREKTUR</code>). If the check returns a correction, it is <strong>applied automatically</strong> and the row counts as <strong>confirmed (green)</strong> &mdash; <em>without</em> another control back-translation (this saves AI calls). The back-translation column still shows the back-translation that triggered the discrepancy (the rating star with grade/reason serves as evidence). Without a correction the grade decides (&ldquo;identical&rdquo;/&ldquo;very good&rdquo; = done, &ldquo;good&rdquo;/&ldquo;poor&rdquo; = stays open for rework). The <strong>source text is no longer checked</strong> &mdash; it is considered authoritative.</p>
 <div class="tip">
   <strong>The former &ldquo;passes&rdquo; setting is gone:</strong> there is only one continuous batch run. Rework remaining rows specifically &mdash; via &ldquo;Translate missing only&rdquo;, &ldquo;Check semantic match&rdquo; or the retranslate buttons.
 </div>
@@ -822,6 +894,7 @@
   <li><strong>Normal font</strong>: consistent &mdash; the back-translation matches the original (confirmed or without objection); a row rated <em>very good</em> is also shown normally (black).</li>
   <li><strong>Light-gray original cell</strong>: the German/English source text was changed <em>after</em> the translation &mdash; the row is <strong>outdated</strong> and will be re-translated on the next run.</li>
   <li><strong>Bold italic</strong>: the AI changed the translation during the current operation (match check/correction) &mdash; purely visual for the current view.</li>
+  <li><strong>Italic (original and back-translation column)</strong>: the back-translation deviates from the original &mdash; both columns are shown in italics (italic only; <em>bold</em> italic stays reserved for the AI change), including for rows confirmed in green.</li>
   <li><strong>Red background inside the translation text</strong>: broken <code>{&hellip;}</code> placeholder. Format placeholders such as <code>{n}</code> must be taken over unchanged; the tooltip names wrong/extra and missing placeholders. Such rows count as <strong>open/incomplete</strong> and are re-translated on the next run &mdash; preventing texts that would break at runtime.</li>
   <li><strong>Colored star</strong> behind the confirmed checkbox: the AI rating &mdash; <span style="color:#4caf50;font-weight:bold">&#9733;</span> green = very good/identical, <span style="color:#e0a800;font-weight:bold">&#9733;</span> yellow = good, <span style="color:#e57373;font-weight:bold">&#9733;</span> red = poor. The mouse tooltip shows the AI's <strong>reasoning</strong>.</li>
 </ul>
@@ -835,13 +908,12 @@
   <li><strong>&ldquo;Rating&rdquo;</strong> (action column): shows grade (with traffic-light star) and reasoning of the last AI rating &mdash; also for consistent rows without a star tooltip.</li>
 </ul>
 
-<h4>Grammar Errors in the Source Text (Confirmation)</h4>
-<p>If the company's match-check prompt uses an <strong>extended grammar check of the source text</strong> (an optional extension activated per company via its own prompt &mdash; not the shipped standard prompt), the AI may report that the <em>German/English source text</em> itself is faulty. In that case:</p>
+<h4>Translation log per language</h4>
+<p>A translation run creates a <strong>log</strong> <code>language.&lt;code&gt;.log.json</code> next to <code>language.&lt;code&gt;.json</code> for traceability (for support/review):</p>
 <ul>
-  <li>A <strong>marker guard</strong> automatically discards suggestions without asking if they would change the <code>{&hellip;}</code> format placeholders of the text (such &ldquo;corrections&rdquo; are AI artifacts).</li>
-  <li>Otherwise a <strong>confirmation dialog</strong> appears with the current and the suggested text; the button <strong>&ldquo;Full response&rdquo;</strong> shows the complete AI answer if needed.</li>
-  <li>Only if you <strong>agree</strong> is the base language file changed. The <strong>second source language</strong> (German&nbsp;&harr;&nbsp;English) is then automatically adjusted to the new text via AI and the row is <strong>freshly retranslated</strong> against the new source text.</li>
-  <li>Because the source text changed, the text subsequently counts as outdated in <strong>all</strong> additional languages and is caught up there on the next run.</li>
+  <li>It is <strong>grouped per row</strong> (<code>gruppen</code>: row number, key, source text and the steps forward translation, back-translation and rating, each with source&nbsp;&rarr;&nbsp;answer).</li>
+  <li>The complete <strong>batch calls</strong> (several rows per AI call) are additionally listed under <code>batch_calls</code> with the keys involved.</li>
+  <li>The log is collected per app session and language and sits next to the language file (not under version control).</li>
 </ul>
 
 <h4>Token Consumption (This Session)</h4>
@@ -1069,15 +1141,29 @@
 </table>
 
 <h4>How the counter works</h4>
+<p>The counter is kept for <strong>all five</strong> document types &mdash; including <strong>reminders</strong>.</p>
 <ul>
   <li>The counter stores the <strong>last assigned number</strong> (not the next one).</li>
   <li>The <strong>preview</strong> shows the number you will get &mdash; <strong>without</strong> incrementing the counter.</li>
   <li>The counter is only incremented when the document is <strong>saved</strong>.</li>
   <li>If you create a document and then do not save it, the number is <strong>not</strong> consumed.</li>
+  <li>The display <strong>&ldquo;Next &hellip; no.&rdquo;</strong> in the <em>Fiscal Years</em> tab shows, for the active fiscal year, the number that will <strong>actually</strong> be assigned next: numbers already taken are skipped.</li>
 </ul>
 
 <div class="tip">
   <strong>Practical tip:</strong> When you see the preview (e.g. &ldquo;RE2026-0015&rdquo;), it means: &ldquo;If you save now, you will get this number.&rdquo; As long as you do not save, the counter stays unchanged.
+</div>
+
+<h4>Changing the counter manually</h4>
+<p>You can set the counter in the <em>Fiscal Years</em> tab. If the new value is <strong>below</strong> a number that has already been assigned, the program asks:</p>
+<p><em>&ldquo;Numbers up to &hellip; have already been assigned for &hellip; in this fiscal year. Set the counter to &hellip; anyway?&rdquo;</em></p>
+<p>It stays allowed &mdash; number assignment automatically skips numbers that are already taken afterwards, so no duplicates arise.</p>
+
+<h4>When two users save at the same time</h4>
+<p>If two workstations assign the same number at the same moment, the program automatically moves on to the <strong>next free</strong> one &mdash; you will not notice a thing. Only if that does not work either does the notice <em>&ldquo;The document number has just been assigned elsewhere. Please save again.&rdquo;</em> appear; a second click on Save is then enough.</p>
+
+<div class="warn">
+  <strong>After the turn of the year:</strong> The year in the document number comes from the <strong>active fiscal year</strong> &mdash; not from the document date. If the two do not match, the program asks when a new document is saved: <em>&ldquo;The document date is in &hellip;, but the active fiscal year is &hellip;. The document number will use the year &hellip;. Save anyway?&rdquo;</em> If this message appears in January, you have probably not yet created or activated the new fiscal year.
 </div>
 
 <h4>Fiscal years</h4>
@@ -1274,7 +1360,8 @@
 
 <h4>What works, what doesn't</h4>
 <ul>
-  <li><strong>New document number:</strong> assigned from the counter on save. The preview in the dialog only shows what you <em>would</em> get. As long as you do not save, the document consumes no number.</li>
+  <li><strong>Draft status:</strong> every newly created document starts with the status <strong>&ldquo;draft&rdquo;</strong>. On the first real print it changes automatically to <strong>&ldquo;open&rdquo;</strong> and the creation date is frozen. Test prints do not change the status.</li>
+  <li><strong>New document number:</strong> assigned from the counter <strong>on save</strong>. The preview in the dialog only shows what you <em>would</em> get. As long as you do not save, the document consumes no number. See <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</li>
   <li><strong>Existing document number:</strong> cannot be changed. It stays fixed throughout the document's lifetime.</li>
   <li><strong>Paid invoices:</strong> are locked and can no longer be edited (a notice is shown).</li>
   <li><strong>Documents with successors:</strong> are partly locked &mdash; a quote that became an order is in status &ldquo;accepted&rdquo; and can no longer be edited.</li>
@@ -1336,6 +1423,14 @@
 </ul>
 <p>You can then edit the order (change line items, adjust date).</p>
 
+<h4>Quote status transitions</h4>
+<table>
+  <tr><th>Status</th><th>Trigger</th></tr>
+  <tr><td><strong>accepted</strong></td><td>An order was created from the quote</td></tr>
+  <tr><td><strong>completed</strong></td><td>An invoice was created in the document chain (order &rarr; invoice, or via a delivery note)</td></tr>
+  <tr><td><strong>successful</strong></td><td>The invoice was marked as paid</td></tr>
+</table>
+
 <h4>Print a quote</h4>
 <p>Select the quote and click <strong>Print</strong>. A PDF is generated and opened in the viewer.</p>
 
@@ -1352,6 +1447,15 @@
 
 <h4>Convert order directly to invoice</h4>
 <p>Button <strong>&rarr; Invoice</strong> &mdash; creates an invoice immediately and skips the delivery note. Useful for pure services where no physical delivery has to be documented. The order status changes to <strong>&ldquo;completed&rdquo;</strong>.</p>
+<p>The path via <strong>delivery note &rarr; invoice</strong> also sets the order status to <strong>&ldquo;completed&rdquo;</strong>.</p>
+
+<h4>Order status transitions</h4>
+<table>
+  <tr><th>Status</th><th>Trigger</th></tr>
+  <tr><td><strong>delivered</strong></td><td>A delivery note was created from the order</td></tr>
+  <tr><td><strong>completed</strong></td><td>An invoice was created (directly or via a delivery note)</td></tr>
+  <tr><td><strong>successful</strong></td><td>The invoice was marked as paid</td></tr>
+</table>
 <p><strong>Prerequisites:</strong></p>
 <ul>
   <li>The order has <em>no</em> delivery note yet &mdash; otherwise use the delivery-note list</li>
@@ -1452,7 +1556,10 @@
   <li>Optional: <strong>interest rate</strong> in percent (default interest)</li>
   <li>Optional: a fixed <strong>reminder fee</strong> in euros</li>
 </ul>
-<p>Reminder fee and default interest are <strong>tax-free</strong> and are posted to <strong>separate accounts</strong> in the booking export (see the Number ranges tab). The <strong>reminder term of the document</strong> applies (selectable in the document dialog, prefilled from the customer at creation) &mdash; not the customer's current term.</p>
+<p>Reminder fee and default interest are calculated <strong>without VAT (0&nbsp;%, tax-free)</strong> and are posted to <strong>separate accounts</strong> in the accounting export. The <strong>reminder term of the document</strong> applies (selectable in the document dialog, prefilled from the customer at creation) &mdash; not the customer's current term.</p>
+<div class="warn">
+  <strong>Mandatory setting for the accounting export:</strong> So that the accounting export passes the correct tax class ID for reminder line items, a VAT class with a <strong>0&nbsp;% rate</strong> (&ldquo;tax-free&rdquo;) must be configured in the company master under <strong>Accounting link &rarr; Reminder tax class</strong>. Without this configuration the line items are created correctly with 0&nbsp;% in arithmetic terms, but the booking record contains no tax class ID &mdash; which can lead to import errors depending on the accounting system.
+</div>
 
 <h4>Create a reminder</h4>
 <ol>
@@ -1478,8 +1585,29 @@
   <li>If the maximum (4) is already reached, a warning appears</li>
 </ul>
 
+<h4>Printing a reminder &ndash; layout</h4>
+<p>The PDF of a reminder is divided into three blocks:</p>
+<ol>
+  <li><strong>Line-item table</strong> &mdash; contains all invoice line items as well as the reminder fees and default interest of all previous reminder levels as tax-free line items.</li>
+  <li><strong>Breakdown per reminder level</strong> &mdash; summarises reminder fee and default interest per level (e.g. &ldquo;1st reminder: 245.88&nbsp;&euro;&rdquo;). This makes it obvious at a glance which costs belong to which reminder level.</li>
+  <li><strong>Totals block</strong> &mdash; shows the invoice block like a normal invoice: net amount, below it &ldquo;total default interest&rdquo; (sum of all reminder fees and interest), then VAT and gross amount.</li>
+</ol>
+<div class="tip"><strong>Finalisation:</strong> On the first original print, the header values of the reminder (interest rate, due date, payable-within-days, reminder-level label) are frozen alongside the line items &mdash; later changes to the base interest rate or the reminder term do not act retroactively. See <a href="#festschreiben">Finalisation &amp; Frozen Values</a>.</div>
+
 <div class="tip">
   <strong>Document chain on reminders:</strong> When you open a reminder, you see the entire chain: Quote &#8594; Order &#8594; Delivery Note &#8594; Invoice &#8594; Payment reminder &#8594; 1st reminder &#8594; 2nd reminder etc.
+</div>
+
+<h4>Cancelling a reminder</h4>
+<p>A <strong>finalised</strong> reminder can be cancelled via the <strong>&ldquo;Cancel&rdquo;</strong> button:</p>
+<ol>
+  <li>The original reminder gets the status <strong>&ldquo;cancelled&rdquo;</strong>.</li>
+  <li>A <strong>cancellation reminder</strong> with negated reminder-fee and default-interest line items is created automatically.</li>
+  <li>The cancellation reminder is finalised immediately and appears in the list with the prefix &ldquo;Cancellation of &hellip;&rdquo;.</li>
+  <li>Cancellation reminders are passed on with the next accounting export.</li>
+</ol>
+<div class="warn">
+  <strong>Caution:</strong> A cancellation reminder cannot be cancelled again. Make sure you have selected the right reminder.
 </div>
 
 <hr>
@@ -1735,6 +1863,18 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <h4>Next page hint</h4>
 <p>If a document spans multiple pages, the hint &ldquo;Please see next page N!&rdquo; appears on every page up to the penultimate one, directly below the total price. On the last page this hint is not shown.</p>
 
+<h3 id="festschreiben">Finalisation &amp; Frozen Values</h3>
+<p>On the <strong>first original print</strong> a document is <strong>finalised</strong> (the creation date is set; after that it can no longer be edited). From that moment on, the values printed on the document are <strong>unchangeable</strong> &mdash; later changes to master data or conditions only take effect in the <strong>follow-up document</strong> (document consistency). Besides the customer and the line items (VAT rate, unit, article number, description), the following are frozen as well:</p>
+<ul>
+  <li>the <strong>payment condition</strong> (due date, &ldquo;payable within days&rdquo;, label) and the <strong>VAT class tax note</strong>;</li>
+  <li>per line item the <strong>safety notes</strong> and the <strong>manufacturer information</strong>;</li>
+  <li>for <strong>reminders</strong> additionally the header values <strong>interest rate, due date, payable-within-days and reminder-level label</strong> &mdash; a later change to the base interest rate or the reminder condition therefore no longer affects reminders that have already been printed.</li>
+</ul>
+<div class="tip"><strong>Existing documents:</strong> Documents finalised <em>before</em> this freeze logic was introduced freeze these values on their <strong>next printout</strong> (from the data current at that time).</div>
+<div class="warn">
+  <strong>A failed first print stays a draft:</strong> The document is finalised only <strong>after</strong> the PDF has been created successfully. If printing fails (e.g. a path or file error), the document remains a <strong>draft and editable</strong>, and the next print is again a regular first print (including the e-invoice).
+</div>
+
 <h3 id="testdruck">Test Print</h3>
 <p>The test print produces a PDF that looks identical to the real print, but with a <strong>TEST PRINT</strong> watermark on every page. The watermark is guaranteed to be on top of the document content.</p>
 <ul>
@@ -1742,6 +1882,59 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <li>In the test print PDF, &ldquo;99.99.9999&rdquo; appears top right as a placeholder</li>
   <li>The file name starts with <code>TEST_</code></li>
 </ul>
+
+<h3 id="drucken-signatur">Digital Signature of Document PDFs</h3>
+<p>On request the program <strong>digitally signs</strong> every document PDF sent to customers at print time (PAdES/PKCS&nbsp;#7). The signature &ldquo;seals&rdquo; the content: if the PDF is later changed by so much as a single character, signature validation fails in the PDF reader. <strong>Subsequent tampering is therefore detectable.</strong></p>
+
+<h4>Activating</h4>
+<ol>
+  <li>Company &rarr; Parameters &rarr; tab <strong>Control</strong>: click <strong>Create certificate</strong> once. The program creates a self-signed company certificate; its password is assigned automatically and is never shown.</li>
+  <li>Then tick <strong>Sign PDF documents digitally</strong> and save.</li>
+</ol>
+<p>The certificate is stored as a <code>.p12</code> file under <code>{signature directory}\{company no.}\zertifikat.p12</code> (Company &rarr; Paths &rarr; <em>Directory for signature certificates</em>; empty = <code>{export path}\Signatur-Zertifikate\</code>). Signing happens on every <strong>real</strong> print &mdash; never on test prints (watermark). The copy sent by email is signed as well.</p>
+<p>As visible evidence, a <strong>signature stamp</strong> appears at the bottom left of the last page (&ldquo;Digitally signed&rdquo;, company name from the certificate, date and time). The actual validation still takes place via the signature field in the PDF reader.</p>
+
+<div class="warn">
+  <strong>Self-signed = yellow warning triangle:</strong> At the recipient the PDF reader initially shows &ldquo;Signature is valid, but the signer's identity could not be verified&rdquo; (yellow triangle). That is normal for a self-created certificate. The <strong>protection against undetected changes still works completely</strong> &mdash; only the <em>origin</em> is not yet confirmed.
+</div>
+
+<h4 id="drucken-signatur-vertrauen">Trusted certificate (green check mark)</h4>
+<p>A certificate is not &ldquo;created trusted&rdquo; &mdash; trust is <em>established</em> afterwards. To get a <strong>green check mark</strong> instead of the yellow triangle, there are two ways:</p>
+
+<p><strong>Option 1 &mdash; the recipient marks your company certificate as trusted, once</strong> (free of charge, works with the certificate created above). Ideal with a stable set of customers. In <strong>Adobe Acrobat Reader</strong> the recipient does the following once:</p>
+<ol>
+  <li>Open the signed PDF and click the signature bar or the signature field &rarr; <strong>Signature Properties</strong>.</li>
+  <li>Choose <strong>Show Signer's Certificate&hellip;</strong>.</li>
+  <li>Tab <strong>Trust</strong> &rarr; <strong>Add to Trusted Certificates&hellip;</strong>.</li>
+  <li>Tick the option <em>&ldquo;Use this certificate as a trusted root&rdquo;</em> and confirm with <strong>OK</strong>.</li>
+  <li>Validate the signature again (close/reopen the reader if necessary) &mdash; the green check mark now appears.</li>
+</ol>
+<div class="tip">
+  <strong>Security note:</strong> The certificate is already contained in the signed PDF &mdash; it does not have to be sent separately. Before marking it as trusted, the recipient should compare the certificate's <strong>fingerprint</strong> (SHA-256) with you over a second channel (telephone, known letterhead), so that the trust is genuinely justified. The setting applies <strong>per recipient and per program</strong>.
+</div>
+
+<p><strong>Option 2 &mdash; a certificate from a trust service provider</strong> (paid, universal). A certificate obtained from a recognised provider is trusted without any action by the recipient. For the automatic green check mark in Adobe, the provider must be listed in the <strong>Adobe Approved Trust List (AATL)</strong> or the <strong>EU Trusted List (EUTL)</strong>. Providers include D-Trust (Bundesdruckerei), GlobalSign, DigiCert, Sectigo and SwissSign. Depending on the certificate class (advanced/qualified) there are annual costs and an identity check may be required.</p>
+<div class="tip">
+  <strong>Adding it to the program:</strong> A purchased certificate comes as a <code>.p12</code> or <code>.pfx</code> file with its own password. Add it via Company &rarr; Parameters &rarr; Control &rarr; <strong>Import certificate</strong>: choose the file, enter the password. The program then signs with this trusted certificate; the status shows <em>&ldquo;(imported / trusted)&rdquo;</em>. The <strong>Create certificate</strong> button, by contrast, always creates a self-signed one &mdash; <em>&ldquo;(self-signed)&rdquo;</em>. After creating or importing, the program asks whether signing should be activated right away.
+</div>
+
+<h4 id="drucken-signatur-kauf">Checklist for buying a certificate</h4>
+<p>So that a purchased certificate works directly via <strong>Import certificate</strong>, watch out for these points at the provider:</p>
+<ul>
+  <li><strong>File format PKCS&nbsp;#12</strong> (<code>.p12</code> or <code>.pfx</code>) <strong>including the private key</strong>. A plain <code>.cer</code>/<code>.crt</code> file contains only the public part and <strong>cannot</strong> sign &mdash; the import rejects it.</li>
+  <li><strong>Software certificate</strong> (also called &ldquo;soft PSE&rdquo; / exportable as a file). <strong>Hardware-bound</strong> certificates on a smartcard, USB token or in an HSM cannot be imported as a file and do <strong>not</strong> work with this program. (Qualified signatures under eIDAS are frequently hardware-bound &mdash; unsuitable here.)</li>
+  <li><strong>Intended use: document/PDF signing</strong> (&ldquo;Document Signing&rdquo;). <em>Not</em> suitable: pure email certificates (S/MIME) or web server certificates (SSL/TLS).</li>
+  <li><strong>For the green check mark in Adobe:</strong> the issuer must be listed in the <strong>AATL</strong> (Adobe Approved Trust List) or the <strong>EUTL</strong> (EU Trusted List). Providers include D-Trust, GlobalSign, DigiCert, SwissSign and Sectigo.</li>
+  <li><strong>Have the password ready:</strong> the password assigned to the <code>.p12</code> file at purchase or export is requested during the import.</li>
+  <li><strong>Validity</strong> is usually 1&ndash;3 years. After expiry you import a new certificate &mdash; documents already signed remain verifiable with the old one.</li>
+</ul>
+<p>The import checks the file: if the private key is missing or the password is wrong, an error message appears and nothing is taken over.</p>
+<div class="tip">
+  <strong>Long-term archiving:</strong> For verifiability far beyond the certificate's expiry date, a qualified <strong>time stamp</strong> (RFC&nbsp;3161) would make sense. A time-stamping service is currently not integrated; for day-to-day operation (tamper detection at the recipient) it is not required.
+</div>
+
+<h4>When signing is not possible</h4>
+<p>If the certificate is missing or the required components are not installed, the PDF is delivered <strong>unsigned</strong> and the case is recorded in the <a href="#fallback-protokoll">error tracking</a> &mdash; printing does not abort.</p>
 
 <h3 id="drucken-journal">Printing Journals</h3>
 <p>The hamburger menu <strong>Reports</strong> contains journal entries per document type:</p>
@@ -1763,27 +1956,49 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <hr>
 
 <h2 id="sperren">Locking System</h2>
-<p>The locking system protects master data from unintended changes.</p>
+<p>When several people work with the program at the same time, the locking system prevents two users from changing the same record and overwriting each other.</p>
 
 <h3>How it works</h3>
+<p>Locking happens <strong>per record</strong> &mdash; not for a whole module. Whoever clicks <strong>Edit</strong> (or double-clicks) takes the record; everyone else can only view it in the meantime:</p>
 <ul>
-  <li>In the company module (<strong>Locks</strong> tab) you can lock individual modules</li>
-  <li>A locked module shows its data but allows <strong>no changes</strong></li>
-  <li>The lock applies to all open tabs of the module</li>
-  <li>The lock is monitored in real time &mdash; when someone places a lock, all other tabs are notified immediately</li>
+  <li>If the record is already being worked on, the message <em>&ldquo;The record is being edited in module &hellip; by user &hellip;&rdquo;</em> appears and the dialog does not open.</li>
+  <li>If two users click Edit <strong>at the same time</strong>, exactly one gets the record &mdash; the other reliably receives the message.</li>
+  <li>The lock ends as soon as you <strong>save</strong> or <strong>close</strong> the dialog.</li>
+  <li>When merely <strong>viewing</strong> (rights level <a href="#benutzer-rechte">read</a>) <strong>no</strong> lock is set &mdash; whoever only reads blocks nobody.</li>
 </ul>
 
-<h3>Locks table</h3>
-<p>In the locks overview you see:</p>
+<h3>The company master: a question instead of a lock</h3>
+<p>The company master is <strong>not locked</strong> while being edited &mdash; its tabs often stay open for a long time, and nobody should be locked out by that. Instead the program checks <strong>on saving</strong> whether <em>another</em> user has saved the company master in the meantime. If so, the following question appears:</p>
+<p><em>&ldquo;The record was changed on &hellip; by user &hellip; in module &hellip;. Your entries would overwrite that change. Save anyway?&rdquo;</em></p>
+<ul>
+  <li><strong>No</strong> aborts the save &mdash; your entries stay in the form. With <em>Cancel</em> you can discard them and reload the current state.</li>
+  <li><strong>Yes</strong> saves and overwrites the other change.</li>
+  <li>Your own changes from another tab do <strong>not</strong> trigger the question.</li>
+</ul>
+
+<h3>Locks overview (Company &rarr; Locks)</h3>
+<p>The overview shows all active locks. It is reserved for <strong>administrators</strong> &mdash; only they can release a lock.</p>
 <table>
   <tr><th>Column</th><th>Description</th></tr>
-  <tr><td>Module</td><td>The name of the module (Customers, Articles, etc.)</td></tr>
-  <tr><td>Locked</td><td>Whether the module is locked</td></tr>
-  <tr><td>Locked until</td><td>When the lock is automatically released</td></tr>
+  <tr><td>Table</td><td>Data area the record lives in (customers, articles, invoices, &hellip;)</td></tr>
+  <tr><td>ID</td><td>Internal number of the locked record</td></tr>
+  <tr><td>User</td><td>Who is currently editing the record</td></tr>
+  <tr><td>Module</td><td>Program area the lock was placed from</td></tr>
+  <tr><td>Locked since</td><td>When the lock was <strong>placed</strong> &mdash; this is how you recognise the <strong>age</strong> of a stuck lock</td></tr>
+  <tr><td>Number of changes</td><td>How often the record has been saved in total</td></tr>
+  <tr><td>Changed at</td><td>Time of the last <strong>save</strong> (not of the lock)</td></tr>
 </table>
 
+<div class="info">
+  Locks placed before this column was introduced show &ldquo;&mdash;&rdquo; under <em>Locked since</em>.
+</div>
+
+<h3>Releasing stuck locks</h3>
+<p>If a machine crashes while a record is being edited, the lock stays in place. An administrator releases it in the overview &mdash; check beforehand, using <em>User</em> and <em>Locked since</em>, that nobody is really working on it any more.</p>
+<p>If releasing a lock fails when a dialog is closed, the case is recorded in the <a href="#fallback-protokoll">error tracking</a> (module &ldquo;Multi-user lock&rdquo;) and can be released here.</p>
+
 <div class="warn">
-  <strong>Caution:</strong> When you lock a module, you cannot make changes yourself either. The lock must be released explicitly.
+  <strong>Caution:</strong> If you release a lock while someone is genuinely editing the record, their changes may be lost. When in doubt, ask them first.
 </div>
 
 <hr>
@@ -1822,6 +2037,17 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <tr><td>With configured export path</td><td><code>{export path}\E-Rechnung\{company number}\{year}\{month}\</code></td></tr>
 </table>
 <p>Reprints of an already finalised invoice do <em>not</em> generate a new XML &mdash; the original file stays unchanged.</p>
+
+<h3>Particularities of the e-invoice</h3>
+<ul>
+  <li><strong>Cancellation:</strong> The e-invoice of a cancellation invoice shows <strong>positive</strong> amounts and marks the credit note solely via the <strong>invoice type code 381</strong> plus a reference to the original invoice. This is a deliberate deviation from the printed PDF, which still shows negative amounts (as is usual under EN&nbsp;16931).</li>
+  <li><strong>Tax exemption:</strong> For 0&nbsp;% line items (without <a href="#igl">igL</a>) the e-invoice takes the <strong>note text of the VAT class</strong> as the exemption reason. If none is maintained, &ldquo;Tax-exempt supply&rdquo; is used instead (and logged, see below).</li>
+  <li><strong>Rounding:</strong> Line and total amounts in the XML are rounded in conformance with the standard and may therefore, in rare cases, differ from the printed PDF by <strong>1&nbsp;cent</strong>.</li>
+  <li><strong>Due date:</strong> The due date of the e-invoice always matches the <strong>finalised document</strong> &mdash; a later change to the payment condition does not act retroactively.</li>
+</ul>
+<div class="warn">
+  <strong>Yellow spool rows / error tracking:</strong> If a required detail is missing, a substitute value is used, the affected spool row is marked <strong>yellow</strong> and the case is recorded in the <a href="#fallback-protokoll">error tracking</a>. New cases: <strong>0&nbsp;% class without a note text</strong> (substitute text used), <strong>company name empty</strong>, <strong>VAT ID and tax number both empty</strong>, and for <strong>XRechnung</strong> additionally <strong>phone empty</strong> &mdash; each with a hint to fill in the field in the company master or the note text in the VAT classes.
+</div>
 
 <h3 id="e_rechnung_spool">Spool Overview</h3>
 <p>Open the spool window via <strong>Modules &rarr; E-Invoice Spool</strong>. It lists all generated XML files with the following columns:</p>
@@ -1875,6 +2101,12 @@ to our account: {IBAN} ({BIC}).</code></pre>
 
 <h3>Booking format</h3>
 <p>One line per booking in <strong>account-to-counter-account</strong> format with <strong>gross amount</strong> and <strong>tax code</strong> (the accounting system derives the VAT from the tax code). The print list shows the <strong>debit and credit totals</strong> with a <strong>zero-balance check</strong> (difference must be 0.00).</p>
+<ul>
+  <li><strong>Cancellations:</strong> cancellation invoices and cancellation reminders go into the export as <strong>negative bookings</strong> (DATEV EXTF: debit/credit indicator &ldquo;H&rdquo; with a positive turnover; DATEV Rechnungsdatenservice: amount with a minus sign). Cancellation reminders are included in the next export <strong>even without a prior printout</strong>.</li>
+  <li><strong>Reminders:</strong> per reminder only the reminder fee and default interest of its <strong>own reminder level</strong> are booked (items of earlier levels carried on follow-up reminders were already booked with their own reminder) &mdash; the monthly counters in the overview count only such reminders too.</li>
+  <li><strong>Amounts:</strong> The booking total of an invoice always matches the printed invoice amount exactly; any cent rounding differences across several VAT groups are balanced out.</li>
+  <li><strong>Concurrency protection:</strong> if two users export the same period at the same time, the second export aborts with an error message (no duplicate handover to accounting).</li>
+</ul>
 
 <h3>Output Formats</h3>
 <table>
@@ -1892,9 +2124,20 @@ to our account: {IBAN} ({BIC}).</code></pre>
 
 <h3>Repeat, Undo &amp; Cancel</h3>
 <ul>
-  <li><strong>Repeat:</strong> rewrites the files of an existing export (new timestamp) &mdash; without a new protocol entry.</li>
+  <li><strong>Repeat:</strong> regenerates the export file of an existing export, <strong>replacing the old file</strong> and updating the file name in the export list &mdash; without a new protocol entry.</li>
   <li><strong>Undo last export:</strong> reverts the export created <em>in this session</em> (document marking removed, export file deleted). After closing the window this is no longer possible.</li>
   <li><strong>Cancel:</strong> cancels the export <strong>selected in the list</strong> &mdash; even after a restart and independent of the session. Effect like undo: the document marking is removed (documents become exportable again), the protocol record and export file are deleted. <strong>Administrators only</strong> (non-admins get a notice on click).</li>
+</ul>
+
+<h3 id="beleg-archiv">Document Archive (audit-proof)</h3>
+<p>During the accounting export, the documents relevant for bookkeeping are additionally <strong>archived as audit-proof PDFs</strong>: finalised <strong>invoices</strong> (including cancellations) and finalised <strong>reminders</strong> (with fee/interest) are copied into the archive folder:</p>
+<pre><code>{archive path}\{company no.}\{year}\{export no.}\</code></pre>
+<ul>
+  <li>The integrity of every copy is checked via <strong>SHA-256</strong>; the results are written to <code>CHECK-positiv.log</code> and <code>CHECK-negativ.log</code>.</li>
+  <li>When the accounting-export window is opened, a check over the last <strong>N years</strong> runs in the <strong>background</strong> (setting: Company &rarr; Parameters &rarr; <a href="#firma-steuerung">Control</a> &rarr; <em>&ldquo;Check document archive (years)&rdquo;</em>; <strong>0 = off</strong>).</li>
+  <li>If defects are found (a missing, changed or never archived file), a <strong>non-blocking warning window</strong> opens with the advice to restore the affected files from the backup. It closes by itself as soon as the archive is complete again (re-check every 60&nbsp;s).</li>
+  <li>You define the <strong>archive path</strong> under Company &rarr; <a href="#firma-pfade">Paths</a> (fallback <code>{export path}\Archiv</code>).</li>
+  <li><strong>&ldquo;Undo&rdquo;/&ldquo;Cancel&rdquo;</strong> of an export deletes the corresponding archive folder as well.</li>
 </ul>
 
 <hr>
@@ -1977,19 +2220,22 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <p>As an alternative to the ELSTER CSV, the <strong>&ldquo;ELMA XML&rdquo;</strong> button creates a bulk-data file that you upload separately via the <strong>BZSt bulk data tool / BOP</strong>.</p>
 <ul>
   <li><strong>Prerequisites:</strong> the <strong>ELMA account ID</strong> (company master &rarr; <a href="#firma-steuern">Taxes</a>) and a complete company address including <strong>house number</strong> (tab <a href="#firma-adresse">Address</a>).</li>
-  <li><strong>Operation:</strong> <strong>report type</strong> (initial report or correction), <strong>environment</strong> (production or test, from the Taxes tab) plus the options <em>anzeige</em> / <em>widerruf</em>.</li>
+  <li><strong>Operation:</strong> <strong>report type</strong> (initial report or correction), <strong>environment</strong> (production or test, from the Taxes tab) plus the options <em>anzeige</em> / <em>widerruf</em>. These two ticks are tied to the <strong>report period type</strong>: &ldquo;<em>announce switch to monthly filing</em>&rdquo; can only be selected for a <strong>quarterly report</strong>, &ldquo;<em>revoke monthly filing</em>&rdquo; only for a <strong>monthly report</strong> (a disabled tick is cleared automatically).</li>
   <li>Only <strong>igL supplies</strong> (transaction type &ldquo;L&rdquo;) are covered. You upload the generated file to the BZSt yourself.</li>
 </ul>
+<div class="warn"><strong>Negative rows:</strong> If the report contains negative rows (cancellations outweigh the period), a <strong>notice</strong> appears before the ELMA XML is created (no abort). A <strong>CSV with more than 1500 data rows</strong> is rejected with an error message instead of producing a file that the ELSTER import would discard. The save dialogs (CSV/ELMA XML) suggest the <strong>company export path</strong> as the starting folder.</div>
 
 <div class="warn"><strong>Customer without VAT ID:</strong> If an EU customer with igL has <strong>no</strong> VAT ID, their supply is omitted from the ZM (PDF, CSV <em>and</em> ELMA XML). On creation a <strong>non-blocking warning</strong> appears listing the affected customers (+ amount), and the case is recorded in the <a href="#fallback-protokoll">error tracking</a>. The ZM for the remaining customers is still created. Remedy: enter the VAT ID in the customer master.</div>
 
 <h3>Data Source &amp; Content</h3>
 <ul>
   <li>The basis are <strong>finalized invoices</strong> with a VAT class flagged as igL in the selected period (by document date), aggregated per customer by <strong>VAT ID</strong>.</li>
+  <li><strong>igL detection via the tax key:</strong> Whether a line item is an intra-Community supply is determined by the <strong>tax key frozen on the document</strong>. Renaming or deleting the igL VAT class therefore no longer changes anything about already booked historical documents in the ZM (previously, turnover could silently disappear from the report this way).</li>
   <li><strong>Cancellation invoices</strong> reduce the amounts (negative).</li>
   <li>Amounts are reported in <strong>whole euros</strong> (cents dropped); the type of supply is <strong>&ldquo;L&rdquo;</strong> (intra-Community supply).</li>
-  <li>Only customers with a maintained <strong>VAT ID</strong> appear.</li>
+  <li>Only customers with a maintained <strong>VAT ID</strong> appear. Different <strong>spellings</strong> of the same VAT ID (with/without spaces, dots, hyphens) are combined into <strong>one</strong> ZM row.</li>
 </ul>
+<div class="warn"><strong>German VAT ID in a report row:</strong> If a report row contains a <strong>German</strong> VAT ID (a misconfiguration in the customer master or the VAT class), it is <strong>rejected</strong> for PDF, CSV <em>and</em> ELMA XML &mdash; with a hint to check the customer master (an igL requires an EU recipient in a <em>different</em> member state).</div>
 
 <div class="warn"><strong>Scope:</strong> Only <strong>supplies of goods</strong> (type &ldquo;L&rdquo;) are covered. Intra-Community <strong>other services</strong> (&sect;13b, type &ldquo;S&rdquo;) and <strong>triangular transactions</strong> (type &ldquo;D&rdquo;) are not included.</div>
 <div class="tip"><strong>Deadline:</strong> The ZM is generally due by the <strong>25th day of the following month</strong>; if the igL do not exceed 50,000&nbsp;&euro; per quarter, quarterly filing (by the 25th after quarter end) is allowed. A late report is an administrative offence.</div>
@@ -2014,11 +2260,16 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <tr><th>Source</th><th>What is missing / where yellow</th><th>Remedy</th></tr>
   <tr><td><strong>Translation (print)</strong></td><td>Missing translation of printed conditions (payment term / reminder level / VAT class) on the translated customer copy &mdash; yellow highlighting also on the copy.</td><td>Maintain company master &rarr; <a href="#firma-drucktexte">Print Texts</a> per language.</td></tr>
   <tr><td><strong>Document entry</strong></td><td>Article without a VAT class (or rate on the document date) or without a unit &rarr; whole <strong>line item row yellow</strong> (entry and PDF). Customer without a valid payment/reminder term &rarr; <strong>combo yellow</strong>.</td><td>Maintain article or customer master.</td></tr>
-  <tr><td><strong>Email creation</strong></td><td>Missing template (subject/body) or sender address &rarr; <strong>yellow row</strong> in the <a href="#emails">outbox</a>. &ldquo;Customer without email address&rdquo; only in the log (no email is created).</td><td>Company master &rarr; Email Texts / Email; customer master &rarr; email address.</td></tr>
-  <tr><td><strong>E-invoice</strong></td><td>Missing country (&rarr; &ldquo;DE&rdquo;), currency code (&rarr; &ldquo;EUR&rdquo;), unit (&rarr; &ldquo;EA&rdquo;) or &mdash; XRechnung only &mdash; Leitweg-ID/customer number &rarr; <strong>yellow row</strong> in the <a href="#e_rechnung_spool">e-invoice spool</a>.</td><td>Company/customer master (country, currency, Leitweg-ID) or article/line item (unit).</td></tr>
+  <tr><td><strong>Print/marker</strong></td><td>A marker in the subject or free texts cannot be resolved when <strong>printing</strong> or when <strong>creating the email</strong> (e.g. <code>{IBAN}</code> without an IBAN stored, <code>{MAZTAGE}</code>/<code>{MAZINS%}</code> without a matching reminder term) &rarr; the substitute value <strong>&ldquo;(&mdash;)&rdquo;</strong> appears in the text and is <strong>highlighted yellow</strong> in the PDF. The editor preview does not log.</td><td>Maintain the marker's data source (company/customer master, reminder term).</td></tr>
+  <tr><td><strong>Print/logo</strong></td><td>If a company logo is defined under Company &rarr; Paths but its file is missing or cannot be loaded, the document is printed <strong>without the logo</strong> (no yellow highlighting &mdash; the logo is simply omitted), but the case is logged.</td><td>Check Company &rarr; <a href="#firma-pfade">Paths</a> (logo path/image file).</td></tr>
+  <tr><td><strong>Reminder/interest calculation</strong></td><td><strong>No base interest rate</strong> is maintained for the reminder's document date &rarr; the default interest rate is calculated without the base rate (too low); the interest rate is <strong>highlighted yellow</strong> in the PDF.</td><td>Maintain Company &rarr; <a href="#basiszinssatz">Base Interest Rate</a> for the document date.</td></tr>
+  <tr><td><strong>Email creation</strong></td><td>Missing template (subject/body) or sender address, a <strong>failed marker replacement</strong> (the template goes out unreplaced) or dispatch type <strong>&ldquo;e-invoice&rdquo;</strong> without an e-invoice file present &rarr; <strong>yellow row</strong> in the <a href="#emails">outbox</a>. &ldquo;Customer without email address&rdquo; only in the log (no email is created).</td><td>Company master &rarr; Email Texts / Email; customer master &rarr; email address; print the invoice with e-invoice.</td></tr>
+  <tr><td><strong>E-invoice</strong></td><td>Missing country (&rarr; &ldquo;DE&rdquo;), currency code (&rarr; &ldquo;EUR&rdquo;), unit (&rarr; &ldquo;EA&rdquo;), Leitweg-ID/customer number (XRechnung only), <strong>0&nbsp;% class without a note text</strong> (substitute text), <strong>company name empty</strong>, <strong>VAT ID and tax number both empty</strong> or &mdash; XRechnung only &mdash; <strong>phone empty</strong> &rarr; <strong>yellow row</strong> in the <a href="#e_rechnung_spool">e-invoice spool</a>.</td><td>Company/customer master (country, currency, Leitweg-ID, company name, VAT ID/tax no., phone), VAT class note text or unit.</td></tr>
+  <tr><td><strong>Signature</strong></td><td>Missing certificate or components not installed &rarr; the PDF is delivered <strong>unsigned</strong> (no abort).</td><td>Company &rarr; Control: create/import a certificate, install packages if needed (see <a href="#drucken-signatur">Digital Signature</a>).</td></tr>
   <tr><td><strong>Booking export</strong></td><td>Missing account assignment &mdash; the blocked export records the missing accounts as a defect overview (no yellow highlighting, since no booking is created).</td><td><a href="#firma-fibu">Accounting Link</a> or master data.</td></tr>
   <tr><td><strong>EC Sales List</strong></td><td>EU customer with igL but no VAT ID &mdash; supply is omitted, warning on creation.</td><td>Customer master &rarr; VAT ID.</td></tr>
 </table>
+<div class="tip"><strong>Calculated values are language-neutral:</strong> Formatted numeric values in the translated customer copy (e.g. the interest rate &ldquo;6.28&nbsp;%&rdquo; or monetary amounts) are <strong>not</strong> marked yellow as a missing translation &mdash; they need no translation. Only the labels next to them (e.g. &ldquo;Interest rate:&rdquo;) are checked.</div>
 
 <hr>
 
@@ -2112,6 +2363,10 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <li>In the email outbox, select the entry and click <strong>Send</strong> &mdash; or use <strong>Send all</strong> to dispatch all pending emails at once.</li>
   <li>After a successful send the status changes to <em>sent</em>.</li>
 </ol>
+
+<div class="warn">
+  <strong>A missing attachment stops the send:</strong> If an attachment can no longer be found (e.g. a moved or deleted PDF), the email is <strong>no longer</strong> sent without the attachment &mdash; especially with <strong>&ldquo;Send all&rdquo;</strong>. Instead it goes to status <strong>&ldquo;error&rdquo;</strong> with the message &ldquo;Attachment missing: &hellip;&rdquo;. Once the file has been restored it can be sent via <strong>&ldquo;Resend&rdquo;</strong>. In addition: <strong>&ldquo;Regenerate email&rdquo;</strong> re-attaches the most recently created e-invoice for invoices; replaced entries that were never sent no longer appear in the &ldquo;Deleted&rdquo; filter.
+</div>
 
 <h3 id="email-konfiguration">Customer configuration</h3>
 <p>In the <strong>customer master</strong> you control per document type what is sent:</p>
@@ -2219,6 +2474,134 @@ to our account: {IBAN} ({BIC}).</code></pre>
 
 <hr>
 
+<h2 id="benutzerverwaltung">User Administration</h2>
+<p>Everyone who works with the program is a <strong>user</strong>. In the user administration you define <em>who</em> may sign in and <em>what</em> they may do in <em>which company</em>.</p>
+<p>You find the user administration in the menu (hamburger icon) as the red entry <strong>User administration</strong>. It is reserved for administrators &mdash; but the right to it can be granted to individual users.</p>
+
+<div class="info">
+  <strong>First start:</strong> On the first start after the update no user exists yet. The program therefore sets up the currently signed-in Windows user as an <strong>administrator</strong> automatically and shows a notice. You then create all further users yourself.
+</div>
+
+<div class="warn">
+  <strong>Important in multi-workstation operation:</strong> Colleagues who have not been created as users yet <strong>can no longer sign in</strong> after the update. Create these users before you roll the new version out to further workstations.
+</div>
+
+<h3 id="benutzer-anmeldung">Signing in</h3>
+<p>The sign-in dialog <strong>always</strong> appears when the program starts &mdash; including for users with Windows sign-in. The dialog is pre-filled with the currently signed-in Windows user.</p>
+<p>There are two sign-in methods. You choose one per user:</p>
+<table>
+  <tr><th>Method</th><th>Meaning</th></tr>
+  <tr><td>Windows sign-in</td><td>The user is identified by their Windows sign-in and has <strong>no</strong> password. If their login is already in the dialog, <strong>Enter</strong> is enough. The login must match the Windows user name (upper/lower case does not matter).</td></tr>
+  <tr><td>Login + password</td><td>User and password are typed in. After five failed attempts the sign-in is aborted and the program closes.</td></tr>
+</table>
+<p><strong>Working as someone else:</strong> overwrite the user, enter the password, press Enter. <strong>Enter</strong> in the <em>user</em> field jumps to the password field first if the user entered there needs a password &mdash; and signs in directly only if it is your own Windows sign-in.</p>
+
+<div class="info">
+  <strong>Windows sign-in only works on your own machine:</strong> A user with the <em>Windows sign-in</em> method can only sign in on <strong>their own Windows account</strong>. You cannot pose as a different Windows user, because that user has no password to identify themselves with &mdash; otherwise the mere name of a colleague (possibly an administrator) would be enough to get in. Anyone who also needs to sign in on <strong>other people's machines</strong> requires the <strong>login + password</strong> method.
+</div>
+
+<p>For security reasons the sign-in dialog reports the same text for a wrong user name and for a wrong password &mdash; so it is not possible to tell from outside which user names exist. Users set to <em>inactive</em> or deleted cannot sign in.</p>
+
+<h3 id="benutzer-zustaende">Creating, deactivating and deleting users</h3>
+<p>A user has three states:</p>
+<table>
+  <tr><th>State</th><th>Meaning</th></tr>
+  <tr><td>active</td><td>Appears in the list, signing in is possible.</td></tr>
+  <tr><td>inactive</td><td>The <em>Active</em> tick removed: still visible in the list, but <strong>no sign-in</strong> any more. Suitable for a temporary break.</td></tr>
+  <tr><td>deleted</td><td>Disappears from the list, no sign-in. The record <strong>is kept</strong>, so that later reports and logs can still resolve the name.</td></tr>
+</table>
+<p>Users are therefore <strong>never removed permanently</strong>. You show deleted ones via the check box <strong>Show deleted</strong> &mdash; they appear grey and italic with the suffix &ldquo;(deleted)&rdquo;. Editing, deleting and resetting the password are not possible for them.</p>
+
+<p><strong>Restoring a deleted user:</strong> Because the login of a deleted user stays taken, creating the same login again brings up the question &ldquo;The login &ldquo;&hellip;&rdquo; belongs to a deleted user (&hellip;). Restore this user?&rdquo;. With <strong>Yes</strong> the user is brought back, <strong>gets their former rights back</strong> and is opened for editing right away. With <strong>No</strong> the login stays taken and you choose a different one.</p>
+
+<h3 id="benutzer-rechte">Assigning rights</h3>
+<p>Rights always apply <strong>per company and program area</strong>. In the user administration you choose the company at the top of the edit dialog and set a level for every program area below it:</p>
+<table>
+  <tr><th>Level</th><th>The user may&hellip;</th></tr>
+  <tr><td>no access</td><td>nothing &mdash; the program area does not even appear (neither in the sidebar nor in the menu)</td></tr>
+  <tr><td>read</td><td>open the record <strong>completely</strong>, view and print it. <strong>New</strong> and <strong>Delete</strong> are blocked, <strong>Save</strong> as well.</td></tr>
+  <tr><td>change</td><td>additionally create new records and save</td></tr>
+  <tr><td>delete</td><td>additionally delete and restore</td></tr>
+</table>
+<p>Every level includes the lower ones: whoever may &ldquo;change&rdquo; may also read and print.</p>
+
+<div class="info">
+  <strong>What &ldquo;read&rdquo; means exactly:</strong> The record can be opened <strong>completely</strong> &mdash; not just the list. <em>Edit</em>, or a double-click on a row, therefore works with read rights too. All fields in the opened record are then <strong>write-protected</strong> and the <strong>Save button is greyed out</strong> (tooltip: &ldquo;You may only view &ldquo;&hellip;&rdquo;, not change it.&rdquo;). Field contents stay selectable and copyable; selection fields that only switch the display &mdash; such as the language selector in the print texts &mdash; remain operable. This applies in <strong>all</strong> program areas, including brands, units, languages/countries, product groups and the chart of accounts.
+</div>
+
+<div class="info">
+  <strong>Good for multi-workstation operation:</strong> No <strong>lock</strong> is set when merely viewing. A user who only reads a record therefore does not block their colleagues &mdash; they can edit it at the same time.
+</div>
+
+<p><strong>What the levels mean in practice:</strong></p>
+<ul>
+  <li>In the <strong>sidebar</strong> and the <strong>menu</strong> a user only sees the program areas for which they have at least &ldquo;read&rdquo;.</li>
+  <li>In the <strong>company selector</strong> only companies appear in which they have any right at all.</li>
+  <li>When converting a document (e.g. <em>quote &rarr; order</em>) the right on the <strong>target document</strong> counts: whoever may only read orders cannot create an order from a quote.</li>
+  <li>A <strong>cancellation invoice</strong> is a new document &mdash; the level &ldquo;change&rdquo; on invoices is sufficient for it.</li>
+  <li>In the customer master the <strong>GDPR report</strong> stays possible from level &ldquo;read&rdquo;. <strong>Anonymise</strong> and <strong>restrict processing</strong>, by contrast, require the level &ldquo;delete&rdquo;, because they change customer data permanently.</li>
+  <li>The <strong>file import</strong> and the <strong>GDPR batch run</strong> also require the level &ldquo;delete&rdquo;, because they overwrite existing data or anonymise it irreversibly.</li>
+</ul>
+
+<h4>The company master: every tab individually</h4>
+<p>The rights matrix lists <strong>34</strong> program areas &mdash; among them every main tab of the company master individually (&ldquo;Company data &rarr; Address&rdquo;, &ldquo;Company data &rarr; Taxes&rdquo;, &ldquo;Company data &rarr; Paths&rdquo;, &hellip;). This way the accounting department can be given access to the accounts, for example, without being able to change the print texts.</p>
+<ul>
+  <li><strong>Without read rights the tab does not appear at all.</strong> With &ldquo;read&rdquo; it is visible, but Save, New and Delete are blocked.</li>
+  <li>The company master opens as soon as <strong>at least one tab</strong> is readable &mdash; and then appears in the sidebar and the menu.</li>
+  <li>The <strong>Parameters</strong> tab is controlled as a whole: its right applies to all seven sub-tabs (Control, Address check, Product groups, Units, Brands, Languages, Countries).</li>
+  <li>Two exceptions: <strong>VAT classes</strong> still belong to the separate program area &ldquo;VAT administration&rdquo; (not to a tab right), and <strong>Locks</strong> remains reserved for administrators.</li>
+</ul>
+<p>The entry <strong>Create/delete company</strong> (formerly &ldquo;Company data&rdquo;) <strong>only</strong> controls creating, copying, deleting and restoring companies &mdash; no longer access to the tabs. Whoever may create companies gets into the company master, because the <em>New</em> button lives there.</p>
+
+<div class="info">
+  <strong>Note on the update:</strong> Whoever previously had the &ldquo;Company data&rdquo; right automatically received <strong>the same level on all tabs</strong>. Nothing changes at first, therefore; you can set the fine-grained rights afterwards at your leisure.
+</div>
+
+<h4>Setting rights quickly</h4>
+<p>Above the rights table there are four buttons &mdash; <strong>All: no access</strong>, <strong>All: read</strong>, <strong>All: change</strong> and <strong>All: delete</strong> &mdash; which set all program areas to the respective level at once. Handy as a starting point: first set everything to &ldquo;read&rdquo;, then raise the few exceptions or set them to &ldquo;no access&rdquo;. Like the table itself, they only affect the <strong>company</strong> selected above; for further companies switch the company and click again. For administrators they are disabled, because the matrix is not evaluated for them anyway.</p>
+
+<p><strong>Taking rights over from a company:</strong> If someone works identically in several companies, set the rights once, switch the company at the top and click <strong>Take rights over from company&hellip;</strong>. The rights of the chosen company are then applied.</p>
+
+<p><strong>Two special flags</strong> apply across companies and sit <em>above</em> the rights table:</p>
+<table>
+  <tr><th>Flag</th><th>Meaning</th></tr>
+  <tr><td>Administrator</td><td>May do everything, in all companies. The rights table is then not evaluated at all and is greyed out in the dialog.</td></tr>
+  <tr><td>User administration</td><td>May create users and assign rights without otherwise being an administrator.</td></tr>
+</table>
+
+<div class="info">
+  <strong>Protection against locking yourself out:</strong> The last active administrator cannot be deleted, cannot be deactivated and cannot be turned into a normal user. Likewise you cannot delete your own user.
+</div>
+
+<h3 id="benutzer-passwort">Passwords</h3>
+<p>Passwords are <strong>never stored in clear text</strong>, only as a check value that cannot be reversed.</p>
+<ul>
+  <li>When <strong>creating</strong> a user with the &ldquo;login + password&rdquo; method, the program generates an eight-digit numeric password and sends it to the user by email. That is why the email address is a mandatory field here.</li>
+  <li>With <strong>Reset password</strong> you can generate a new password at any time and send it again. The old password then stops working.</li>
+  <li>In both cases the user <strong>must</strong> change the password at the next sign-in &mdash; they are prompted automatically and cannot continue without changing it. The new password must be at least eight characters long.</li>
+  <li>Every user can change their own password at any time via the menu item <strong>Change password</strong>. With Windows sign-in this item does not appear &mdash; there is no password there.</li>
+</ul>
+
+<p><strong>Sender company:</strong> So that password emails can be sent, set a <strong>sender company</strong> at the top of the user administration. Its email settings are used for sending &mdash; that is, the company selected <em>there</em>, not the currently active one.</p>
+
+<p><strong>Which address appears as the sender</strong> depends on the sender company's email client:</p>
+<table>
+  <tr><th>Client</th><th>Sender address</th></tr>
+  <tr><td>Brevo</td><td>the email address from <em>Company data &rarr; Address</em></td></tr>
+  <tr><td>Gmail</td><td>the <strong>Gmail user</strong> from the email configuration</td></tr>
+  <tr><td>SMTP</td><td>the <strong>SMTP user</strong> from the email configuration</td></tr>
+</table>
+<p>With Gmail and SMTP the company address is therefore deliberately <strong>not</strong> used: mail servers reject a sender that does not belong to the signed-in account (GMX, for instance, with &ldquo;Sender address is not allowed&rdquo;). The <strong>company name</strong> is kept as the display name in all cases.</p>
+
+<div class="warn">
+  <strong>Not every email client can do this:</strong> Only <strong>Brevo</strong>, <strong>Gmail</strong> and <strong>SMTP</strong> can send automatically. With <em>Outlook 365 classic</em>, <em>New Outlook</em> or <em>none</em> no automatic sending is possible &mdash; nor with a network error or a missing sender company. In all these cases the program shows you the password <strong>once</strong> so that you can pass it on personally. The incident is additionally recorded in the <a href="#fallback-protokoll">error tracking</a>.
+</div>
+
+<h3>Multi-workstation operation</h3>
+<p>If a user is currently being edited by someone else, they are locked &mdash; just like customers or articles. These locks appear in the company master under <strong>Locks</strong> with the module &ldquo;User administration&rdquo; and can be released there in an emergency.</p>
+
+<hr>
+
 <h2 id="firmenverwaltung">Company Administration</h2>
 <p>The functions in this area are <strong>admin functions</strong> and must be activated beforehand in the &ldquo;Admin Settings&rdquo; menu.</p>
 
@@ -2240,7 +2623,12 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <tr><td>Reminder terms</td><td>All reminder terms incl. reminder levels (with foreign key remapping)</td></tr>
   <tr><td>Base interest rates</td><td>All historical Bundesbank base interest rates</td></tr>
   <tr><td>Customers</td><td>All customers with remapped payment and reminder term keys</td></tr>
-  <tr><td>Articles</td><td>All articles with remapped VAT class</td></tr>
+  <tr><td>Articles</td><td>All articles with remapped VAT class, brand and product group</td></tr>
+  <tr><td>Brands</td><td>All brands</td></tr>
+  <tr><td>Product groups</td><td>Product groups, article groups, sub-groups and groups</td></tr>
+  <tr><td>Units</td><td>All units including their translations</td></tr>
+  <tr><td>Languages &amp; countries</td><td>All languages and country codes</td></tr>
+  <tr><td>Accounts</td><td>Revenue/tax accounts (VAT accounts) and number ranges</td></tr>
   <tr><td>Fiscal years &amp; counters</td><td>All fiscal years and their document counter values</td></tr>
   <tr><td>Documents</td><td>Quotes, orders, delivery notes, invoices, reminders incl. line items and cross-references</td></tr>
 </table>
@@ -2250,7 +2638,11 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <li>The copied company gets a <strong>new, own ID</strong> plus a new company number, short name and name</li>
   <li>All foreign keys (e.g. VAT class on articles, payment terms on customers) are rewired to the new target company IDs</li>
   <li>Documents receive <strong>new numbers</strong> (sequential from the current counter of the target company)</li>
+  <li>The articles of the copy refer to the <strong>brands and groups of the copy</strong> &mdash; no longer to those of the source company</li>
   <li>Locks (<code>lock_aktiv</code>) and change counters are reset to 0</li>
+  <li>The documents of the copy do <strong>not</strong> count as &ldquo;exported&rdquo;: the assignment to the <a href="#buchungsexport">accounting export</a> is not inherited, so the copy can be exported normally</li>
+  <li>If you copy a <strong>deleted</strong> company, the copy itself is <strong>not deleted</strong> and is visible immediately. Records that were already deleted <em>individually</em> in the source stay deleted in the copy as well.</li>
+  <li>If the source company has <a href="#datenbank-secrets">credentials</a> stored, the copy gets its <strong>own encrypted key file</strong> with its own password &mdash; the source's file is not shared</li>
   <li><strong>Not</strong> copied: the email outbox (send history of the source company)</li>
   <li>A database backup is created automatically before copying; in case of error the DB is fully rolled back</li>
 </ul>
@@ -2263,7 +2655,12 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <li>The company is marked as &ldquo;deleted&rdquo;, but the data remains in the database</li>
   <li>Deleted companies can be restored if needed: activate the admin switch <a href="#einstellungen">&ldquo;Show deleted companies&rdquo;</a>, select the company (it appears in the picker with the suffix &ldquo;(deleted)&rdquo;, also after the <a href="#firma-adresse">company number</a>) and use the selection <strong>&ldquo;Restore company:&rdquo;</strong>.</li>
   <li>This is the default function and requires no activation</li>
+  <li>The <strong>first company</strong> and the <strong>currently active</strong> company cannot be deleted. The program then reports: &ldquo;This company cannot be deleted (first company or currently active)&rdquo; &mdash; switch to a different company first.</li>
 </ul>
+
+<div class="info">
+  <strong>What comes back on restore:</strong> Only those records are reactivated that were removed <strong>by deleting the company</strong>. Records &mdash; customers, articles, documents, terms &mdash; that you had already deleted <strong>individually beforehand</strong> stay deleted. The program distinguishes the two cleanly; previously, individually deleted records incorrectly came back too.
+</div>
 
 <p><strong>Hard delete (admin):</strong></p>
 <ul>
@@ -2271,10 +2668,23 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <li>This action is <strong>irreversible</strong></li>
   <li>Enable &ldquo;Enable company deletion&rdquo; in the admin settings</li>
   <li>On hard delete you can choose which data is deleted (documents, master data, or everything)</li>
+  <li>Here too: the <strong>first company</strong> and the <strong>active</strong> company cannot be deleted permanently</li>
 </ul>
 
+<p><strong>What the individual options remove:</strong></p>
+<table>
+  <tr><th>Option</th><th>Effect</th></tr>
+  <tr><td>documents only</td><td>Quotes, orders, delivery notes, invoices and reminders &mdash; and additionally the company's <strong>email outbox</strong>, because its entries point to the deleted documents and contain personal data. The <strong>accounting export log</strong> and the <a href="#beleg-archiv">document archive</a> are deliberately kept (log and audit character).</td></tr>
+  <tr><td>master data</td><td>Customers and articles</td></tr>
+  <tr><td>complete</td><td><strong>All</strong> data of the company &mdash; including the email outbox, brands, product groups, languages, countries, accounts and number ranges &mdash; as well as the company record itself. The company's encrypted <a href="#datenbank-secrets">key file</a> is removed afterwards as well. Previously, remnants were left behind here.</td></tr>
+</table>
+
 <div class="warn">
-  <strong>Caution:</strong> Hard delete is final. Before complete deletion you should create a backup of the database.
+  <strong>Caution:</strong> Hard delete is final. Before complete deletion you should create a backup of the database. (The program creates one itself, but your own does no harm.)
+</div>
+
+<div class="info">
+  <strong>Files are not deleted:</strong> Deletion only affects the database. The <strong>files</strong> in the export and archive paths &mdash; printouts, e-invoices, emails, article images and the document archive &mdash; are left in place. Once the retention periods have expired you can remove them manually if needed. The confirmation dialog points this out.
 </div>
 
 <hr>
@@ -2410,9 +2820,17 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <pre><code>copy app\daten\auftragsabwicklung.db app\daten\auftragsabwicklung.db.bak</code></pre>
 <p>Or use the export function in the menu (Menu File &rarr; Export data).</p>
 
+<h3 id="datenbank-secrets">Encrypted Credentials (key files)</h3>
+<p>All secret credentials &mdash; <strong>API keys</strong> (Brevo, AI/OpenRouter/Anthropic, address check) as well as <strong>SMTP/app/certificate passwords</strong> &mdash; are <strong>not</strong> stored in the database, but <strong>encrypted in a separate file per company</strong>: <code>app\daten\api_keys_{company number}.json</code>. The encryption password is assigned automatically and is never visible.</p>
+<ul>
+  <li>The <strong>JSON export</strong> (File menu) <strong>never</strong> contains keys or passwords; after an import the keys may have to be entered again.</li>
+  <li>The key file is part of the <strong>backup</strong>: back it up together with the database. Without the database it is useless, and without it a restored database is missing all credentials.</li>
+  <li>Status and reset (delete the file &rarr; new password + re-enter the keys) under Company &rarr; Parameters &rarr; <a href="#firma-steuerung">Control</a>, row &ldquo;Key file (API keys)&rdquo;.</li>
+</ul>
+
 <h3>Recommendation</h3>
 <div class="warn">
-  <strong>Back up regularly!</strong> It is recommended to back up the database regularly &mdash; e.g. after every change to important documents. A simple method: copy the database file into a backup directory with date.
+  <strong>Back up regularly!</strong> It is recommended to back up the database regularly &mdash; e.g. after every change to important documents. A simple method: copy the database file <strong>and the key file(s)</strong> (<code>app\daten\api_keys_*.json</code>) into a backup directory with date.
 </div>
 
 <hr>

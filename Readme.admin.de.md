@@ -53,10 +53,21 @@ Die folgenden Pakete werden installiert:
 - **pyenchant** — Rechtschreibprüfung (benötigt Hunspell-Wörterbücher)
 - **pywin32** — COM-Automation für Outlook 365 Classic
 - **factur-x** — ZUGFeRD-E-Rechnung (PDF/A-3-Hybridformat)
+- **PyMuPDF** — PDF-Nachbearbeitung (Seitenzahlen, Lieferanschrift, Testdruck-Wasserzeichen)
+- **lxml** — XSD-Validierung des DATEV-Rechnungsdatenservice (Buchungsexport)
+- **pyhanko** — digitale PDF-Signatur (PAdES) der Beleg-PDFs
+- **cryptography** — selbst-signiertes Zertifikat (`.p12`) für die PDF-Signatur
+- **schwifty** — IBAN-Prüfung (MOD-97) sowie BIC/Bankname offline
+- **httpx** — Adressvalidierung (Google Address Validation / Nominatim)
+
+> **Signatur-Funktion:** Für die digitale Signatur der Beleg-PDFs müssen
+> **pyhanko** und **cryptography** installiert sein. Fehlen sie, läuft das Programm
+> normal weiter — die Belege werden dann nur nicht signiert, und der Fall wird in der
+> Fehler-Nachverfolgung festgehalten.
 
 **Für die Entwicklung** (optional): zusätzlich den Linter installieren und den
 pre-commit-Hook aktivieren. Der Hook führt vor jedem `git commit` automatisch
-`ruff check app tools` aus und bricht den Commit bei Problemen ab.
+`ruff check app` aus und bricht den Commit bei Problemen ab.
 
 ```bash
 pip install -r requirements-dev.txt
@@ -67,13 +78,15 @@ Die Hook-Aktivierung (`core.hooksPath`) ist **pro Klon einmalig** nötig. Notfal
 
 ### 2.3 Rechtschreibprüfung einrichten (optional)
 
-Die Anwendung nutzt `pyenchant` mit Hunspell-Wörterbüchern. Die Prüfsprache wechselt automatisch mit der App-Sprache (Deutsch ↔ Englisch).
+Die Anwendung nutzt `pyenchant` mit Hunspell-Wörterbüchern. Die Prüfsprache wechselt automatisch mit der App-Sprache.
 
-**Ein-Klick (empfohlen):** einfach `Install_Woerterbuecher.cmd` per Doppelklick starten. Das Batchfile sucht selbst eine Python-Installation, installiert `pyenchant` bei Bedarf automatisch nach und lädt anschließend die Wörterbücher (DE + EN) herunter — kein weiterer Schritt nötig. Einzige Voraussetzung ist eine vorhandene Python-3-Installation.
+**Ein-Klick (empfohlen):** einfach `Install_Woerterbuecher.cmd` per Doppelklick starten. Das Batchfile sucht selbst eine Python-Installation, installiert `pyenchant` bei Bedarf automatisch nach und lädt anschließend die Wörterbücher herunter — kein weiterer Schritt nötig. Einzige Voraussetzung ist eine vorhandene Python-3-Installation.
+
+**Welche Sprachen installiert werden:** Der Installer nimmt **alle eingerichteten App-Sprachen** — nicht nur Deutsch und Englisch. Die Liste steht in `installed_languages.txt` (wird vom Sprach-Generator gepflegt); die Bezugsquellen liegen zentral in `app/dict_quellen.py`. App-Sprachen, für die es **kein** Hunspell-Wörterbuch gibt (z. B. Singhalesisch), werden sauber übersprungen. Legen Sie eine neue App-Sprache an, starten Sie den Installer einfach erneut.
 
 Alternativ direkt über das Python-Skript:
 ```bash
-python Install_Woerterbuecher.py        # alle Sprachen
+python Install_Woerterbuecher.py        # alle eingerichteten App-Sprachen
 python Install_Woerterbuecher.py de     # nur Deutsch
 python Install_Woerterbuecher.py en     # nur Englisch
 ```
@@ -89,8 +102,29 @@ Die Wörterbücher kommen von LibreOffice / wooorm. Ist keine Quelle erreichbar,
 Beim allerersten Start:
 1. Starten Sie `Start.cmd` (oder `python Order-Management.py`).
 2. Die SQLite-Datenbank wird automatisch in `app/daten/` angelegt.
-3. Das Schema wird auf den aktuellen Stand (v25) gebracht.
-4. Das Hauptfenster erscheint.
+3. Das Schema wird auf den aktuellen Stand gebracht (die Zielversion steht in `app/DB-Pflege.py` als `CURRENT_VERSION`).
+4. Der Anmeldedialog erscheint, danach das Hauptfenster.
+
+### Benutzer: erster Start und Rollout
+
+Beim ersten Start nach dem Update auf die Benutzerverwaltung ist noch kein Benutzer
+angelegt. Das Programm richtet daher den **gerade angemeldeten Windows-Benutzer
+automatisch als Administrator** ein und weist darauf hin.
+
+> **Wichtig im Mehrplatzbetrieb:** Alle anderen Arbeitsplätze kommen erst wieder
+> herein, **nachdem ihre Benutzer angelegt sind**. Legen Sie diese also an, *bevor*
+> Sie den neuen Stand an weitere Arbeitsplätze verteilen — sonst kann sich dort
+> niemand mehr anmelden.
+
+Zwei Anmeldearten stehen zur Wahl: **Windows-Anmeldung** (kein Passwort; gilt nur am
+eigenen Windows-Konto des Benutzers) und **Login + Passwort** (nötig für alle, die
+sich auch an fremden Rechnern anmelden sollen).
+
+Passwort-Mails kann das Programm nur über einen **serverseitigen** E-Mail-Client
+verschicken — **Brevo**, **Gmail** oder **SMTP**. Mit *Outlook 365 Classic*, *New
+Outlook* oder *keine* ist kein automatischer Versand möglich; das Passwort wird dann
+einmalig angezeigt und muss persönlich weitergegeben werden. Die Absender-Firma
+stellen Sie oben in der Benutzerverwaltung ein.
 
 ### Pflicht: Firmendaten eingeben
 
@@ -288,3 +322,8 @@ pip install -r requirements.txt
 ```
 
 Beim nächsten Start werden die Datenbank-Migrationen automatisch (mit Backup) angewendet.
+
+> **Beim Update auf die Benutzerverwaltung:** Der erste Start macht den angemeldeten
+> Windows-Benutzer zum Administrator. Legen Sie danach alle weiteren Benutzer an,
+> **bevor** Sie den neuen Stand an die übrigen Arbeitsplätze verteilen — siehe
+> [Benutzer: erster Start und Rollout](#benutzer-erster-start-und-rollout).
