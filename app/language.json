@@ -8484,7 +8484,9 @@
   },
   "login.kopf_windows": {
     "de": "Angemeldet als „{login}“ — zum Starten einfach Enter drücken.\nUm als jemand anderes zu arbeiten: Benutzer überschreiben und dessen Passwort eingeben.",
-    "en": "Signed in as “{login}” — just press Enter to start.\nTo work as someone else: overwrite the user and enter their password."
+    "en": "Signed in as “{login}” — just press Enter to start.\nTo work as someone else: overwrite the user and enter their password.",
+    "ts": "2026-07-18 08:02",
+    "h": "c9cfc6618bbe"
   },
   "login.pw_erzwungen": {
     "de": "Ihr Passwort wurde neu vergeben. Bitte legen Sie jetzt ein eigenes Passwort fest — ohne Änderung können Sie nicht fortfahren.",
@@ -9688,11 +9690,15 @@
   },
   "rechte.modul.firma": {
     "de": "Firma anlegen/löschen",
-    "en": "Create/delete company"
+    "en": "Create/delete company",
+    "ts": "2026-07-18 08:02",
+    "h": "6c70f71ed27e"
   },
   "rechte.modul.firma_praefix": {
     "de": "Firmenstamm",
-    "en": "Company data"
+    "en": "Company data",
+    "ts": "2026-07-18 08:02",
+    "h": "80b63f36dc12"
   },
   "rechte.modul.kunden": {
     "de": "Kundenstamm",

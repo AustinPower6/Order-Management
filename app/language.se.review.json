@@ -1,4 +1,52 @@
 {
+  "adresse.abgelehnt": {
+    "rueck": "Die Anschrift konnte nicht bestätigt werden — bitte prüfen Sie sie.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.bestaetigt": {
+    "rueck": "Anschrift bestätigt ({provider}).",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.nicht_konfiguriert": {
+    "rueck": "Die Adressprüfung ist nicht konfiguriert. Bitte richten Sie unter Firmenstamm → Parameter → Adressprüfung einen Anbieter ein.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.nicht_uebernommen": {
+    "rueck": "Vorschlag nicht übernommen — bitte prüfen Sie die Anschrift manuell.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.pruefen_btn": {
+    "rueck": "Adresse prüfen",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.titel": {
+    "rueck": "Adressprüfung",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.uebernehmen_frage": {
+    "rueck": "Der Adressdienst schlägt eine normierte Anschrift vor.\n\nErfasst:\n{alt}\n\nVorschlag:\n{neu}\n\nVorschlag übernehmen?",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "adresse.uebernommen": {
+    "rueck": "Normierte Anschrift übernommen ({provider}).",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
   "app.firma_unbenannt": {
     "rueck": "Unbenannt",
     "ok": true,
@@ -407,6 +455,325 @@
     "rueck": "Rechnung",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "benutzer.absender_firma": {
+    "rueck": "Absender-Firma der Passwort-E-Mails:",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.absender_hinweis": {
+    "rueck": "Initialpasswörter und Passwort-Rücksetzungen werden über die E-Mail-Einstellungen dieser Firma versendet. Das ist nur mit Brevo, Gmail oder SMTP möglich — Outlook kann nicht automatisch versenden.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.absender_keine": {
+    "rueck": "— nicht konfiguriert —",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.anmeldeart.passwort": {
+    "rueck": "Benutzer + Passwort",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch",
+    "begruendung": "„Identifiant“ ist die übliche französische Entsprechung für Login."
+  },
+  "benutzer.anmeldeart.windows": {
+    "rueck": "Windows-Anmeldung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.bitte_waehlen": {
+    "rueck": "Bitte wählen Sie einen Benutzer aus.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.btn_alle_stufe": {
+    "rueck": "Alle: {stufe}",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.btn_pw_reset": {
+    "rueck": "Passwort zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.btn_rechte_uebernehmen": {
+    "rueck": "Rechte einer Firma übernehmen…",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.anmeldeart": {
+    "rueck": "Anmeldung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.email": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.login": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.name": {
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.programmteil": {
+    "rueck": "Programmteil",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.rolle": {
+    "rueck": "Rolle",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.col.stufe": {
+    "rueck": "Recht",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.dlg_titel": {
+    "rueck": "Benutzerverwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.edit_titel": {
+    "rueck": "Benutzer bearbeiten",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.email_pflicht": {
+    "rueck": "Für die Anmeldung per Passwort wird eine E-Mail-Adresse benötigt — dorthin wird das Initialpasswort gesendet.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.erst_speichern": {
+    "rueck": "Bitte speichern Sie den Benutzer zuerst — danach können Rechte übernommen werden.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.geloeschte_anzeigen": {
+    "rueck": "Gelöschte anzeigen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.ist_admin_hinweis": {
+    "rueck": "darf alles, in allen Firmen (die Rechte-Matrix wird nicht ausgewertet)",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.ist_geloescht": {
+    "rueck": "Der Benutzer „{login}“ ist gelöscht und wird nur zur Einsicht angezeigt.\n\nUm ihn wiederherzustellen: „Neu“ wählen und denselben Login eingeben — dann wird die Wiederherstellung angeboten.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.ja": {
+    "rueck": "ja",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.letzter_admin": {
+    "rueck": "Das ist der letzte aktive Administrator — sonst könnte sich niemand mehr anmelden und Rechte vergeben.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.loeschen_frage": {
+    "rueck": "Benutzer „{login}“ löschen?\n\nEr verschwindet aus der Liste und kann sich nicht mehr anmelden. Der Datensatz bleibt erhalten (für spätere Auswertungen) und ist über „Gelöschte anzeigen“ einsehbar. Beim Anlegen desselben Logins wird die Wiederherstellung angeboten.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.login_geloescht": {
+    "rueck": "{login} (gelöscht)",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.login_pflicht": {
+    "rueck": "Bitte geben Sie einen Benutzernamen (Login) ein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.login_vergeben": {
+    "rueck": "Der Login „{login}“ ist bereits vergeben.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.fehler_text": {
+    "rueck": "Die E-Mail konnte nicht versendet werden:\n{fehler}\n\nBitte geben Sie das Passwort persönlich weiter:\n\nBenutzer: {login}\nPasswort: {passwort}\n\nEs muss bei der ersten Anmeldung geändert werden. Der Vorfall steht in der Fehler-Nachverfolgung.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.fehler_titel": {
+    "rueck": "Das Passwort konnte nicht versendet werden",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.gesendet": {
+    "rueck": "Das Passwort wurde an {empfaenger} versendet.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.gesendet_titel": {
+    "rueck": "Passwort versendet",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.initial_betreff": {
+    "rueck": "Ihr Zugang zur Auftragsabwicklung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.initial_text": {
+    "rueck": "Guten Tag,\n\nfür Sie wurde ein Zugang zur Auftragsabwicklung eingerichtet.\n\nBenutzer: {login}\nPasswort: {passwort}\n\nBitte ändern Sie das Passwort bei der ersten Anmeldung — Sie werden automatisch dazu aufgefordert.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.keine_absender_firma": {
+    "rueck": "Es ist keine Absender-Firma für Passwort-E-Mails festgelegt.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.keine_adresse": {
+    "rueck": "Der Benutzer hat keine E-Mail-Adresse.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.reset_betreff": {
+    "rueck": "Ihr Passwort wurde zurückgesetzt",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.mail.reset_text": {
+    "rueck": "Guten Tag,\n\nIhr Passwort für die Auftragsabwicklung wurde zurückgesetzt.\n\nBenutzer: {login}\nNeues Passwort: {passwort}\n\nBitte ändern Sie das Passwort bei der nächsten Anmeldung — Sie werden automatisch dazu aufgefordert.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.nein": {
+    "rueck": "nein",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.neu_titel": {
+    "rueck": "Neuer Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.nicht_selbst_loeschen": {
+    "rueck": "Sie können Ihren eigenen Benutzer nicht löschen.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.recht_bv_hinweis": {
+    "rueck": "darf Benutzer anlegen und Rechte vergeben",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.rechte_firma": {
+    "rueck": "Rechte für die Firma",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.reset_frage": {
+    "rueck": "Für „{login}“ ein neues Passwort erzeugen und per E-Mail versenden?",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.reset_nur_passwort": {
+    "rueck": "Dieser Benutzer meldet sich über die Windows-Anmeldung an und hat kein Passwort.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.restore_frage": {
+    "rueck": "Der Login „{login}“ gehört zu einem gelöschten Benutzer ({name}).\n\nDiesen Benutzer wiederherstellen? Er erhält seine früheren Rechte zurück und wird anschließend zum Bearbeiten geöffnet.\n\nNein: Bitte einen anderen Login wählen — „{login}“ bleibt belegt.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.restore_titel": {
+    "rueck": "Gelöschten Benutzer wiederherstellen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.rolle.admin": {
+    "rueck": "Administrator",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.rolle.benutzer": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.rolle.benutzerverwaltung": {
+    "rueck": "Benutzerverwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "benutzer.uebernehmen_von": {
+    "rueck": "Rechte übernehmen von:",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "btn.abb": {
     "rueck": "Abbrechen",
@@ -958,6 +1325,12 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "col.lock_seit": {
+    "rueck": "Gesperrt seit",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "col.locks": {
     "rueck": "Sperre",
@@ -3707,6 +4080,93 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.adresspruefung.attest_btn": {
+    "rueck": "Attestierung erfassen…",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.attest_dpa": {
+    "rueck": "Mit Google ist ein Auftragsverarbeitungsvertrag (DPA) geschlossen",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch",
+    "begruendung": "„Personuppgiftsbiträdesavtal“ ist der schwedische DSGVO-Fachbegriff."
+  },
+  "firma.adresspruefung.attest_erfasser": {
+    "rueck": "Erfasst von: {user} (mit Zeitstempel, dauerhaft protokolliert)",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.attest_hinweis": {
+    "rueck": "Die Google-Adressprüfung übermittelt Anschriften an einen externen US-Dienst. Sie darf erst genutzt werden, wenn der Betreiber dies attestiert: Auftragsverarbeitungsvertrag geschlossen und Verzeichnis von Verarbeitungstätigkeiten ergänzt. Die Attestierung dokumentiert diese Entscheidung — sie ersetzt keine rechtliche Prüfung; der Verantwortliche bleibt haftbar. Ein Widerruf ist jederzeit möglich (Häkchen entfernen und auf OK klicken); frühere Einträge bleiben protokolliert.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.attest_status_fehlt": {
+    "rueck": "Keine gültige Attestierung — Google ist gesperrt, Nominatim wird automatisch verwendet.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.attest_status_ok": {
+    "rueck": "Attestierung gültig — erfasst von {user} am {datum} (UTC).",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.attest_titel": {
+    "rueck": "DSGVO-Attestierung — Google-Adressprüfung",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch",
+    "begruendung": "GDPR ist im Schwedischen die gebräuchliche Bezeichnung."
+  },
+  "firma.adresspruefung.attest_vvt": {
+    "rueck": "Das Verzeichnis von Verarbeitungstätigkeiten ist ergänzt",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "sehr_gut",
+    "begruendung": "Schwedisch kennt keine gebräuchliche Abkürzung wie VVT; ausgeschrieben ist klarer."
+  },
+  "firma.adresspruefung.google_api_key": {
+    "rueck": "Google API-Schlüssel:",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.hint": {
+    "rueck": "Die Adressprüfung verifiziert Kundenanschriften im Kundenstamm (Button „Adresse prüfen“). Nominatim (eigene Instanz) ist der datenschutzfreundliche Standard; Google verlangt zusätzlich einen API-Schlüssel und eine gültige DSGVO-Attestierung — ohne sie wird automatisch Nominatim verwendet.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.nominatim_url": {
+    "rueck": "Nominatim-Basis-URL:",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.provider": {
+    "rueck": "Anbieter:",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.provider.google": {
+    "rueck": "Google Address Validation (extern, Attestierung nötig)",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
+  "firma.adresspruefung.provider.nominatim": {
+    "rueck": "Nominatim / OpenStreetMap (eigene Instanz)",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
+  },
   "firma.ag.frage_loeschen": {
     "rueck": "Artikelgruppe löschen?\nAlle Untergruppen, Gruppen und betroffenen Artikel verlieren ihre Verknüpfung.",
     "ok": true,
@@ -4853,6 +5313,12 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.gj.warn_zaehler_niedriger": {
+    "rueck": "Für {typ} sind im Geschäftsjahr bereits Nummern bis {hoechste} vergeben.\n\nZähler trotzdem auf {zahl} setzen?",
+    "ok": true,
+    "src_ts": "2026-07-14 11:51",
+    "bewertung": "identisch"
+  },
   "firma.hart.admin_titel": {
     "rueck": "Administratorberechtigung erforderlich",
     "ok": true,
@@ -5682,6 +6148,12 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "firma.loeschen.erste_firma": {
+    "rueck": "Die erste Firma (ID=1) kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Löschung fehlgeschlagen:\n{err}",
     "ok": true,
@@ -5710,6 +6182,12 @@
     "rueck": "(gelöscht)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.hinweis_dateien": {
+    "rueck": "Hinweis: Die Dateien im Export- und Archivpfad (Ausdrucke, E-Rechnungen, E-Mails, Artikelbilder, Archiv) werden NICHT entfernt. Bitte nach Ablauf der Aufbewahrungsfristen manuell löschen.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "firma.loeschen.loesche": {
     "rueck": "Daten werden gelöscht...",
@@ -5745,6 +6223,36 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "\"Permanent\" gibt die Bedeutung von \"endgültig\" leicht abweichend wieder, der Sinn bleibt aber im Wesentlichen erhalten."
+  },
+  "firma.loeschen.step_belege": {
+    "rueck": "Belege werden gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "firma.loeschen.step_einstellungen": {
+    "rueck": "Einstellungen werden gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "firma.loeschen.step_fertig": {
+    "rueck": "Fertig",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "firma.loeschen.step_firma": {
+    "rueck": "Firmendatensatz wird gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "firma.loeschen.step_stammdaten": {
+    "rueck": "Stammdaten werden gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "firma.loeschen.warnung": {
     "rueck": "HINWEIS: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
@@ -6683,6 +7191,30 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "firma.steuerung.keydatei": {
+    "rueck": "Schlüsseldatei (API-Schlüssel)",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "identisch"
+  },
+  "firma.steuerung.keydatei_defekt": {
+    "rueck": "defekt — Datei löschen und Schlüssel neu erfassen",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "identisch"
+  },
+  "firma.steuerung.keydatei_fehlt": {
+    "rueck": "fehlt — wird beim nächsten Speichern eines Schlüssels neu angelegt",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "identisch"
+  },
+  "firma.steuerung.keydatei_vorhanden": {
+    "rueck": "vorhanden (verschlüsselt)",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "identisch"
+  },
   "firma.steuerung.ki_disclaimer": {
     "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
     "ok": true,
@@ -6797,6 +7329,12 @@
     "rueck": "Adresse",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.adresspruefung": {
+    "rueck": "Adressprüfung",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "identisch"
   },
   "firma.tab.anbindung_fibu": {
     "rueck": "Anbindung Buchhaltung",
@@ -7043,6 +7581,12 @@
     "src_ts": "2026-06-29 00:07",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "firma.weich.nicht_loeschbar": {
+    "rueck": "Diese Firma kann nicht gelöscht werden (erste Firma oder aktuell aktiv).",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "firma.weich.titel": {
     "rueck": "Wiederherstellbares löschen",
@@ -7622,6 +8166,121 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
+  "login.bootstrap_text": {
+    "rueck": "Es war noch kein Benutzer angelegt. Der Benutzer „{login}“ wurde als Administrator eingerichtet und meldet sich künftig automatisch über die Windows-Anmeldung an.\n\nWeitere Benutzer legen Sie im Menü unter „Benutzerverwaltung“ an.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.bootstrap_titel": {
+    "rueck": "Benutzerverwaltung eingerichtet",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.btn_anmelden": {
+    "rueck": "Anmelden",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.fehlgeschlagen": {
+    "rueck": "Benutzer oder Passwort ist falsch. Noch {rest} Versuche.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Schwedisch bildet bei „försök“ keinen sichtbaren Plural; die Klammerform „(e)“ entfällt daher."
+  },
+  "login.feld_login": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.feld_passwort": {
+    "rueck": "Passwort",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.gesperrt_text": {
+    "rueck": "Die Anmeldung wurde nach {anzahl} Fehlversuchen abgebrochen. Das Programm wird beendet.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.gesperrt_titel": {
+    "rueck": "Anmeldung abgebrochen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.kopf": {
+    "rueck": "Bitte melden Sie sich an, um das Programm zu starten.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.kopf_windows": {
+    "rueck": "Angemeldet als „{login}“ — zum Starten einfach Enter drücken.\nUm unter einer anderen Identität zu arbeiten: Benutzer überschreiben und dessen Passwort eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-18 08:02",
+    "bewertung": "identisch"
+  },
+  "login.pw_erzwungen": {
+    "rueck": "Ihr Passwort wurde neu vergeben. Bitte legen Sie jetzt ein eigenes Passwort fest — ohne Änderung können Sie nicht fortfahren.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_kopf": {
+    "rueck": "Bitte geben Sie Ihr neues Passwort ein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_neu": {
+    "rueck": "Neues Passwort",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_regel": {
+    "rueck": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_titel": {
+    "rueck": "Passwort ändern",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_ungleich": {
+    "rueck": "Die beiden Passwörter stimmen nicht überein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_wdh": {
+    "rueck": "Wiederholen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.pw_zu_kurz": {
+    "rueck": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "login.titel": {
+    "rueck": "Anmeldung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
   "mahnung.lbl.mahnstufe": {
     "rueck": "Mahnstufe:",
     "ok": true,
@@ -7799,6 +8458,12 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "menu.benutzerverwaltung": {
+    "rueck": "Benutzerverwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
   "menu.darkmode": {
     "rueck": "Dunkler Modus",
     "ok": true,
@@ -7873,6 +8538,12 @@
     "rueck": "Benutzerdokumentation",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "menu.passwort_aendern": {
+    "rueck": "Passwort ändern",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "menu.sprachdatei": {
     "rueck": "App-Sprache erstellen/aktualisieren …",
@@ -7977,6 +8648,12 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "msg.aktive_firma_weg": {
+    "rueck": "Die zuletzt aktive Firma existiert nicht mehr oder wurde gelöscht.\nDie Firma „{firma}“ wurde aktiviert.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
     "ok": true,
@@ -8015,6 +8692,13 @@
     "rueck": "{typ} wiederherstellen?",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.belegnr_konflikt": {
+    "rueck": "Die Belegnummer wurde soeben anderweitig vergeben. Bitte erneut speichern.",
+    "ok": true,
+    "src_ts": "2026-07-14 11:51",
+    "bewertung": "identisch",
+    "begruendung": "Bewusst „dokument“ statt des buchhalterischen „verifikat“, da der Beleg auch Angebot oder Auftrag sein kann."
   },
   "msg.bereits_bezahlt": {
     "rueck": "Diese Rechnung ist bereits bezahlt.",
@@ -8175,6 +8859,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Der Inhalt ist im Wesentlichen korrekt wiedergegeben, jedoch fehlt die Höflichkeitsfloskel \"Bitte\" vor der Aufforderung."
   },
+  "msg.gsjahr_abweichung": {
+    "rueck": "Das Belegdatum liegt im Jahr {beleg_jahr}, das aktive Geschäftsjahr ist {gsjahr}.\n\nDie Belegnummer erhält die Jahreszahl {gsjahr}. Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-14 11:51",
+    "bewertung": "identisch"
+  },
   "msg.hinweis": {
     "rueck": "Meldung",
     "ok": true,
@@ -8195,6 +8885,24 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Formulierung „ännu inte exporterade“ ist grammatisch korrekt, wirkt aber leicht unidiomatisch; „som ännu inte har exporterats“ wäre natürlicher. „Belege“ wurde als generisches „dokument“ übersetzt, während im Buchhaltungskontext der spezifischere Begriff „verifikationer“ üblich ist."
+  },
+  "msg.kein_recht": {
+    "rueck": "Sie haben keine Berechtigung für diesen Programmteil.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.kein_recht_titel": {
+    "rueck": "Kein Zugriff",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.keine_firma_recht": {
+    "rueck": "Ihnen ist keine Firma zugeordnet. Bitte wenden Sie sich an einen Administrator.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "msg.keine_mahnkondition": {
     "rueck": "Dem Kunden oder der Rechnung ist keine Mahnbedingung zugewiesen.",
@@ -8230,6 +8938,42 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.lock_admin": {
+    "rueck": "Nur Administratoren dürfen Sperren aufheben.\n\nTrage Deinen Benutzernamen in settings.json unter multiuser → admins ein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.lock_admin_titel": {
+    "rueck": "Nicht erlaubt",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.lock_gesperrt": {
+    "rueck": "Der Datensatz wird im Modul {modul} vom Benutzer {user} bearbeitet.\n\nBitte versuche es später noch einmal.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.lock_gesperrt_titel": {
+    "rueck": "Datensatz gesperrt",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.lock_konflikt_frage": {
+    "rueck": "Der Datensatz wurde am {zeit} vom Benutzer {user} im Modul {modul} geändert.\n\nDeine Eingaben würden diese Änderung überschreiben. Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "msg.lock_konflikt_titel": {
+    "rueck": "Datensatz zwischenzeitlich geändert",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "msg.loeschen": {
     "rueck": "Löschen",
@@ -8310,6 +9054,12 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "\"Villkor\" ist ein Neutrum-Substantiv (\"ett villkor\"), daher muss es \"inget påminnelsevillkor\" statt \"ingen påminnelsevillkor\" heißen. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.nur_lesen": {
+    "rueck": "Sie dürfen „{modul}“ nur ansehen, nicht ändern.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "msg.original_veraltet": {
     "rueck": "Der erste Ausdruck des Belegs ist veraltet.",
@@ -8645,6 +9395,135 @@
     "rueck": "Rabatt (%):",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "rechte.modul.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.artikel": {
+    "rueck": "Artikelstammdaten",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch",
+    "begruendung": "„Stamdata“ folgt der Wortwahl aus tab.firma („Företagsstamdata“)."
+  },
+  "rechte.modul.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch",
+    "begruendung": "„Order“ ist im Schwedischen auch Pluralform und folgt tab.auftraege."
+  },
+  "rechte.modul.auswertungen": {
+    "rueck": "Auswertungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.buchungsexport": {
+    "rueck": "Export der Buchungssätze",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.e_rechnung_spool": {
+    "rueck": "Spool für E-Rechnungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.einstellungen": {
+    "rueck": "Einstellungen/Admin",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.emails": {
+    "rueck": "E-Mail-Postausgang",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.fallback_protokoll": {
+    "rueck": "Fehler-Nachverfolgung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.firma": {
+    "rueck": "Firma anlegen/löschen",
+    "ok": true,
+    "src_ts": "2026-07-18 08:02",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.firma_praefix": {
+    "rueck": "Firmenstammdaten",
+    "ok": true,
+    "src_ts": "2026-07-18 08:02",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.kunden": {
+    "rueck": "Kundenstammdaten",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.mahnungen": {
+    "rueck": "Mahnungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch",
+    "begruendung": "„Påminnelser“ übernimmt die Wortwahl aus tab.mahnungen."
+  },
+  "rechte.modul.mwst": {
+    "rueck": "MwSt-Verwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.modul.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.stufe.0": {
+    "rueck": "kein Zugriff",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.stufe.1": {
+    "rueck": "lesen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.stufe.2": {
+    "rueck": "ändern",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
+  },
+  "rechte.stufe.3": {
+    "rueck": "löschen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "identisch"
   },
   "settings.developer_email": {
     "rueck": "E-Mail des Entwicklers:",

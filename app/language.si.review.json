@@ -1,4 +1,60 @@
 {
+  "adresse.abgelehnt": {
+    "rueck": "Die Anschrift konnte nicht bestätigt werden — bitte prüfen Sie sie.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.bestaetigt": {
+    "rueck": "Anschrift bestätigt ({provider}).",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.nicht_konfiguriert": {
+    "rueck": "Die Adressprüfung ist nicht konfiguriert. Bitte richten Sie unter Firmenstamm → Parameter → Adressprüfung einen Anbieter ein.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.nicht_uebernommen": {
+    "rueck": "Vorschlag nicht übernommen — bitte prüfen Sie die Anschrift manuell.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.pruefen_btn": {
+    "rueck": "Adresse prüfen",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.titel": {
+    "rueck": "Adressprüfung",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.uebernehmen_frage": {
+    "rueck": "Der Adressdienst schlägt eine normierte Anschrift vor.\n\nErfasst:\n{alt}\n\nVorschlag:\n{neu}\n\nVorschlag übernehmen?",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "adresse.uebernommen": {
+    "rueck": "Normierte Anschrift übernommen ({provider}).",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "app.firma_unbenannt": {
     "rueck": "Unbenannt",
     "ok": true,
@@ -407,6 +463,377 @@
     "rueck": "Rechnung",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "benutzer.absender_firma": {
+    "rueck": "Absender-Firma der Passwort-E-Mails:",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.absender_hinweis": {
+    "rueck": "Initialpasswörter und Passwort-Rücksetzungen werden über die E-Mail-Einstellungen dieser Firma versendet. Das ist nur mit Brevo, Gmail oder SMTP möglich — Outlook kann nicht automatisch versenden.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.absender_keine": {
+    "rueck": "— nicht konfiguriert —",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.anmeldeart.passwort": {
+    "rueck": "Kennung + Passwort",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.anmeldeart.windows": {
+    "rueck": "Windows-Anmeldung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.bitte_waehlen": {
+    "rueck": "Bitte wählen Sie einen Benutzer aus.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.btn_alle_stufe": {
+    "rueck": "Alle: {stufe}",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.btn_pw_reset": {
+    "rueck": "Passwort zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.btn_rechte_uebernehmen": {
+    "rueck": "Rechte einer Firma übernehmen…",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.anmeldeart": {
+    "rueck": "Anmeldung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.email": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.login": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.name": {
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.programmteil": {
+    "rueck": "Programmteil",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.rolle": {
+    "rueck": "Rolle",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.col.stufe": {
+    "rueck": "Recht",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.dlg_titel": {
+    "rueck": "Benutzerverwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.edit_titel": {
+    "rueck": "Benutzer bearbeiten",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.email_pflicht": {
+    "rueck": "Für die Anmeldung per Passwort wird eine E-Mail-Adresse benötigt — dorthin wird das Initialpasswort gesendet.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.erst_speichern": {
+    "rueck": "Bitte speichern Sie den Benutzer zuerst — danach können Rechte übernommen werden.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.geloeschte_anzeigen": {
+    "rueck": "Gelöschte anzeigen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.ist_admin_hinweis": {
+    "rueck": "darf alles, in allen Firmen (die Rechte-Matrix wird nicht ausgewertet)",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.ist_geloescht": {
+    "rueck": "Der Benutzer „{login}“ ist gelöscht und wird nur zur Einsicht angezeigt.\n\nUm ihn wiederherzustellen: „Neu“ wählen und denselben Login eingeben — dann wird die Wiederherstellung angeboten.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.ja": {
+    "rueck": "ja",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.letzter_admin": {
+    "rueck": "Das ist der letzte aktive Administrator — sonst könnte sich niemand mehr anmelden und Rechte vergeben.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.loeschen_frage": {
+    "rueck": "Benutzer „{login}“ löschen?\n\nEr verschwindet aus der Liste und kann sich nicht mehr anmelden. Der Datensatz bleibt erhalten (für spätere Auswertungen) und ist über „Gelöschte anzeigen“ einsehbar. Beim Anlegen desselben Logins wird die Wiederherstellung angeboten.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.login_geloescht": {
+    "rueck": "{login} (gelöscht)",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.login_pflicht": {
+    "rueck": "Bitte geben Sie einen Benutzernamen (Login) ein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.login_vergeben": {
+    "rueck": "Der Login „{login}“ ist bereits vergeben.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.fehler_text": {
+    "rueck": "Die E-Mail konnte nicht versendet werden:\n{fehler}\n\nBitte geben Sie das Passwort persönlich weiter:\n\nBenutzer: {login}\nPasswort: {passwort}\n\nEs muss bei der ersten Anmeldung geändert werden. Der Vorfall steht in der Fehler-Nachverfolgung.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.fehler_titel": {
+    "rueck": "Das Passwort konnte nicht versendet werden",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.gesendet": {
+    "rueck": "Das Passwort wurde an {empfaenger} versendet.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.gesendet_titel": {
+    "rueck": "Passwort versendet",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.initial_betreff": {
+    "rueck": "Ihr Zugang zur Auftragsabwicklung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.initial_text": {
+    "rueck": "Guten Tag,\n\nfür Sie wurde ein Zugang zur Auftragsabwicklung eingerichtet.\n\nBenutzer: {login}\nPasswort: {passwort}\n\nBitte ändern Sie das Passwort bei der ersten Anmeldung — Sie werden automatisch dazu aufgefordert.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.keine_absender_firma": {
+    "rueck": "Es ist keine Absender-Firma für Passwort-E-Mails festgelegt.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.keine_adresse": {
+    "rueck": "Der Benutzer hat keine E-Mail-Adresse.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.reset_betreff": {
+    "rueck": "Ihr Passwort wurde zurückgesetzt",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.mail.reset_text": {
+    "rueck": "Guten Tag,\n\nIhr Passwort für die Auftragsabwicklung wurde zurückgesetzt.\n\nBenutzer: {login}\nNeues Passwort: {passwort}\n\nBitte ändern Sie das Passwort bei der nächsten Anmeldung — Sie werden automatisch dazu aufgefordert.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.nein": {
+    "rueck": "nein",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.neu_titel": {
+    "rueck": "Neuer Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.nicht_selbst_loeschen": {
+    "rueck": "Sie können Ihren eigenen Benutzer nicht löschen.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.recht_bv_hinweis": {
+    "rueck": "darf Benutzer anlegen und Rechte vergeben",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.rechte_firma": {
+    "rueck": "Rechte für die Firma",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.reset_frage": {
+    "rueck": "Für „{login}“ ein neues Passwort erzeugen und per E-Mail versenden?",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.reset_nur_passwort": {
+    "rueck": "Dieser Benutzer meldet sich über die Windows-Anmeldung an und hat kein Passwort.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.restore_frage": {
+    "rueck": "Der Login „{login}“ gehört zu einem gelöschten Benutzer ({name}).\n\nDiesen Benutzer wiederherstellen? Er erhält seine früheren Rechte zurück und wird anschließend zum Bearbeiten geöffnet.\n\nNein: Bitte einen anderen Login wählen — „{login}“ bleibt belegt.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.restore_titel": {
+    "rueck": "Gelöschten Benutzer wiederherstellen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.rolle.admin": {
+    "rueck": "Administrator",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.rolle.benutzer": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.rolle.benutzerverwaltung": {
+    "rueck": "Benutzerverwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "benutzer.uebernehmen_von": {
+    "rueck": "Rechte übernehmen von:",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "btn.abb": {
     "rueck": "Abbrechen",
@@ -972,6 +1399,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung „බෙදාහැරීමේ සටහන් අංකය\" gibt „Lieferschein-Nr.\" korrekt wieder (Liefernotiz-Nummer). Die Abkürzung „Nr.\" wurde jedoch ausgeschrieben statt als Abkürzung übertragen."
+  },
+  "col.lock_seit": {
+    "rueck": "Gesperrt seit",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "col.locks": {
     "rueck": "Sperren",
@@ -3855,6 +4289,104 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.adresspruefung.attest_btn": {
+    "rueck": "Attestierung erfassen…",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_dpa": {
+    "rueck": "Mit Google ist ein Auftragsverarbeitungsvertrag (AVV/DPA) geschlossen",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_erfasser": {
+    "rueck": "Erfasst von: {user} (mit Zeitstempel, dauerhaft protokolliert)",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_hinweis": {
+    "rueck": "Die Google-Adressprüfung übermittelt Anschriften an einen externen US-Dienst. Sie darf erst nach Attestierung durch den Betreiber genutzt werden: AVV geschlossen und Verzeichnis von Verarbeitungstätigkeiten (VVT) ergänzt. Die Attestierung dokumentiert diese Entscheidung — sie ersetzt keine rechtliche Prüfung; der Verantwortliche bleibt haftbar. Ein Widerruf ist jederzeit möglich (Häkchen entfernen und auf OK klicken); frühere Einträge bleiben protokolliert.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_status_fehlt": {
+    "rueck": "Keine gültige Attestierung — Google ist gesperrt, Nominatim wird automatisch verwendet.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_status_ok": {
+    "rueck": "Attestierung gültig — erfasst von {user} am {datum} (UTC).",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_titel": {
+    "rueck": "DSGVO-Attestierung — Google-Adressprüfung",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.attest_vvt": {
+    "rueck": "Das Verzeichnis von Verarbeitungstätigkeiten (VVT) ist ergänzt",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.google_api_key": {
+    "rueck": "Google API-Schlüssel:",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.hint": {
+    "rueck": "Die Adressprüfung validiert Kundenanschriften im Kundenstamm (Button „Adresse prüfen“). Nominatim (eigene Instanz) ist der datenschutzfreundliche Standard; Google verlangt zusätzlich einen API-Schlüssel und eine gültige DSGVO-Attestierung — ohne sie wird automatisch Nominatim verwendet.",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.nominatim_url": {
+    "rueck": "Nominatim-Basis-URL:",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.provider": {
+    "rueck": "Anbieter:",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.provider.google": {
+    "rueck": "Google Address Validation (extern, Attestierung nötig)",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.adresspruefung.provider.nominatim": {
+    "rueck": "Nominatim / OpenStreetMap (eigene Instanz)",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "firma.ag.frage_loeschen": {
     "rueck": "Warengruppe löschen?\nAlle Untergruppen, Gruppen und zugehörigen Warenzuordnungen gehen verloren.",
     "ok": true,
@@ -5017,6 +5549,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.gj.warn_zaehler_niedriger": {
+    "rueck": "Für {typ} sind im Geschäftsjahr bereits Nummern bis {hoechste} vergeben.\n\nZähler trotzdem auf {zahl} setzen?",
+    "ok": true,
+    "src_ts": "2026-07-14 11:51",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "firma.hart.admin_titel": {
     "rueck": "Administratorberechtigung erforderlich",
     "ok": true,
@@ -5884,6 +6423,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung \"සමාගම ස්ථිරව මකන්න\" gibt exakt \"Firma endgültig löschen\" wieder: සමාගම = Firma, ස්ථිරව = endgültig/dauerhaft, මකන්න = löschen."
   },
+  "firma.loeschen.erste_firma": {
+    "rueck": "Die erste Firma (ID=1) kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Löschung fehlgeschlagen:\n{err}",
     "ok": true,
@@ -5912,6 +6458,13 @@
     "rueck": "(gelöscht)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.hinweis_dateien": {
+    "rueck": "Hinweis: Die Dateien im Export- und Archivpfad (Ausdrucke, E-Rechnungen, E-Mails, Artikelbilder, Archiv) werden NICHT gelöscht. Bitte nach Ablauf der Aufbewahrungsfristen manuell löschen.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.loeschen.loesche": {
     "rueck": "Daten werden gelöscht...",
@@ -5943,6 +6496,41 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt \"Stammdaten Kunden und Artikel\" korrekt wieder (මූලික දත්ත = Stammdaten, පාරිභෝගික = Kunden, භාණ්ඩ = Artikel). \"ස්ථිරව\" bedeutet \"endgültig/final\" und passt sinngemäß gut."
+  },
+  "firma.loeschen.step_belege": {
+    "rueck": "Belege werden gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.loeschen.step_einstellungen": {
+    "rueck": "Einstellungen werden gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.loeschen.step_fertig": {
+    "rueck": "Fertig",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.loeschen.step_firma": {
+    "rueck": "Firmendatensatz wird gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.loeschen.step_stammdaten": {
+    "rueck": "Stammdaten werden gelöscht...",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.loeschen.warnung": {
     "rueck": "Warnung: Diese Löschung ist endgültig und kann nicht wiederhergestellt werden!",
@@ -6893,6 +7481,34 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt \"Sicherheitsinformation drucken\" exakt wieder: \"ආරක්ෂක තොරතුරු\" (Sicherheitsinformation) und \"මුද්‍රණය කරන්න\" (drucken)."
   },
+  "firma.steuerung.keydatei": {
+    "rueck": "Schlüsseldatei (API-Schlüssel)",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.steuerung.keydatei_defekt": {
+    "rueck": "defekt — Datei löschen und Schlüssel neu erfassen",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.steuerung.keydatei_fehlt": {
+    "rueck": "fehlt — wird beim nächsten Speichern eines Schlüssels neu angelegt",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "firma.steuerung.keydatei_vorhanden": {
+    "rueck": "vorhanden (verschlüsselt)",
+    "ok": true,
+    "src_ts": "2026-07-13 18:09",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "firma.steuerung.ki_disclaimer": {
     "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
     "ok": true,
@@ -7013,6 +7629,13 @@
     "rueck": "Adresse",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.adresspruefung": {
+    "rueck": "Adressprüfung",
+    "ok": true,
+    "src_ts": "2026-07-13 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.tab.anbindung_fibu": {
     "rueck": "Finanzbuchhaltung verbinden",
@@ -7271,6 +7894,13 @@
     "src_ts": "2026-06-29 00:07",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: \"wiederherstellbar gelöscht\" (ප්‍රතිසාධනය කළ හැකි ලෙස මැකිය), das Fehlen einer solchen Firma sowie die Nichtlöschbarkeit der Original- und aktiven Firma sind präzise übertragen."
+  },
+  "firma.weich.nicht_loeschbar": {
+    "rueck": "Diese Firma kann nicht gelöscht werden (erste Firma oder aktuell aktiv).",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.weich.titel": {
     "rueck": "Wiederherstellbar löschen",
@@ -7862,6 +8492,139 @@
     "bewertung": "identisch",
     "begruendung": "\"ගෙවීම්\" (Zahlung) und \"කොන්දේසිය\" (Kondition/Bedingung) geben den Begriff präzise wieder. Auch der Doppelpunkt ist korrekt übernommen."
   },
+  "login.bootstrap_text": {
+    "rueck": "Es war noch kein Benutzer angelegt. Der Benutzer „{login}“ wurde als Administrator eingerichtet und meldet sich künftig automatisch über die Windows-Anmeldung an.\n\nWeitere Benutzer legen Sie im Menü unter „Benutzerverwaltung“ an.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.bootstrap_titel": {
+    "rueck": "Benutzerverwaltung eingerichtet",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.btn_anmelden": {
+    "rueck": "Anmelden",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.fehlgeschlagen": {
+    "rueck": "Benutzer oder Passwort ist falsch. Noch {rest} Versuch(e).",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.feld_login": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.feld_passwort": {
+    "rueck": "Passwort",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.gesperrt_text": {
+    "rueck": "Die Anmeldung wurde nach {anzahl} Fehlversuchen abgebrochen. Das Programm wird beendet.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.gesperrt_titel": {
+    "rueck": "Anmeldung abgebrochen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.kopf": {
+    "rueck": "Bitte melden Sie sich an, um das Programm zu starten.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.kopf_windows": {
+    "rueck": "Angemeldet als „{login}“ — zum Starten einfach Enter drücken.\nUm unter einer anderen Identität zu arbeiten: Benutzer überschreiben und dessen Passwort eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-18 08:02",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_erzwungen": {
+    "rueck": "Ihr Passwort wurde neu vergeben. Bitte legen Sie jetzt ein eigenes Passwort fest — ohne Änderung können Sie nicht fortfahren.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_kopf": {
+    "rueck": "Bitte geben Sie Ihr neues Passwort ein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_neu": {
+    "rueck": "Neues Passwort",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_regel": {
+    "rueck": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_titel": {
+    "rueck": "Passwort ändern",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_ungleich": {
+    "rueck": "Die beiden Passwörter stimmen nicht überein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_wdh": {
+    "rueck": "Wiederholen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.pw_zu_kurz": {
+    "rueck": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "login.titel": {
+    "rueck": "Anmeldung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "mahnung.lbl.mahnstufe": {
     "rueck": "Mahnstufe:",
     "ok": true,
@@ -8043,6 +8806,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"ඉන්වොයිස\" gibt \"Rechnungen\" (invoices) korrekt als Transliteration wieder. Für den Plural wäre die Ergänzung eines Pluralmarkers idiomatischer."
   },
+  "menu.benutzerverwaltung": {
+    "rueck": "Benutzerverwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "menu.darkmode": {
     "rueck": "Dark Mode",
     "ok": true,
@@ -8115,6 +8885,13 @@
     "rueck": "Benutzerdokumentation",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "menu.passwort_aendern": {
+    "rueck": "Passwort ändern",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "menu.sprachdatei": {
     "rueck": "App-Sprache erstellen/aktualisieren …",
@@ -8217,6 +8994,13 @@
     "ok": true,
     "src_ts": "2026-07-05 11:54"
   },
+  "msg.aktive_firma_weg": {
+    "rueck": "Die zuletzt aktive Firma existiert nicht mehr oder wurde gelöscht.\nDie Firma „{firma}“ wurde aktiviert.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
     "ok": true,
@@ -8259,6 +9043,13 @@
     "rueck": "{typ} wiederherstellen?",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.belegnr_konflikt": {
+    "rueck": "Die Belegnummer wurde soeben anderweitig vergeben. Bitte erneut speichern.",
+    "ok": true,
+    "src_ts": "2026-07-14 11:51",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "msg.bereits_bezahlt": {
     "rueck": "Diese Rechnung wurde bereits bezahlt.",
@@ -8419,6 +9210,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: Festschreibung, Nichtbearbeitbarkeit, Stornierung und ggf. neue Rechnung sind alle präzise übertragen. \"අවශ්‍ය නම්\" (falls nötig) entspricht dem \"ggf.\" korrekt."
   },
+  "msg.gsjahr_abweichung": {
+    "rueck": "Das Belegdatum liegt im Jahr {beleg_jahr}, das aktive Geschäftsjahr ist {gsjahr}.\n\nDie Belegnummer erhält die Jahreszahl {gsjahr}. Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-14 11:51",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "msg.hinweis": {
     "rueck": "Buchung",
     "ok": true,
@@ -8437,6 +9235,27 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"gewählte Buchungsperiode\" (තෝරාගත් සටහන් කාල සීමාව), \"keine noch nicht exportierten Belege\" (තවම අපනයනය නොකළ ලේඛන නොමැත). Bedeutung und Struktur stimmen vollständig überein."
+  },
+  "msg.kein_recht": {
+    "rueck": "Sie haben keine Berechtigung für diesen Programmteil.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.kein_recht_titel": {
+    "rueck": "Kein Zugriff",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.keine_firma_recht": {
+    "rueck": "Ihnen ist keine Firma zugeordnet. Bitte wenden Sie sich an einen Administrator.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "msg.keine_mahnkondition": {
     "rueck": "Dem Kunden oder der Rechnung wurde keine Mahnbedingung zugewiesen.",
@@ -8472,6 +9291,48 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Ein Lieferschein wurde bereits erstellt, und die Rechnung soll aus dem Lieferschein erzeugt werden. Die Begriffe \"බෙදාහැරීමේ සටහන\" (Lieferschein) und \"ඉන්වොයිසිය\" (Rechnung) sind passend gewählt."
+  },
+  "msg.lock_admin": {
+    "rueck": "Nur Administratoren dürfen Sperren aufheben.\n\nTrage Deinen Benutzernamen in settings.json unter multiuser → admins ein.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.lock_admin_titel": {
+    "rueck": "Nicht erlaubt",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.lock_gesperrt": {
+    "rueck": "Der Datensatz wird im Modul {modul} vom Benutzer {user} bearbeitet.\n\nBitte versuche es später noch einmal.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.lock_gesperrt_titel": {
+    "rueck": "Datensatz gesperrt",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.lock_konflikt_frage": {
+    "rueck": "Der Datensatz wurde am {zeit} vom Benutzer {user} im Modul {modul} geändert.\n\nDeine Eingaben würden diese Änderung überschreiben. Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "msg.lock_konflikt_titel": {
+    "rueck": "Datensatz zwischenzeitlich geändert",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "msg.loeschen": {
     "rueck": "Löschen",
@@ -8548,6 +9409,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt beide Aussagen korrekt wieder: \"nächste Mahnstufe nicht definiert\" (ඊළඟ මතක් කිරීමේ මට්ටම නිර්වචනය කර නොමැත) und \"keine Mahnkondition zugewiesen\" (මතක් කිරීමේ කොන්දේසියක් පවරා නොමැත). Die Bedeutung ist präzise und vollständig übertragen."
+  },
+  "msg.nur_lesen": {
+    "rueck": "Sie dürfen „{modul}“ nur ansehen, nicht ändern.",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "msg.original_veraltet": {
     "rueck": "Der erste Druck des Dokuments ist veraltet.",
@@ -8883,6 +9751,153 @@
     "rueck": "Rabatt (%):",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "rechte.modul.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.artikel": {
+    "rueck": "Artikelstamm",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.auswertungen": {
+    "rueck": "Auswertungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.buchungsexport": {
+    "rueck": "Export der Buchungssätze",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.e_rechnung_spool": {
+    "rueck": "Spool für E-Rechnungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.einstellungen": {
+    "rueck": "Einstellungen/Admin",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.emails": {
+    "rueck": "E-Mail-Postausgang",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.fallback_protokoll": {
+    "rueck": "Fehler-Nachverfolgung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.firma": {
+    "rueck": "Firma anlegen/löschen",
+    "ok": true,
+    "src_ts": "2026-07-18 08:02",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.firma_praefix": {
+    "rueck": "Firmenstamm",
+    "ok": true,
+    "src_ts": "2026-07-18 08:02",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.kunden": {
+    "rueck": "Kundenstamm",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.mahnungen": {
+    "rueck": "Mahnungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.mwst": {
+    "rueck": "MwSt-Verwaltung",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.modul.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.stufe.0": {
+    "rueck": "kein Zugriff",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.stufe.1": {
+    "rueck": "lesen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.stufe.2": {
+    "rueck": "ändern",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "rechte.stufe.3": {
+    "rueck": "löschen",
+    "ok": true,
+    "src_ts": "2026-07-15 10:46",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "settings.developer_email": {
     "rueck": "Entwickler-E-Mail:",
