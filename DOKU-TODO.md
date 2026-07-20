@@ -23,23 +23,16 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-- [ ] (2026-07-20) Statusspalte der Beleglisten ist jetzt **farbig hinterlegt**
-  - Code: `app/theme.py::status_cell_colors` / `_BELEG_STATUS_SEMANTIK`,
-    `app/modul/beleg_liste.py::_fuelle_tabelle`
-  - Doku: Bei den Beleglisten (Angebote/Aufträge/Lieferscheine/Rechnungen/
-    Mahnungen) eine Farberklärung ergänzen — grau = *entwurf*, bernstein =
-    *offen*, grün = erfolgreiche Endzustände (*angenommen*, *geliefert*,
-    *abgerechnet*, *bezahlt*, *abgeschlossen*, *erfolgreich*), rot =
-    *storniert*/*storno*. Format analog zur bestehenden Farbtabelle im
-    Abschnitt „Postausgang-Fenster". **Wichtig:** Ein veralteter („stale")
-    Beleg behält Vorrang und bleibt roter Text **ohne** Farbfläche.
+_(derzeit keine offenen Punkte)_
 
-Stand 2026-07-16: `app/doku.de.html` und `app/doku.en.html` waren **synchron** auf dem
-damaligen Code-Stand nachgezogen (siehe DEVLOG-Eintrag vom 2026-07-16); die
-Admin-Readmes (`Readme.admin.de.md` / `Readme.admin.en.md`) ebenso.
+Stand 2026-07-20: `app/doku.de.html` und `app/doku.en.html` sind **synchron** auf dem
+aktuellen Code-Stand nachgezogen — zuletzt der neue Abschnitt „Statusfarben in der
+Liste" (`#belege-statusfarben`) zur farbigen Statusspalte der Beleglisten.
+Die Admin-Readmes (`Readme.admin.de.md` / `Readme.admin.en.md`) sind auf dem Stand
+vom 2026-07-16.
 
 Hinweis zur Design-Umstellung vom 2026-07-20: Die reine Optik (Farben, Radien,
 Schrift, Abstände) ist **nicht** doku-relevant — die Anwender-Hilfe beschreibt
-kein Erscheinungsbild. Die bestehende Farbtabelle im Abschnitt „Postausgang-
-Fenster" bleibt gültig, da die dortigen Statusfarben (`status_info/ok/error/
-muted`) unverändert geblieben sind.
+kein Erscheinungsbild. Die Farbtabelle im Abschnitt „Postausgang-Fenster" bleibt
+gültig, da die dortigen Statusfarben (`status_info/ok/error/muted`) unverändert
+geblieben sind.

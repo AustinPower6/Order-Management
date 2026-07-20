@@ -1311,6 +1311,36 @@
 <p>In der Rechnungsliste gibt es zus&auml;tzlich <strong>&rarr; Mahnung</strong> und <strong>Als bezahlt markieren</strong>, in der Mahnungsliste <strong>&rarr; N&auml;chste Stufe</strong>. Die Beleglisten haben <strong>kein Hamburger-Men&uuml;</strong> mehr &mdash; Belegkette und Journal sind eigene Toolbar-Buttons.</p>
 <p>Oberhalb der Liste stehen ein <strong>Live-Suchfeld</strong> (mehrere Begriffe = UND-Verkn&uuml;pfung), ein <strong>Statusfilter</strong> und die Checkbox <strong>&bdquo;Gel&ouml;scht anzeigen&ldquo;</strong> (blendet soft-gel&ouml;schte Belege ein). In Angeboten, Auftr&auml;gen, Lieferscheinen und Rechnungen gibt es zudem eine Spalte <strong>&bdquo;igL&ldquo;</strong> (&#10003; = vollwertiger <a href="#igl">igL-Beleg</a>: igL-Positionen <em>und</em> Kunde am Belegdatum EU-qualifiziert, anderes EU-Land, mit USt-IdNr.). Mahnungen haben keine igL-Spalte.</p>
 
+<h4 id="belege-statusfarben">Statusfarben in der Liste</h4>
+<p>Die Spalte <strong>Status</strong> ist farbig hinterlegt, damit der Bearbeitungsstand einer Liste auf einen Blick erkennbar ist. Die Farbe ergibt sich aus der Bedeutung des Status, nicht aus dem Belegtyp &mdash; welche Status ein Belegtyp &uuml;berhaupt kennt, steht in den jeweiligen Abschnitten (<a href="#angebote">Angebote</a>, <a href="#rechnungen">Rechnungen</a>, &hellip;).</p>
+<table>
+  <tr><th>Farbe</th><th>Status</th><th>Bedeutung</th></tr>
+  <tr>
+    <td style="background:#eceef1;color:#5a6068"><strong>Grau</strong></td>
+    <td><em>Entwurf</em></td>
+    <td>Beleg ist angelegt, aber noch nicht per Originaldruck festgeschrieben &mdash; frei &auml;nderbar</td>
+  </tr>
+  <tr>
+    <td style="background:#fdecd2;color:#8a4b00"><strong>Bernstein</strong></td>
+    <td><em>offen</em></td>
+    <td>Wartet auf eine Handlung: das Angebot auf die Entscheidung des Kunden, die Rechnung auf den Zahlungseingang</td>
+  </tr>
+  <tr>
+    <td style="background:#e6f4ea;color:#1e6b26"><strong>Gr&uuml;n</strong></td>
+    <td><em>angenommen</em>, <em>geliefert</em>, <em>abgerechnet</em>, <em>bezahlt</em>, <em>abgeschlossen</em>, <em>erfolgreich</em></td>
+    <td>Erfolgreich abgeschlossen &mdash; f&uuml;r diesen Beleg ist nichts mehr zu tun</td>
+  </tr>
+  <tr>
+    <td style="background:#fbe4e2;color:#a01f18"><strong>Rot</strong></td>
+    <td><em>storniert</em>, <em>Storno</em></td>
+    <td>Rechnung wurde storniert bzw. der Beleg <em>ist</em> die Stornorechnung (siehe <a href="#rechnungen">Rechnungen</a>)</td>
+  </tr>
+</table>
+
+<div class="warn">
+  <strong>Ausnahme &mdash; veralteter Beleg:</strong> Entspricht die zuletzt gedruckte Original-PDF nicht mehr dem aktuellen Belegstand, wird die <strong>gesamte Zeile in roter Schrift</strong> dargestellt. Dieser Hinweis hat Vorrang: Die Statuszelle bleibt dann <em>ohne</em> Farbfl&auml;che, damit die Warnung nicht &uuml;berdeckt wird. Drucken Sie den Beleg in diesem Fall erneut.
+</div>
+
 <div class="tip">
   <strong>Spaltenbreiten und Sortierung</strong> in jeder Liste werden pro Modul automatisch gespeichert. Die Anwendung merkt sich Ihre Anpassungen f&uuml;r den n&auml;chsten Start.
 </div>

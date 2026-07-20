@@ -1296,6 +1296,36 @@
 <p>The invoice list additionally provides <strong>&rarr; Reminder</strong> and <strong>Mark as paid</strong>, the reminder list provides <strong>&rarr; Next Level</strong>. The document lists have <strong>no hamburger menu</strong> anymore &mdash; document chain and journal are dedicated toolbar buttons.</p>
 <p>Above the list there are a <strong>live search field</strong> (multiple terms = AND), a <strong>status filter</strong> and the checkbox <strong>&ldquo;Show deleted&rdquo;</strong> (shows soft-deleted documents). Quotes, orders, delivery notes and invoices additionally have a column <strong>&ldquo;igL&rdquo;</strong> (&#10003; = fully qualified <a href="#igl">igL document</a>: igL line items <em>and</em> a customer who, on the document date, is EU-qualified, in another EU country, with a VAT ID). Reminders have no igL column.</p>
 
+<h4 id="belege-statusfarben">Status colours in the list</h4>
+<p>The <strong>Status</strong> column has a coloured background so that the state of a whole list is recognisable at a glance. The colour follows the meaning of the status, not the document type &mdash; which statuses a document type actually uses is described in the respective sections (<a href="#angebote">Quotes</a>, <a href="#rechnungen">Invoices</a>, &hellip;).</p>
+<table>
+  <tr><th>Colour</th><th>Status</th><th>Meaning</th></tr>
+  <tr>
+    <td style="background:#eceef1;color:#5a6068"><strong>Grey</strong></td>
+    <td><em>draft</em></td>
+    <td>Document has been created but not yet finalised by an original printout &mdash; freely editable</td>
+  </tr>
+  <tr>
+    <td style="background:#fdecd2;color:#8a4b00"><strong>Amber</strong></td>
+    <td><em>open</em></td>
+    <td>Waiting for an action: the quote for the customer&rsquo;s decision, the invoice for payment</td>
+  </tr>
+  <tr>
+    <td style="background:#e6f4ea;color:#1e6b26"><strong>Green</strong></td>
+    <td><em>accepted</em>, <em>delivered</em>, <em>invoiced</em>, <em>paid</em>, <em>completed</em>, <em>successful</em></td>
+    <td>Successfully completed &mdash; nothing left to do for this document</td>
+  </tr>
+  <tr>
+    <td style="background:#fbe4e2;color:#a01f18"><strong>Red</strong></td>
+    <td><em>cancelled</em>, <em>Cancel</em></td>
+    <td>Invoice has been cancelled, or the document <em>is</em> the cancellation invoice (see <a href="#rechnungen">Invoices</a>)</td>
+  </tr>
+</table>
+
+<div class="warn">
+  <strong>Exception &mdash; outdated document:</strong> If the most recently printed original PDF no longer matches the current state of the document, the <strong>entire row is shown in red text</strong>. This warning takes precedence: the status cell then stays <em>without</em> a coloured background so the warning is not obscured. In this case, print the document again.
+</div>
+
 <div class="tip">
   <strong>Column widths and sorting</strong> in each list are saved automatically per module. The application remembers your adjustments for the next start.
 </div>
