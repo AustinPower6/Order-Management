@@ -527,7 +527,8 @@ def _spin(minimum: int, maximum: int, default: int = 0) -> QSpinBox:
 
 def _suche_btn(callback) -> QPushButton:
     btn = QPushButton("…")
-    btn.setFixedSize(20, 20)
+    btn.setFixedSize(24, 24)
+    btn.setProperty("compact", True)   # Theme: schmales Padding
     btn.setToolTip("Im Kontenrahmen suchen")
     btn.clicked.connect(callback)
     return btn

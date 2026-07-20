@@ -59,7 +59,7 @@ class PositionenEditor(QWidget):
         lay.addWidget(self.table)
 
         self._summen_label = QLabel()
-        self._summen_label.setFont(QFont("Helvetica", 9, QFont.Weight.Bold))
+        self._summen_label.setFont(QFont(theme.FONT_FAMILY, 9, QFont.Weight.Bold))
         self._summen_label.setAlignment(Qt.AlignmentFlag.AlignRight)
         lay.addWidget(self._summen_label)
 

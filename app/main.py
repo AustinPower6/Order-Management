@@ -509,7 +509,7 @@ class MainWindow(QMainWindow):
         c = theme.sidebar_colors(self._theme_dark)
         if firma:
             firm_name = QLabel(firma.get("name", _("app.title")))
-            firm_font = QFont("Helvetica", 24, QFont.Weight.Bold)
+            firm_font = QFont(theme.FONT_FAMILY, 24, QFont.Weight.Bold)
             firm_name.setFont(firm_font)
             firm_name.setStyleSheet(f"color: {c['name_color']};")
             firm_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -530,19 +530,19 @@ class MainWindow(QMainWindow):
                 welcome_lay.addWidget(slogan_lbl)
         else:
             no_firma_label = QLabel(_("app.keine_firma"))
-            no_firma_label.setFont(QFont("Helvetica", 20, QFont.Weight.Bold))
+            no_firma_label.setFont(QFont(theme.FONT_FAMILY, 20, QFont.Weight.Bold))
             no_firma_label.setStyleSheet(f"color: {c['name_color']};")
             no_firma_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             welcome_lay.addWidget(no_firma_label)
 
             no_firma_hint = QLabel(_("app.keine_firma_hinweis"))
-            no_firma_hint.setFont(QFont("Helvetica", 12))
+            no_firma_hint.setFont(QFont(theme.FONT_FAMILY, 12))
             no_firma_hint.setStyleSheet(f"color: {c['sub_color']};")
             no_firma_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
             welcome_lay.addWidget(no_firma_hint)
 
             btn_firma = QPushButton(_("menu.firma.firmenstamm"))
-            btn_firma.setFont(QFont("Helvetica", 14))
+            btn_firma.setFont(QFont(theme.FONT_FAMILY, 14))
             btn_firma.setFixedSize(220, 44)
             btn_firma.clicked.connect(self._open_firma)
             welcome_lay.addWidget(btn_firma)
@@ -1140,6 +1140,7 @@ def main():
     _setup_logging()
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
+    app.setFont(QFont(theme.FONT_FAMILY, 10))
     db = Database()
     import ui_widgets
     # QLineEdit in QWidget-Formularen (z. B. Firmenstamm): Enter/Pfeil hoch/runter

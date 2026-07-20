@@ -292,6 +292,8 @@ class BelegListeFenster(QWidget):
         self._b_loeschen = None
         for lbl_key, fn in [("btn.neu", self._neu), ("btn.loeschen", self._loeschen)]:
             btn = QPushButton(_(lbl_key)); btn.clicked.connect(fn); tb.addWidget(btn)
+            if lbl_key == "btn.neu":
+                btn.setProperty("primary", True)
             if lbl_key == "btn.loeschen":
                 self._b_loeschen = btn
             elif not self._darf(rechte.AENDERN):
@@ -354,6 +356,10 @@ class BelegListeFenster(QWidget):
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        # Ruhigere Zeilenhöhe der Beleglisten (Design „Klar-geschäftlich").
+        # Bewusst hier statt über Item-Padding im Theme: Padding würde in
+        # Tabellen mit eingesetzten Zell-Widgets deren Fläche wegnehmen.
+        self.table.verticalHeader().setDefaultSectionSize(34)
         self.table.setSortingEnabled(True)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._on_selection_changed)
@@ -362,6 +368,7 @@ class BelegListeFenster(QWidget):
                 self.table.setColumnWidth(i, 200)
             else:
                 self.table.setColumnWidth(i, w)
+        self._status_col = next((i for i, c in enumerate(self.COLS) if c[0] == "status"), None)
         if self._show_locks:
             self.table.setColumnWidth(len(self.COLS), 120)   # Locks nach den Datenspalten
         if self._show_id:
@@ -518,6 +525,7 @@ class BelegListeFenster(QWidget):
                     "values": values,
                     "lock_info": lock_info,
                     "row_color": row_color,
+                    "is_stale": is_stale,
                     "bold": bool(b.get("festgeschrieben")),
                     "italic": b["id"] in nachfolger_ids,
                     "status": b.get("status", ""),
@@ -561,6 +569,13 @@ class BelegListeFenster(QWidget):
                 item.setTextAlignment(align)
                 if c == len(values) - 1 and lock_info is not None:
                     _apply_lock_style(item, lock_info)
+                elif (c == self._status_col and not rec["is_stale"] and rec["status"]):
+                    bg, fg = theme.status_cell_colors(rec["status"])
+                    if bg:
+                        item.setBackground(bg)
+                        item.setForeground(fg)
+                    elif row_color:
+                        item.setForeground(row_color)
                 elif row_color:
                     item.setForeground(row_color)
                 self.table.setItem(r, c, item)

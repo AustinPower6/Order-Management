@@ -77,7 +77,7 @@ def build_sidebar(win, firma):
     hamburger_lay.setContentsMargins(12, 8, 8, 8)
     win._hamburger_btn = QPushButton("☰")
     win._hamburger_btn.setFixedHeight(36)
-    win._hamburger_btn.setFont(QFont("Helvetica", 14))
+    win._hamburger_btn.setFont(QFont(theme.FONT_FAMILY, 14))
     win._hamburger_btn.setCursor(Qt.CursorShape.PointingHandCursor)
     win._hamburger_btn.clicked.connect(lambda: win._hamburger_menu.exec(win._hamburger_btn.mapToGlobal(QPoint(0, win._hamburger_btn.height()))))
     hamburger_lay.addWidget(win._hamburger_btn)
@@ -109,7 +109,7 @@ def build_sidebar(win, firma):
     name_lay.addWidget(win._firma_combo)
 
     win._name_lbl = QLabel(firma.get("name", _("app.title")))
-    win._name_lbl.setFont(QFont("Helvetica", 12, QFont.Weight.Bold))
+    win._name_lbl.setFont(QFont(theme.FONT_FAMILY, 12, QFont.Weight.Bold))
     name_lay.addWidget(win._name_lbl)
     win._sub_lbl = None
     if firma.get("zusatz"):
@@ -118,12 +118,12 @@ def build_sidebar(win, firma):
 
     # Aktueller Benutzer (Multiuser-Identifikation)
     win._user_lbl = QLabel(f"👤 {lock_manager.aktueller_user()}")
-    win._user_lbl.setFont(QFont("Helvetica", 10))
+    win._user_lbl.setFont(QFont(theme.FONT_FAMILY, 10))
     name_lay.addWidget(win._user_lbl)
 
     # Belegdatum-Label (klickbar zum Ändern)
     win._datum_lbl = ClickableLabel()
-    win._datum_lbl.setFont(QFont("Helvetica", 10))
+    win._datum_lbl.setFont(QFont(theme.FONT_FAMILY, 10))
     win._datum_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
     win._datum_lbl.setToolTip(_("sidebar.tip.belegdatum"))
     win._datum_lbl.clicked.connect(win._open_date_picker)
@@ -140,18 +140,18 @@ def build_sidebar(win, firma):
 
     # Geschäftsjahr und Buchungsmonat
     win._geschaeftsjahr_lbl = QLabel()
-    win._geschaeftsjahr_lbl.setFont(QFont("Helvetica", 10))
+    win._geschaeftsjahr_lbl.setFont(QFont(theme.FONT_FAMILY, 10))
     win._geschaeftsjahr_lbl.setToolTip(_("sidebar.tip.geschaeftsjahr"))
     name_lay.addWidget(win._geschaeftsjahr_lbl)
 
     win._buchungsmonat_lbl = QLabel()
-    win._buchungsmonat_lbl.setFont(QFont("Helvetica", 10))
+    win._buchungsmonat_lbl.setFont(QFont(theme.FONT_FAMILY, 10))
     win._buchungsmonat_lbl.setToolTip(_("sidebar.tip.buchungsmonat"))
     name_lay.addWidget(win._buchungsmonat_lbl)
 
     # Sprach-Auswahl
     win._sprache_lbl = QLabel(_("sidebar.lbl.sprache"))
-    win._sprache_lbl.setFont(QFont("Helvetica", 10))
+    win._sprache_lbl.setFont(QFont(theme.FONT_FAMILY, 10))
     name_lay.addWidget(win._sprache_lbl)
     win._sprache_combo = QComboBox()
     win._sprache_combo.setMinimumHeight(26)

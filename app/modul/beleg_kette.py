@@ -320,21 +320,21 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
             c = 0
             item = QTableWidgetItem(besch)
             if current:
-                item.setFont(QFont("Helvetica", 9, QFont.Weight.Bold))
+                item.setFont(QFont(theme.FONT_FAMILY, 9, QFont.Weight.Bold))
                 item.setBackground(QColor(255, 255, 224))
             self.table.setItem(r, c, item)
 
             item = QTableWidgetItem(str(entry["id"]) if entry["id"] else "—")
             item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             if current:
-                item.setFont(QFont("Helvetica", 9, QFont.Weight.Bold))
+                item.setFont(QFont(theme.FONT_FAMILY, 9, QFont.Weight.Bold))
                 item.setBackground(QColor(255, 255, 224))
             self.table.setItem(r, c + 1, item)
 
             item = QTableWidgetItem(nr)
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             if current:
-                item.setFont(QFont("Helvetica", 9, QFont.Weight.Bold))
+                item.setFont(QFont(theme.FONT_FAMILY, 9, QFont.Weight.Bold))
                 item.setBackground(QColor(255, 255, 224))
             self.table.setItem(r, c + 2, item)
 

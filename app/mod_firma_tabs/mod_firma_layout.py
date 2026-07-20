@@ -142,6 +142,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         color_row.addWidget(QLabel(_("dlg.farbe")))
         self._color_btn = QPushButton()
         self._color_btn.setFixedSize(40, 22)
+        self._color_btn.setProperty("compact", True)   # Theme: schmales Padding
         self._color_btn.clicked.connect(self._pick_color)
         self._current_color = QColor(font_color or LAYOUT_DEFAULT_TEXT)
         self._update_color_btn()
@@ -155,6 +156,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
             bg_row.addWidget(QLabel(_("dlg.hintergrundfarbe")))
             self._bg_btn = QPushButton()
             self._bg_btn.setFixedSize(40, 22)
+            self._bg_btn.setProperty("compact", True)   # Theme: schmales Padding
             self._bg_btn.clicked.connect(self._pick_bg_color)
             self._current_bg_color = QColor(bg_color or LAYOUT_DEFAULT_POS_BG)
             self._update_bg_btn()
@@ -406,6 +408,7 @@ class _EditableBlock(QFrame):
 
         self._btn_reset = QPushButton(_("btn.auf_standard"))
         self._btn_reset.setFixedHeight(22)
+        self._btn_reset.setProperty("compact", True)   # Theme: schmales Padding
         self._btn_reset.clicked.connect(self.reset_clicked.emit)
         row.addWidget(self._btn_reset)
 
@@ -451,6 +454,7 @@ class _EditableBlock(QFrame):
             mahn_row.addWidget(QLabel(_("lbl.layout.belegart_mahnung")))
             self._mahn_color_btn = QPushButton()
             self._mahn_color_btn.setFixedSize(40, 22)
+            self._mahn_color_btn.setProperty("compact", True)   # Theme: schmales Padding
             self._mahn_color_btn.clicked.connect(self._pick_mahn_color)
             self._mahn_current_color = QColor(LAYOUT_DEFAULT_MAHN)
             self._update_mahn_color_btn()

@@ -290,7 +290,8 @@ class KontoFeld(QWidget):
         self._edit.setFixedWidth(90)
         self._edit.setAlignment(Qt.AlignmentFlag.AlignRight)
         self._such_btn = QPushButton("…")
-        self._such_btn.setFixedSize(22, 22)
+        self._such_btn.setFixedSize(24, 24)
+        self._such_btn.setProperty("compact", True)   # Theme: schmales Padding
         self._such_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._such_btn.setToolTip("Im Kontenrahmen suchen")
         self._such_btn.clicked.connect(self._open_suche)
@@ -359,7 +360,8 @@ class KontoZelleEdit(QWidget):
         self._edit.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         self._edit.textChanged.connect(self._on_changed)
         self._such_btn = QPushButton("…")
-        self._such_btn.setFixedSize(20, 20)
+        self._such_btn.setFixedSize(24, 24)
+        self._such_btn.setProperty("compact", True)   # Theme: schmales Padding
         self._such_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._such_btn.setToolTip(_("kontenrahmen.suche_placeholder"))
         self._such_btn.clicked.connect(self._open_suche)
