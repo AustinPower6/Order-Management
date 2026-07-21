@@ -139,6 +139,62 @@ main_lay.addWidget(self._save_bar)
 
 **Gilt nicht für** Tabs mit eigener komplexer Struktur (QTable, QScrollArea, Mehrfach-Sektionen) — dort expandiert der Inhalt selbst und schiebt die SaveBar automatisch nach unten.
 
+## ⚠️ STRENGE REGEL: Fenster passen sich nicht an — sie rollen
+
+**Kein Fenster, Reiter oder Dialog darf seine Größe an den Inhalt anpassen.**
+Passt der Inhalt nicht in die verfügbare Höhe, gehört ein **vertikaler
+Rollbalken** hin. Sonst erzwingt das Layout eine größere Fensterhöhe (bzw.
+staucht die Zeilen, wodurch Einträge unten abgeschnitten werden — genau so
+gemeldet für den Firmenstamm am 2026-07-21).
+
+### Umsetzung
+
+`ui_widgets.in_scrollbereich(widget)` hüllt ein Widget in einen rahmenlosen,
+vertikal rollenden Bereich. Eine **SaveBar/Buttonleiste bleibt außerhalb**, damit
+Speichern/Abbrechen immer sichtbar sind — bei einer `SaveBar` (Attribut
+`_save_bar`) erledigt das die Funktion selbst, bei Dialogen wird nur der
+Inhaltsbereich gehüllt und die Leiste separat ins äußere Layout gehängt.
+
+- **Neuer Firmenstamm-Reiter:** nichts zu tun. `mod_firma_base.py::_add_tab`
+  schickt jeden Reiter zentral hindurch. **Keine eigene `QScrollArea` einbauen** —
+  das ergäbe zwei ineinander liegende Rollbalken.
+- **Neuer Modul-Tab im Hauptfenster:** nichts zu tun.
+  `main.py::TabManager.get_or_create` erledigt es zentral.
+- **Neuer Dialog:** nur nötig, wenn er wirklich zu hoch wird. Messkriterium:
+  `dlg.minimumSizeHint().height()` über ~700 px (Referenz: `mod_kunden.py`,
+  `beleg_edit.py`, `mod_artikel.py`). Ein Dialog von 300 px bekommt keinen
+  Rollbalken.
+
+### Pflicht beim Auslesen von Tab-Widgets
+
+Weil im `QTabWidget` jetzt die **Hülle** steckt und nicht mehr der Reiter, muss
+jeder Zugriff der Form `tabs.widget(i)` / `tabs.currentWidget()` durch
+`ui_widgets.scroll_inhalt(...)` laufen:
+
+```python
+tab = ui_widgets.scroll_inhalt(self._tabs.widget(idx))   # sonst kommt die Hülle
+```
+
+Ohne das laufen Identitätsvergleiche (`tab is self._tab_x`) und Attributzugriffe
+(`HELP_ANCHOR`, `_refresh`, `set_kunde`) ins Leere. Genau daran ist das
+Nachladen der Firmenstamm-Reiter einmal stillschweigend gescheitert.
+
+### Prüfung
+
+Nach jedem solchen Umbau **beides** messen:
+
+1. **Layout:** Ein `resize(800, 700)` muss tatsächlich 700 px ergeben, und die
+   Eingabefelder behalten ihre Höhe (kein Stauchen).
+2. **Funktion:** Laden die Reiter/Tabs noch ihre Daten, stimmt der F1-Anker,
+   greifen `_refresh`/`set_kunde`? Ein reiner Layout-Test übersieht genau die
+   Hüllen-Regression von oben — leere Felder im Screenshot sind ein Warnsignal,
+   kein Testartefakt.
+
+Fallstricke bei der Messung: `DialogSizeMixin.showEvent` stellt die gespeicherte
+Dialoggröße wieder her, ein `resize()` **vor** `show()` wird also überschrieben.
+Und die internen `QLineEdit` editierbarer `QComboBox`-Widgets sind immer kleiner
+als ihr eigener `sizeHint` — sie gehören aus Stauchungs-Messungen ausgenommen.
+
 ## ⚠️ STRENGE REGEL: Neue UI-Strings über i18n
 
 Jeder neue **benutzersichtbare String** in der UI (Button-Label, Menüeintrag, QLabel-Text, MessageBox-Titel/-Text, Tooltip, Spaltenheader, Tab-Titel, Form-Beschriftung, Fenstertitel) **muss** über `_("schluessel")` aus `i18n.py` geladen werden:

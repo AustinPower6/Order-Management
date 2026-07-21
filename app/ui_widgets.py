@@ -6,7 +6,8 @@ from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel,
                               QDialog, QVBoxLayout, QTextEdit, QDialogButtonBox,
                               QMessageBox, QApplication, QStyle, QStyleOptionTab,
                               QStylePainter, QTabBar, QTabWidget, QComboBox, QTableView,
-                              QLineEdit, QAbstractSpinBox, QCheckBox, QScrollArea)
+                              QLineEdit, QAbstractSpinBox, QCheckBox, QScrollArea,
+                              QFrame)
 from i18n import _
 import theme
 
@@ -531,6 +532,59 @@ class FlowWidget(QWidget):
         if lay:
             return QSize(50, lay.heightForWidth(600))
         return super().minimumSizeHint()
+
+
+def in_scrollbereich(inhalt: QWidget) -> QWidget:
+    """Hüllt `inhalt` in einen vertikalen Scrollbereich und gibt die Hülle zurück.
+
+    Zweck: Ein Fenster/Reiter darf sich **nicht** an seinen Inhalt anpassen. Passt
+    der Inhalt nicht in die verfügbare Höhe, wird gerollt — sonst erzwingt das
+    Layout eine größere Fensterhöhe (bzw. staucht die Zeilen, wodurch Einträge
+    unten abgeschnitten werden).
+
+    Eine SaveBar des Inhalts (Attribut `_save_bar`) wird aus dessen Layout gelöst
+    und **unterhalb** des Scrollbereichs fest verankert, damit Speichern und
+    Abbrechen immer sichtbar bleiben und nicht mitrollen.
+
+    Wird `inhalt` bereits von dieser Funktion gehüllt (oder ist er selbst eine
+    QScrollArea), passiert nichts — die Funktion ist mehrfach aufrufbar.
+    """
+    if isinstance(inhalt, QScrollArea) or inhalt.property("_hat_scrollbereich"):
+        return inhalt
+
+    huelle = QWidget()
+    huelle.setProperty("_hat_scrollbereich", True)
+    # Rückweg zum Inhalt: Wer ein Tab-Widget aus einem QTabWidget holt, bekommt
+    # sonst die Hülle statt des Reiters — `scroll_inhalt()` löst das auf.
+    huelle._scroll_inhalt = inhalt
+    lay = QVBoxLayout(huelle)
+    lay.setContentsMargins(0, 0, 0, 0)
+    lay.setSpacing(6)
+
+    save_bar = getattr(inhalt, "_save_bar", None)
+    if save_bar is not None:
+        save_bar.setParent(None)      # aus dem Layout des Inhalts lösen
+
+    scroll = QScrollArea()
+    scroll.setWidgetResizable(True)   # Inhalt füllt die Breite, wächst nur in der Höhe
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
+    scroll.setWidget(inhalt)
+    lay.addWidget(scroll)
+    if save_bar is not None:
+        lay.addWidget(save_bar)
+    return huelle
+
+
+def scroll_inhalt(widget):
+    """Gibt zu einer `in_scrollbereich`-Hülle den ursprünglichen Inhalt zurück.
+
+    **Immer benutzen, wenn ein Widget aus einem QTabWidget geholt wird**
+    (`tabs.widget(i)`, `tabs.currentWidget()`): Sonst liefert der Zugriff die
+    Hülle, und Identitätsvergleiche (`tab is self._tab_x`) oder Attributzugriffe
+    (`HELP_ANCHOR`) laufen ins Leere. Widgets ohne Hülle gibt die Funktion
+    unverändert zurück, `None` bleibt `None`.
+    """
+    return getattr(widget, "_scroll_inhalt", widget) if widget is not None else None
 
 
 def setze_formular_readonly(root, ausser=()):

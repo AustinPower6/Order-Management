@@ -41,6 +41,7 @@ from modul.mod_fallback_protokoll import FallbackProtokollFenster
 from modul.mod_token_verbrauch import TokenVerbrauchFenster
 from modul.mod_sprachdatei import SprachdateiDialog
 import druck as druck_mod
+import ui_widgets
 from ui_widgets import zeige_fehler, zeige_warnung
 import main_sidebar
 from main_sidebar import ClickableLabel
@@ -57,7 +58,11 @@ class TabManager:
             self._tabs.setCurrentIndex(self._keys[key])
             return
         widget = widget_fn()
-        idx = self._tabs.addTab(widget, title)
+        # Jedes Modulfenster kommt in einen Scrollbereich: Das Hauptfenster soll
+        # sich nicht an seinen längsten Inhalt anpassen — passt er nicht, wird
+        # gerollt. Wer das Widget später aus `_tabs` holt, muss es über
+        # `ui_widgets.scroll_inhalt()` auflösen (sonst kommt die Hülle zurück).
+        idx = self._tabs.addTab(ui_widgets.in_scrollbereich(widget), title)
         self._keys[key] = idx
         self._tabs.setCurrentIndex(idx)
         self._tabs.setTabsClosable(True)
@@ -559,7 +564,7 @@ class MainWindow(QMainWindow):
 
     def _on_tab_changed(self, index):
         self._update_sidebar_from_tab()
-        widget = self._tabs.widget(index)
+        widget = ui_widgets.scroll_inhalt(self._tabs.widget(index))
         if widget and hasattr(widget, '_refresh'):
             widget._refresh()
 
@@ -662,7 +667,7 @@ class MainWindow(QMainWindow):
             return w
         if "firma" in self._tab_mgr._keys:
             idx = self._tab_mgr._keys["firma"]
-            widget = self._tabs.widget(idx)
+            widget = ui_widgets.scroll_inhalt(self._tabs.widget(idx))
             if hasattr(widget, 'refresh'):
                 widget.refresh()
             self._tabs.setCurrentIndex(idx)
@@ -1022,6 +1027,7 @@ class MainWindow(QMainWindow):
     def _current_help_anchor(self):
         """Anker des aktiv ausgewaehlten Tabs (HELP_ANCHOR-Klassenattribut)."""
         widget = self._tabs.currentWidget() if hasattr(self, "_tabs") else None
+        widget = ui_widgets.scroll_inhalt(widget)   # Tabs liegen in einer Scroll-Hülle
         return getattr(widget, "HELP_ANCHOR", None) if widget is not None else None
 
     def _open_help(self, anchor=None):

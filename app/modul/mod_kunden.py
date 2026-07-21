@@ -752,7 +752,10 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._splitter.splitterMoved.connect(
             lambda *_: settings.save_column_widths(
                 "kunde_dialog_splitter", self._splitter.sizes()))
-        lay.addWidget(self._splitter, 1)
+        # Der Dialog darf sich nicht an die Formularhöhe anpassen (die Spalten
+        # ergeben zusammen über 1000 px): Passt er nicht auf den Bildschirm, wird
+        # gerollt. Die Buttonleiste bleibt außerhalb und damit immer sichtbar.
+        lay.addWidget(ui_widgets.in_scrollbereich(self._splitter), 1)
 
         btn_bar_w = QWidget()
         btn_bar_lay = QHBoxLayout(btn_bar_w)

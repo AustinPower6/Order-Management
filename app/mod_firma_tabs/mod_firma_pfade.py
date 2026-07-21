@@ -1,7 +1,6 @@
 import os
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-                             QLineEdit, QLabel, QPushButton, QSizePolicy,
-                             QScrollArea, QFrame)
+                             QLineEdit, QLabel, QPushButton, QSizePolicy)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from ui_widgets import SaveBar
@@ -83,12 +82,9 @@ class PfadeTab(SimpleFormTab):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(6)
 
-        # Scrollbereich: Reicht die Fensterhöhe für die 11 Pfad-Zeilen samt
-        # Hinweistexten nicht, wird gescrollt statt die Felder zu stauchen —
-        # die Zeilenhöhe bleibt also konstant (Muster wie mod_firma_ki.py).
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        # Den Scrollbereich stellt der Firmenstamm zentral bereit
+        # (mod_firma_base._add_tab → ui_widgets.in_scrollbereich); hier nur noch
+        # der Inhalt, sonst gäbe es zwei ineinander liegende Rollbalken.
         content = QWidget()
         content_lay = QVBoxLayout(content)
         content_lay.setContentsMargins(0, 0, 0, 0)
@@ -164,11 +160,10 @@ class PfadeTab(SimpleFormTab):
 
         content_lay.addWidget(form_widget)
         content_lay.addStretch()
-        scroll.setWidget(content)
-        main_lay.addWidget(scroll)
+        main_lay.addWidget(content)
 
-        # SaveBar bewusst AUSSERHALB des Scrollbereichs: bleibt immer am
-        # unteren Tab-Rand sichtbar, scrollt nicht mit.
+        # Die SaveBar löst `in_scrollbereich` aus diesem Layout und verankert sie
+        # unter dem Scrollbereich — sie bleibt am unteren Tab-Rand sichtbar.
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)

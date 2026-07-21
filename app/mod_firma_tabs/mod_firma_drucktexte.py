@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QGroupBox, QInputDialog, QLabel, QComboBox, QCheckBox,
                              QPushButton, QLineEdit, QMessageBox)
 from PyQt6.QtCore import Qt, QEvent
@@ -206,8 +206,9 @@ class DrucktexteTab(SimpleFormTab):
         _hint.setStyleSheet(theme.hint_label_style())
         main_lay.addWidget(_hint)
 
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
+        # Den Scrollbereich stellt der Firmenstamm zentral bereit
+        # (mod_firma_base._add_tab → ui_widgets.in_scrollbereich); hier nur noch
+        # der Inhalt — vorher zeigte dieser Reiter zwei Rollbalken nebeneinander.
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
         scroll_layout.setSpacing(10)
@@ -356,8 +357,7 @@ class DrucktexteTab(SimpleFormTab):
             self._kond_group_boxes.append(box)
 
         scroll_layout.addStretch()
-        scroll.setWidget(scroll_widget)
-        main_lay.addWidget(scroll)
+        main_lay.addWidget(scroll_widget)
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)

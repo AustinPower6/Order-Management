@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QColorDialog, QDialog, QDialogButtonBox, QDoubleSpinBox, QFrame,
-    QHBoxLayout, QLabel, QLineEdit, QListWidget, QPushButton, QScrollArea,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget, QPushButton,
     QSizePolicy, QVBoxLayout, QWidget,
 )
 from PyQt6.QtCore import Qt, pyqtSignal
@@ -579,10 +579,9 @@ class LayoutTab(QWidget):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
 
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QFrame.Shape.NoFrame)
-
+        # Den Scrollbereich stellt der Firmenstamm zentral bereit
+        # (mod_firma_base._add_tab → ui_widgets.in_scrollbereich); hier nur noch
+        # der Inhalt, sonst gäbe es zwei ineinander liegende Rollbalken.
         inner = QWidget()
         inner_lay = QVBoxLayout(inner)
         inner_lay.setContentsMargins(8, 8, 8, 8)
@@ -600,8 +599,7 @@ class LayoutTab(QWidget):
             inner_lay.addWidget(block)
 
         inner_lay.addStretch()
-        scroll.setWidget(inner)
-        main_lay.addWidget(scroll, 1)
+        main_lay.addWidget(inner, 1)
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)

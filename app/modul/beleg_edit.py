@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog, QGroup
                              QHBoxLayout, QLabel, QMessageBox,
                              QPushButton, QTextEdit,
                              QToolButton, QVBoxLayout, QWidget)
+import ui_widgets
 from ui_widgets import FlowWidget as _FlowWidget
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QCursor
@@ -114,8 +115,16 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         QDesktopServices.openUrl(url)
 
     def _build(self):
-        lay = QVBoxLayout(self)
+        aussen = QVBoxLayout(self)
+        aussen.setSpacing(6)
+        # Kopf, Positionen und Fußtext liegen in einem Scrollbereich: Reicht die
+        # Bildschirmhöhe nicht (der Dialog braucht über 770 px), wird gerollt
+        # statt gestaucht. Die Buttonleiste bleibt außerhalb und damit sichtbar.
+        inhalt = QWidget()
+        lay = QVBoxLayout(inhalt)
+        lay.setContentsMargins(0, 0, 0, 0)
         lay.setSpacing(6)
+        aussen.addWidget(ui_widgets.in_scrollbereich(inhalt), 1)
 
         # ── Kopfdaten ────────────────────────────────────────────────────────
         kopf = QGroupBox(_("gbx.kopfdaten"))
@@ -248,7 +257,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         b_save = QPushButton(_("btn.speichern")); b_save.clicked.connect(self._speichern)
         b_cancel = QPushButton(_("btn.abbrechen")); b_cancel.clicked.connect(self.reject)
         btn_bar.addWidget(b_save); btn_bar.addWidget(b_cancel)
-        lay.addLayout(btn_bar)
+        aussen.addLayout(btn_bar)      # außerhalb des Scrollbereichs
 
     def _extra_action_buttons(self, btn_bar):
         pass

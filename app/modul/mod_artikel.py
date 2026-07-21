@@ -925,7 +925,9 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._splitter.splitterMoved.connect(
             lambda *_: settings.save_column_widths(
                 "artikel_dialog_splitter", self._splitter.sizes()))
-        lay.addWidget(self._splitter, 1)
+        # Scrollbereich statt Anpassen der Dialoghöhe (das Formular braucht über
+        # 700 px); die Buttonleiste bleibt außerhalb und damit immer sichtbar.
+        lay.addWidget(ui_widgets.in_scrollbereich(self._splitter), 1)
         btn_bar_w = QWidget()
         btn_bar_lay = QHBoxLayout(btn_bar_w)
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)

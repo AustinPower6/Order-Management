@@ -1,3 +1,45 @@
+## 2026-07-21 19:05 — Fenster rollen, statt sich an den Inhalt anzupassen
+
+Übernahme aus dem Mehrplatz-Ableger `Order-Management-Multi` (dort in zwei
+Schritten am 2026-07-21 umgesetzt und abgenommen). Anlass dort: Im
+Firmenstamm wurden Einträge unten abgeschnitten, weil die Reiter ihre Höhe
+erzwangen — `FirmaFenster.resize(800, 700)` ergab tatsächlich 1136 px.
+
+**Regel:** Kein Fenster, Reiter oder Dialog passt seine Größe an den Inhalt an;
+passt er nicht, kommt ein vertikaler Rollbalken. Als STRENGE REGEL in der
+`CLAUDE.md` festgehalten.
+
+- **Neu in `ui_widgets.py`:** `in_scrollbereich(widget)` hüllt ein Widget in
+  einen rahmenlosen, vertikal rollenden Bereich; eine `SaveBar` wird aus dem
+  Inhalt gelöst und darunter fest verankert. Dazu `scroll_inhalt(widget)`, das
+  eine Hülle wieder zum ursprünglichen Inhalt auflöst.
+- **Zentrale Einhängepunkte:** `mod_firma_base.py::_add_tab` (alle 20
+  Firmenstamm-Reiter, inkl. Admin-Reiter „Sperren") und
+  `main.py::TabManager.get_or_create` (alle Modul-Tabs). Neue Reiter/Tabs
+  brauchen dadurch nichts Eigenes.
+- **Zugriffe abgesichert:** Jeder `tabs.widget()`/`currentWidget()`-Zugriff
+  läuft jetzt durch `scroll_inhalt()` — in `mod_firma_base` (`_load_tab`,
+  `HELP_ANCHOR`) und an drei Stellen in `main.py`. Ohne das lädt kein Reiter
+  mehr seine Daten nach und F1 verliert seinen Anker (im Multi-Projekt war
+  genau das eine Regression, die erst beim zweiten Durchgang auffiel).
+- **Eigene ScrollAreas zurückgebaut** in `mod_firma_pfade.py`,
+  `mod_firma_ki.py`, `mod_firma_layout.py`, `mod_firma_drucktexte.py` — sonst
+  lägen zwei Rollbalken ineinander (bei Drucktexte war das sichtbar).
+- **Drei Dialoge** bekamen einen Scrollbereich, Buttonleiste jeweils außerhalb:
+  `mod_kunden.KundeDialog` (1031 → 120 px), `beleg_edit.BelegEditDialog`
+  (772 → 116 px, deckt alle fünf Belegarten ab), `mod_artikel.ArtikelDialog`
+  (718 → 120 px). Alle übrigen geprüften Dialoge liegen unter 500 px und
+  bleiben unverändert.
+
+**Verifikation** (gegen die eigene SQLite-Datenbank, Firma 990): `ruff check
+app` grün; `FirmaFenster.resize(800, 700)` ergibt exakt 700 px
+(`minimumSizeHint` 243 statt >1136); alle 20 Reiter mit höchstens einem
+Rollbalken, sichtbarer SaveBar, ohne gestauchte Felder; **Funktion mitgeprüft** —
+alle Reiter laden ihre Daten (Adressreiter zeigt „Testfirma 990") und der
+F1-Anker stimmt je Reiter; die drei Dialoge halten 400 px mit Rollbalken und
+gefüllten Feldern; `TabManager` liefert über `scroll_inhalt` das echte
+Modulfenster samt `HELP_ANCHOR` und `_refresh`.
+
 ## 2026-07-21 12:48 — Belegkette: Auftrag zeigte seine Rechnung nicht, wenn kein Lieferschein existiert
 
 Übernahme der Korrektur aus dem Mehrplatz-Ableger `Order-Management-Multi`

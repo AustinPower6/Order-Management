@@ -26,6 +26,7 @@ from .mod_firma_parameter import ParameterTab
 from .mod_firma_ki import KiAnbindungTab
 from .mod_firma_layout import LayoutTab
 from .mod_firma_steuern import SteuernTab
+import ui_widgets
 from ui_widgets import zeige_fehler, zeige_warnung
 
 
@@ -40,7 +41,8 @@ class FirmaFenster(QWidget):
         trägt sein eigenes HELP_ANCHOR-Klassenattribut, das auf eine id in
         doku.{de,en}.html zeigt). Vor dem UI-Bau bzw. ohne aktiven Reiter: „firma"."""
         tabs = getattr(self, "_tabs_widget", None)
-        aktiv = tabs.currentWidget() if tabs is not None else None
+        # scroll_inhalt: Die Reiter liegen in einer Scrollbereich-Hülle (_add_tab)
+        aktiv = ui_widgets.scroll_inhalt(tabs.currentWidget()) if tabs is not None else None
         return getattr(aktiv, "HELP_ANCHOR", None) or "firma"
 
     def __init__(self, db):
@@ -215,7 +217,8 @@ class FirmaFenster(QWidget):
         # "Lock entsperren" nur für Administratoren sichtbar
         if lock_manager.ist_admin():
             self._tab_locks = LocksTab(self.db)
-            self._tabs_widget.addTab(self._tab_locks, _("firma.tab.sperren"))
+            self._tabs_widget.addTab(ui_widgets.in_scrollbereich(self._tab_locks),
+                                     _("firma.tab.sperren"))
         else:
             self._tab_locks = None
 
@@ -240,7 +243,12 @@ class FirmaFenster(QWidget):
         feuert für es nie) und kostet daher nichts.
         """
         if rechte.darf(self.db, modul_key, rechte.LESEN):
-            self._tabs_widget.addTab(widget, _(label_key))
+            # Jeder Reiter kommt in einen Scrollbereich: Der Firmenstamm soll sich
+            # nicht an seinen längsten Reiter anpassen — passt ein Formular nicht
+            # in die Fensterhöhe, wird gerollt statt die Zeilen zu stauchen
+            # (sonst schneidet Qt die Einträge unten ab). Eine SaveBar bleibt
+            # dabei fest unter dem Scrollbereich stehen.
+            self._tabs_widget.addTab(ui_widgets.in_scrollbereich(widget), _(label_key))
 
     # ─── Laden ────────────────────────────────────────────────────────
 
@@ -308,7 +316,10 @@ class FirmaFenster(QWidget):
             return
         self._show_loading()
         try:
-            tab = self._tabs_widget.widget(idx)
+            # scroll_inhalt: `widget(idx)` liefert die Scrollbereich-Hülle des
+            # Reiters (_add_tab) — ohne Auflösung schlügen die Identitäts-
+            # vergleiche unten fehl und kein Reiter würde nachgeladen.
+            tab = ui_widgets.scroll_inhalt(self._tabs_widget.widget(idx))
             f = self._pending_f
 
             if tab is self._tab_nummern:

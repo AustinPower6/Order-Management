@@ -9,7 +9,7 @@ die Antwort anzeigt.
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit, QLabel,
                              QSizePolicy, QPushButton, QMessageBox, QGroupBox,
-                             QScrollArea, QSpinBox, QAbstractSpinBox)
+                             QSpinBox, QAbstractSpinBox)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QGuiApplication
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
@@ -68,11 +68,9 @@ class KiAnbindungTab(SimpleFormTab):
         self._admin = ist_admin()
         self._key_realwerte = {}
 
-        # Scrollbereich: Wird das Fenster verkleinert, bleibt der 6-px-Abstand
-        # zwischen den Feldern erhalten (es wird gescrollt, statt die Felder
-        # zusammenzuquetschen).
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
+        # Den Scrollbereich stellt der Firmenstamm zentral bereit
+        # (mod_firma_base._add_tab → ui_widgets.in_scrollbereich); hier nur noch
+        # der Inhalt, sonst gäbe es zwei ineinander liegende Rollbalken.
         content = QWidget()
         content_lay = QVBoxLayout(content)
         content_lay.setContentsMargins(0, 0, 0, 0)
@@ -192,8 +190,7 @@ class KiAnbindungTab(SimpleFormTab):
         content_lay.addWidget(prompts_w)
         content_lay.addStretch()
 
-        scroll.setWidget(content)
-        main_lay.addWidget(scroll)
+        main_lay.addWidget(content)
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
