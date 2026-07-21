@@ -118,6 +118,18 @@ def load_chain(db: Any, current_id: Optional[int], current_typ: str) -> Tuple[Op
                     if rec:
                         chain[next_typ] = rec
 
+    # 3b. Auftrag → Rechnung ohne Lieferschein: „→ Rechnung" in der Auftragsliste
+    # überspringt den Lieferschein. Die Kette oben läuft strikt
+    # Angebot → Auftrag → Lieferschein → Rechnung und bricht deshalb schon beim
+    # fehlenden Lieferschein ab. Rückwärts deckt ALT_VORGANGER denselben Fall
+    # bereits ab — ohne diesen Zweig fand die Rechnung ihren Auftrag, der Auftrag
+    # aber nicht seine Rechnung (und damit auch deren Mahnungen nicht).
+    if chain["auftraege"] and not chain["rechnungen"]:
+        rec = _safe_dict(db.get_rechnung_fuer_auftrag(chain["auftraege"]["id"],
+                                                      include_deleted=True))
+        if rec:
+            chain["rechnungen"] = rec
+
     # 4. Mahnungen laden (immer alle Mahnungen der Rechnung)
     rech = chain["rechnungen"]
     if rech:

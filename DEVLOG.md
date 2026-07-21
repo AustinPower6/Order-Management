@@ -1,3 +1,42 @@
+## 2026-07-21 12:48 — Belegkette: Auftrag zeigte seine Rechnung nicht, wenn kein Lieferschein existiert
+
+Übernahme der Korrektur aus dem Mehrplatz-Ableger `Order-Management-Multi`
+(dort gemeldet an AU2026-0004/RE2026-0005); die Datei ist in beiden Projekten
+zeichengleich und bleibt es.
+
+**Ursache** (`modul/beleg_kette.py::load_chain`): Die Funktion baut die Kette in
+zwei Durchgängen auf. Rückwärts (Schritt 2) deckt `ALT_VORGANGER` den Fall
+„Rechnung ohne Lieferschein → Auftrag" ab. Vorwärts (Schritt 3) lief die Kette
+dagegen strikt Angebot → Auftrag → Lieferschein → Rechnung: Fehlt der
+Lieferschein, bricht sie dort ab, und der Schritt Lieferschein → Rechnung wird
+nie ausgeführt. Da „→ Rechnung" in der Auftragsliste den Lieferschein bewusst
+überspringt, ist das ein regulärer Datenstand (`auftrag_id` gesetzt,
+`lieferschein_id` NULL) — daher zeigte die Rechnung ihren Auftrag, der Auftrag
+aber nicht seine Rechnung.
+
+**Behebung:** Neuer Schritt 3b — ist ein Auftrag in der Kette, aber noch keine
+Rechnung, wird `db.get_rechnung_fuer_auftrag()` befragt. Die Methode existierte
+bereits (`db/db_belege.py:982`) und wurde von der Vorwärtssuche nur nicht
+genutzt. Der Zweig greift ausschließlich, wenn noch keine Rechnung gefunden
+wurde, und überschreibt damit nie den Weg über den Lieferschein.
+
+- **Nebeneffekt, der schwerer wog als die Anzeige:** Die Mahnungen hängen in
+  Schritt 4 an der gefundenen Rechnung. Ohne den Fix hatte eine vom Auftrag aus
+  geöffnete Kette auch keine Mahnungen — bei einer gemahnten Rechnung ohne
+  Lieferschein fehlte der komplette Zweig.
+- Nicht betroffen: `build_chain_data` setzt die Auftrag→Rechnung-Links bereits,
+  `lebende_nachfolger` fragt `get_rechnung_fuer_auftrag` korrekt ab — beide
+  bekamen die Rechnung nur nie geliefert.
+- Die Anwenderdoku beschreibt das Modell bereits korrekt (Abschnitt „Belegkette
+  im Detail": *Rechnung: auftrag_id →, lieferschein_id?*) — sie war richtig, der
+  Code falsch.
+- **Verifikation** gegen die eigene Datenbank (Firma 6): Hier sind **vier**
+  Aufträge betroffen — AU2026-0004→RE2026-0005, AU2026-0002→RE2026-0002,
+  AU2026-0006→RE2026-0003, AU2026-0005→RE2026-0004. Alle vier zeigten vorher
+  keine Rechnung, nachher die richtige ✓; Gegenrichtung unverändert ✓;
+  Regression an einer Kette **mit** Lieferschein (Auftrag 93 / Rechnung 78) in
+  beiden Richtungen unverändert ✓; `ruff check app` grün.
+
 ## 2026-07-20 19:34 — Anwenderdoku: Statusfarben der Beleglisten nachgezogen (DE + EN)
 
 - **Anlass (Walter):** „die doku für die statusfarben nachziehen" — der offene DOKU-TODO-Punkt aus der Design-Übernahme vom selben Tag.
