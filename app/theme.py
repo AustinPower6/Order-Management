@@ -308,6 +308,22 @@ QTableWidget QLineEdit:focus, QTreeWidget QLineEdit:focus {{
     padding: 2px 6px;
 }}
 
+/* Dauerhaft in eine Zelle eingesetzte Eingabefelder (setCellWidget, z. B.
+   KontoZelleEdit in den MwSt.-Konten) sind keine kurzzeitigen Zell-Editoren:
+   Ein Rahmen je Feld ergäbe ein Gitter aus Rahmen über der ganzen Tabelle.
+   Deshalb rahmenlos; der Fokus bleibt über den invertierten Hintergrund
+   erkennbar. Der Attribut-Selektor sticht die Regel darüber (CSS-Spezifität). */
+QLineEdit[flat="true"], QLineEdit[flat="true"]:focus {{
+    border: none;
+    border-radius: 0px;
+    padding: 2px 6px;
+}}
+
+QLineEdit[flat="true"]:focus {{
+    background-color: {focus_bg};
+    color: {focus_fg};
+}}
+
 QTextEdit {{
     background-color: {bg_input};
     color: {fg};

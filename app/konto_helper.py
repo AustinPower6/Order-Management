@@ -357,6 +357,7 @@ class KontoZelleEdit(QWidget):
         self._edit = QLineEdit()
         self._edit.setAlignment(Qt.AlignmentFlag.AlignRight)
         self._edit.setFrame(False)
+        self._edit.setProperty("flat", True)   # Theme: kein Rahmen in der Zelle
         self._edit.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         self._edit.textChanged.connect(self._on_changed)
         self._such_btn = QPushButton("…")

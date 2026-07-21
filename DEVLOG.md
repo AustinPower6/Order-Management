@@ -1,3 +1,28 @@
+## 2026-07-21 19:18 — Blaue Rahmen um die Konto-Felder entfernt
+
+Gemeldet aus dem Reiter „Anbindung Finanzbuchhaltung": Die vier Konto-Spalten
+der MwSt.-Konten-Tabelle waren mit blauen Rahmen umzogen — ein Rahmengitter
+über die ganze Tabelle. Übernahme der Korrektur aus dem Mehrplatz-Ableger
+(dort am 2026-07-21 als `77c90ca` umgesetzt).
+
+**Ursache:** Die Theme-Regel für Tabellenzellen-Editoren
+(`QTableWidget QLineEdit …` mit `border: 1px solid {accent}`) war für den
+kurzzeitigen Editor beim Doppelklick auf eine Zelle gedacht, traf aber auch die
+dauerhaft per `setCellWidget` eingesetzten `KontoZelleEdit`-Felder — daher ein
+Rahmen um **jedes** Feld in **jeder** Zeile.
+
+- **`theme.py`:** neue Regel `QLineEdit[flat="true"]` — rahmenlos, der Fokus
+  bleibt über die Hintergrund-Inversion erkennbar. Der Attribut-Selektor sticht
+  die Zell-Editor-Regel per CSS-Spezifität, ohne sie zu verändern; der echte
+  Doppelklick-Editor behält seinen Rahmen.
+- **`konto_helper.py`:** `KontoZelleEdit` setzt `flat=True` auf seinem
+  `QLineEdit`.
+- Die Felder im oberen Formularbereich (DATEV-Nummern, Kontenrahmen usw.)
+  bleiben unverändert mit ihrem normalen grauen Rahmen.
+
+**Verifikation:** `ruff check app` grün; Fibu-Reiter der Firma 990 gerendert —
+16 Zellfelder tragen `flat=True`, die Tabelle zeigt keine Rahmen mehr.
+
 ## 2026-07-21 19:05 — Fenster rollen, statt sich an den Inhalt anzupassen
 
 Übernahme aus dem Mehrplatz-Ableger `Order-Management-Multi` (dort in zwei
