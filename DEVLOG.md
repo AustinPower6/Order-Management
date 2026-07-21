@@ -1,3 +1,28 @@
+## 2026-07-21 21:30 — Fehler-Hinweis im E-Mail-Postausgang war unsichtbar
+
+Beim Abschluss-Smoke des Refactorings meldete Qt fünfmal „Could not parse
+stylesheet" beim Öffnen des E-Mail-Tabs.
+
+**Ursache:** In `modul/mod_emails.py` wird das Stylesheet des Labels
+„Fehler vorhanden!" aus drei Teilstrings zusammengesetzt. Die ersten beiden sind
+f-Strings — dort steht `{{`/`}}` korrekt für eine einzelne Klammer. Der dritte
+Teil ist ein **normaler** String; dort bleiben beide Klammern stehen. Das
+Stylesheet endete also auf `}}`, Qt verwarf es komplett — **die rote
+Hervorhebung des Fehlerhinweises wurde nie dargestellt**, das Label blieb
+unauffällig im Standardaussehen.
+
+**Korrektur:** eine Klammer entfernt (letzte Zeile ist kein f-String).
+
+**Prüfung:** Gegenprobe statt Sichtprüfung — das Label sichtbar geschaltet, per
+`grab()` die tatsächliche Pixelfarbe in seiner Mitte gemessen: `#c62828`,
+identisch mit `theme.color("status_error")`, Fettschrift gesetzt, null
+Stylesheet-Warnungen. Vorher wäre hier die Hintergrundfarbe des Formulars
+erschienen.
+
+Ein AST-Prüflauf über **alle** `setStyleSheet`-Aufrufe beider Projekte (Klammern
+je Aufruf zählen, f-Präfix berücksichtigen) fand genau diese eine Stelle je
+Projekt — sonst ist keine weitere betroffen.
+
 ## 2026-07-21 19:18 — Blaue Rahmen um die Konto-Felder entfernt
 
 Gemeldet aus dem Reiter „Anbindung Finanzbuchhaltung": Die vier Konto-Spalten
