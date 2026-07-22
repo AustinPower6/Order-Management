@@ -1,3 +1,32 @@
+## 2026-07-22 15:10 — DB v79: vier tote Spalten aus `firma` entfernt
+
+Aufgefallen beim Schema-Abgleich zur KIS-Übernahme: Die Tabelle `firma` trug
+neben den aktiven Vorgabefeldern `email_versand_default`,
+`email_versand_angebot_default`, `email_versand_auftrag_default` und
+`email_versand_mahnungen_default` noch die gleichnamigen Spalten **ohne**
+Suffix. Sie stammen aus der Zeit vor dem Umbau und blieben liegen, weil SQLite
+damals kein `DROP COLUMN` beherrschte.
+
+**Beleg, dass sie tot sind:** Kein Code-Zugriff über das firma-dict (gezielt
+gesucht), und ihre Werte weichen inzwischen von den aktiven Feldern ab
+(`email_versand` = 0 gegenüber `email_versand_default` = 1) — seit dem Umbau
+wurden sie also nicht mehr mitgepflegt.
+
+`_to_v79` entfernt sie per `ALTER TABLE firma DROP COLUMN` (ab SQLite 3.35, hier
+3.50). In `db_schema.py` ist nichts zu ändern: Dort standen sie ohnehin nie.
+
+**Ausdrücklich nicht betroffen:** die gleichnamigen Spalten der Tabelle `kunden`
+(Versandsteuerung je Kunde) und die Tabelle `email_versand` (Postausgang) —
+beide aktiv. Das ALTER ist deshalb strikt auf `firma` begrenzt.
+
+**Verifikation** (auf einer Kopie, Arbeits-DB unangetastet): Von `firma` fehlen
+danach **genau** diese vier Spalten und keine andere; die `*_default`-Werte sind
+unverändert; die `kunden`-Spalten und ihre Daten (280 Zeilen) unberührt; Tabelle
+`email_versand` steht; `integrity_check` = ok, `foreign_key_check` ohne Befund;
+`Database()` lädt Firma und Kundenliste weiterhin. Zusätzlich: Nach v79 sind
+migrierte und frisch angelegte DB **spaltengleich** — vorher unterschieden sie
+sich in genau diesen vier Spalten.
+
 ## 2026-07-22 14:44 — Kundeninformationssystem aus dem Mehrplatz-Ableger übernommen (DB v78)
 
 Das KIS gab es bisher nur im Mehrplatz-Ableger (dort DB v82–v84). Übernommen

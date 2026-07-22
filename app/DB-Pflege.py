@@ -1896,7 +1896,33 @@ def _to_v78(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 78
+def _to_v79(conn):
+    """`firma`: vier tote Spalten aus der Zeit vor den `*_default`-Feldern entfernen.
+
+    Die firmenweiten Versand-Vorgaben heißen längst `email_versand_default`,
+    `email_versand_angebot_default` usw. Die gleichnamigen Spalten ohne Suffix
+    blieben beim Umbau liegen, weil SQLite damals kein DROP COLUMN konnte. Der
+    Code liest sie nirgends mehr — belegt auch dadurch, dass ihre Werte seit dem
+    Umbau nicht mehr mitgepflegt wurden und von den aktiven Feldern abweichen.
+
+    Nicht verwechseln: Die gleichnamigen Spalten der Tabelle `kunden` (Versand je
+    Kunde) und die Tabelle `email_versand` (Postausgang) sind aktiv und bleiben
+    unangetastet — deshalb ist das ALTER hier ausdrücklich auf `firma` begrenzt.
+
+    In db_schema.py ist nichts zu ergänzen: Dort stehen diese Spalten ohnehin
+    nicht, frische DBs haben sie also nur über die alten Migrationsschritte.
+    DROP COLUMN gibt es ab SQLite 3.35; kein Index, View oder Trigger hängt an
+    den Spalten (geprüft).
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    for spalte in ("email_versand", "email_versand_angebot",
+                   "email_versand_auftrag", "email_versand_mahnungen"):
+        if spalte in cols:
+            conn.execute(f"ALTER TABLE firma DROP COLUMN {spalte}")
+    conn.commit()
+
+
+CURRENT_VERSION = 79
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1976,6 +2002,7 @@ MIGRATIONEN: dict = {
     76: _to_v76,
     77: _to_v77,
     78: _to_v78,
+    79: _to_v79,
 }
 
 
