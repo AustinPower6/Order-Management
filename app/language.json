@@ -3424,6 +3424,10 @@
     "ts": "2026-06-25 17:24",
     "h": "60293289265d"
   },
+  "field.kunde.ansprechpartner": {
+    "de": "Ansprechpartner:",
+    "en": "Contact person:"
+  },
   "field.kunde.e_rechnung_aktiv": {
     "de": "E-Rechnung erstellen:",
     "en": "Create e-invoice:",
@@ -3453,6 +3457,10 @@
     "en": "BIC:",
     "ts": "2026-07-13 06:21",
     "h": "3480ce4c0ae9"
+  },
+  "field.kunde.fax": {
+    "de": "Telefax:",
+    "en": "Fax:"
   },
   "field.kunde.iban": {
     "de": "IBAN:",
@@ -3520,6 +3528,10 @@
     "en": "Leitweg-ID / Buyer reference:",
     "ts": "2026-06-25 17:24",
     "h": "4a416b4eb26e"
+  },
+  "field.kunde.mobil": {
+    "de": "Mobil:",
+    "en": "Mobile:"
   },
   "field.kunde.nachname": {
     "de": "Nachname:",
@@ -11069,6 +11081,14 @@
     "de": "Kunde:",
     "en": "Customer:"
   },
+  "kundeninfo.lbl.name": {
+    "de": "Name:",
+    "en": "Name:"
+  },
+  "kundeninfo.lbl.ort": {
+    "de": "PLZ/Ort:",
+    "en": "ZIP/City:"
+  },
   "kundeninfo.msg.abruf_ergebnis": {
     "de": "E-Mail-Abruf abgeschlossen:\n{neu} neu übernommen\n{doppelt} bereits vorhanden\n{ignoriert} nicht zuordenbar (übersprungen)",
     "en": "Email retrieval finished:\n{neu} newly added\n{doppelt} already present\n{ignoriert} not attributable (skipped)"
@@ -11097,8 +11117,28 @@
     "de": "Gesamt",
     "en": "Total"
   },
+  "kundeninfo.umsatz.jahr": {
+    "de": "Jahr",
+    "en": "Year"
+  },
+  "kundeninfo.umsatz.monat": {
+    "de": "Monat",
+    "en": "Month"
+  },
+  "kundeninfo.umsatz.quartal": {
+    "de": "Quartal",
+    "en": "Quarter"
+  },
   "kundeninfo.umsatz.quartal_spalte": {
     "de": "Q{q}/{jahr}",
     "en": "Q{q}/{jahr}"
+  },
+  "sidebar.btn.kundeninfo": {
+    "de": "Kundeninfo",
+    "en": "Customer Info"
+  },
+  "tab.kundeninfo": {
+    "de": "Kundeninfo",
+    "en": "Customer Info"
   }
 }

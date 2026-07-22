@@ -57,6 +57,24 @@ Arbeits-DB blieb unverändert:
   haben ein Ziel, `HELP_ANCHOR = "kundeninfo"` trifft das neue Kapitel.
 - `ruff check app` grün.
 
+**Nachtrag 14:55 — zehn fehlende Schlüssel.** Nach dem ersten echten Start
+meldete Walter unübersetzte Texte: der Tab hieß „tab.kundeninfo", die Sidebar
+„sidebar.btn.kundeninfo", der Kopf zeigte „kundeninfo.lbl.name" und die
+Umsatzzeilen ihre Schlüssel. **Ursache war meine Prüfung, nicht der Code:** Der
+Abgleich hatte nur direkte `_("…")`-Aufrufe erfasst — Schlüssel, die als
+String-Literal in Registries und Listen stehen (`TAB_REGISTRY`, Sidebar-Struktur,
+`_kopf_feld("name", "kundeninfo.lbl.name", …)`), fielen durch das Raster.
+Nachgetragen wurden `tab.kundeninfo`, `sidebar.btn.kundeninfo`,
+`kundeninfo.lbl.name`, `kundeninfo.lbl.ort`, `kundeninfo.umsatz.monat/quartal/jahr`
+sowie `field.kunde.mobil/fax/ansprechpartner` (die drei neuen Kundenfelder hatten
+im Dialog ebenfalls keine Beschriftung).
+
+Die Prüfung ist jetzt eine andere: Ein Skript baut Kundeninfo-Tab und
+Kundendialog auf, liest **alle** sichtbaren Texte (Labels, Buttons, GroupBox-
+Titel, Combo-Einträge, Spaltenköpfe) samt Tab-Titeln und Sidebar-Beschriftungen
+aus den Registries und meldet jeden, der wie ein Schlüssel aussieht
+(`punkt.getrennt.klein`). Ergebnis: **0 Treffer**.
+
 **Noch offen:** Die Migration der Arbeits-DB läuft beim nächsten regulären
 Programmstart über DB-Pflege. Sicherung vorher:
 `app/daten/auftragsabwicklung_vor_KIS_20260722_1426.db`.
