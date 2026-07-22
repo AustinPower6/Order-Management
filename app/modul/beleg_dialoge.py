@@ -395,8 +395,8 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         search_row.addStretch()
         mitte_lay.addLayout(search_row)
 
-        base_cols = [_("col.artikelnr"), _("col.bezeichnung"), _("col.einheit"),
-                     _("col.einzelpreis"), _("col.mwst_klasse")]
+        base_cols = [_("col.artikelnr"), _("col.marke"), _("col.bezeichnung"),
+                     _("col.einheit"), _("col.einzelpreis"), _("col.mwst_klasse")]
         if self._show_locks:
             base_cols.append(_("col.locks"))
         cols = (base_cols + [_("col.id")]) if self._show_id else base_cols
@@ -405,12 +405,15 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setSortingEnabled(True)   # Sortierung per Klick auf die Kopfzeile
-        self.table.setColumnWidth(1, 200)   # Bezeichnung (immer Index 1)
+        self.table.setColumnWidth(1, 110)   # Marke (immer Index 1)
+        self.table.setColumnWidth(2, 200)   # Bezeichnung (immer Index 2)
         if self._show_id:
             self.table.setColumnWidth(len(cols) - 1, 50)   # Satz-ID (letzte Spalte)
         self.table.doubleClicked.connect(self._ok)
-        _apply_saved_columns(self.table, "artikel_auswahl")
-        _connect_save_columns(self.table, "artikel_auswahl")
+        # Schlüssel mit „2": Die Spalte „Marke" kam nachträglich dazu — mit dem alten
+        # Schlüssel hätte die gespeicherte Breitenliste die Spalten verschoben.
+        _apply_saved_columns(self.table, "artikel_auswahl2")
+        _connect_save_columns(self.table, "artikel_auswahl2")
         mitte_lay.addWidget(self.table)
         inner.addWidget(mitte)
 
@@ -517,7 +520,9 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             nr = (a["artikelnr"] or "").lower()
             if any(t not in nr for t in nr_tokens):
                 continue
-            bez = (a["bezeichnung"] or "").lower()
+            # Marke wird mitdurchsucht: „bosch" findet die Marke auch dann, wenn sie
+            # nicht in der Bezeichnung steht (sie steht sichtbar in der Marken-Spalte).
+            bez = f'{a["bezeichnung"] or ""} {a["marke_bez"] or ""}'.lower()
             if any(t not in bez for t in bez_tokens):
                 continue
             out.append(a)
@@ -591,10 +596,10 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             self.table, artikel_list,
             fmt_row=lambda a: (
                 a["id"],
-                [a["artikelnr"], a["bezeichnung"],
+                [a["artikelnr"], a["marke_bez"] or "", a["bezeichnung"],
                  einheit_map.get(a["einheit"], a["einheit"]),
                  fmt_betrag(float(a["preis"]), self._waehrung), a["mwst_bez"] or ""],
-                [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
+                [ALLEFT, ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
             ),
             show_id=self._show_id, show_locks=self._show_locks)
         self.table.setSortingEnabled(True)

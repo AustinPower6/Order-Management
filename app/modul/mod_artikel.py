@@ -135,7 +135,8 @@ class ArtikelFenster(QWidget):
         splitter.addWidget(rechts)
         splitter.setStretchFactor(1, 1)
 
-        self._base_cols = [_("col.artikelnr"), _("col.bezeichnung"), _("col.einheit"),
+        self._base_cols = [_("col.artikelnr"), _("col.marke"), _("col.bezeichnung"),
+                           _("col.einheit"),
                            _("col.einzelpreis"), _("col.mwst_klasse"),
                            _("col.warengruppe"), _("col.artikelgruppe"),
                            _("col.untergruppe"), _("col.gruppe"),
@@ -151,9 +152,12 @@ class ArtikelFenster(QWidget):
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
-        self.table.setColumnWidth(1, 200)   # Bezeichnung (immer Index 1)
-        _apply_saved_columns(self.table, "artikel")
-        _connect_save_columns(self.table, "artikel")
+        self.table.setColumnWidth(1, 110)   # Marke (immer Index 1)
+        self.table.setColumnWidth(2, 200)   # Bezeichnung (immer Index 2)
+        # Schlüssel mit „2": Die Spalte „Marke" kam nachträglich dazu — mit dem alten
+        # Schlüssel hätte die gespeicherte Breitenliste die Spalten verschoben.
+        _apply_saved_columns(self.table, "artikel2")
+        _connect_save_columns(self.table, "artikel2")
 
         # Suchzeile über der Tabelle
         search_row = QHBoxLayout()
@@ -304,7 +308,9 @@ class ArtikelFenster(QWidget):
         nr = (a["artikelnr"] or "").lower()
         if any(t not in nr for t in nr_tokens):
             return False
-        bez = (a["bezeichnung"] or "").lower()
+        # Marke wird mitdurchsucht (wie in der Artikel-Auswahl des Belegs): „bosch"
+        # findet die Marke auch dann, wenn sie nicht in der Bezeichnung steht.
+        bez = f'{a["bezeichnung"] or ""} {a["marke_bez"] or ""}'.lower()
         if any(t not in bez for t in bez_tokens):
             return False
         return True
@@ -332,7 +338,7 @@ class ArtikelFenster(QWidget):
         """Befüllt Tabellenzeile r aus Artikel-dict a (setItem überschreibt vorhandene)."""
         preis = f"{float(a['preis']):.2f}".replace(".", ",") + " " + waehrung
         einheit = self._einheit_map.get(a["einheit"], a["einheit"])
-        values = [a["artikelnr"], a["bezeichnung"], einheit,
+        values = [a["artikelnr"], a["marke_bez"] or "", a["bezeichnung"], einheit,
                   preis, a["mwst_bez"] or "",
                   a["warengruppe_bez"] or "", a["artikelgruppe_bez"] or "",
                   a["untergruppe_bez"] or "", a["gruppe_bez"] or "",
@@ -352,7 +358,7 @@ class ArtikelFenster(QWidget):
             item = QTableWidgetItem(v or "")
             if c == id_col:
                 item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            elif c == 3:  # Preis (immer Index 3)
+            elif c == 4:  # Preis (immer Index 4)
                 item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             else:
                 item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -677,7 +683,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._vorbelegung = vorbelegung
         self._lock_freigegeben = False
         self._dirty = False
-        self._besc_snapshot = ""
+        self._saved = None            # Zustand beim Laden (Vergleich in _refresh_dirty)
         self.setWindowTitle(_("dlg.artikel_bearbeiten") if artikel_id else _("dlg.artikel_neu"))
         self.resize(950, 620)
         self._build()
@@ -778,14 +784,14 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._ueb_sich = UebersetzungCheck()
         self._ueb_hist = UebersetzungCheck()
         for _c in (self._ueb_bez, self._ueb_besc, self._ueb_sich, self._ueb_hist):
-            _c.changed.connect(self._mark_dirty)
+            _c.changed.connect(self._refresh_dirty)
 
         # Druck-Schalter je druckbarem Artikeltext (dreiwertig: Firmenstamm/immer/nie)
         self._druck_besc = DruckCheck()
         self._druck_sich = DruckCheck()
         self._druck_hist = DruckCheck()
         for _c in (self._druck_besc, self._druck_sich, self._druck_hist):
-            _c.changed.connect(self._mark_dirty)
+            _c.changed.connect(self._refresh_dirty)
 
         def _wrap_feld(feld, ctrl, ctrl_links):
             c = QWidget()
@@ -840,19 +846,32 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         kv_lay.setSpacing(8)
         kv_lay.addWidget(self._logo_vorschau, 1)
         kv_lay.addWidget(self._bild_vorschau, 1)
-        # Marken-Logo (links) wird im Firmenstamm → Parameter verwaltet; hier nur
-        # Vorschau. Button-Zeile enthält daher nur noch die Artikelbild-Buttons.
+        # Unter jeder Vorschau ein eigenes Button-Paar (Auswahl + Löschen), in
+        # derselben 1:1-Aufteilung wie die Vorschauen darüber. Das Marken-Logo
+        # gilt markenweit — es liegt konventionsbasiert unter dem Marken-Slug und
+        # wird auch im Firmenstamm → Parameter → Marken gepflegt.
+        def _btn_paar(auswahl_key, on_auswahl, on_loeschen):
+            w = QWidget()
+            w_lay = QHBoxLayout(w)
+            w_lay.setContentsMargins(0, 0, 0, 0)
+            w_lay.setSpacing(4)
+            w_lay.addStretch()
+            btn = QPushButton(_(auswahl_key))
+            btn.clicked.connect(on_auswahl)
+            btn_del = QPushButton(_("btn.loeschen"))
+            btn_del.clicked.connect(on_loeschen)
+            w_lay.addWidget(btn)
+            w_lay.addWidget(btn_del)
+            return w
+
         btn_zeile = QWidget()
         btn_zeile_lay = QHBoxLayout(btn_zeile)
         btn_zeile_lay.setContentsMargins(0, 0, 0, 0)
-        btn_zeile_lay.setSpacing(4)
-        btn_zeile_lay.addStretch()
-        btn_bild = QPushButton(_("btn.auswahl_bild"))
-        btn_bild.clicked.connect(self._bild_auswaehlen)
-        btn_bild_del = QPushButton(_("btn.loeschen"))
-        btn_bild_del.clicked.connect(self._bild_loeschen)
-        btn_zeile_lay.addWidget(btn_bild)
-        btn_zeile_lay.addWidget(btn_bild_del)
+        btn_zeile_lay.setSpacing(8)
+        btn_zeile_lay.addWidget(
+            _btn_paar("btn.auswahl_logo", self._logo_auswaehlen, self._logo_loeschen), 1)
+        btn_zeile_lay.addWidget(
+            _btn_paar("btn.auswahl_bild", self._bild_auswaehlen, self._bild_loeschen), 1)
         form_r.addRow("", kombinierte_vorschau)
         form_r.addRow("", btn_zeile)
         form_r.addRow(_("field.artikel.beschreibung"),
@@ -882,26 +901,26 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             _b.setEnabled(_ki_aktiv)
             if not _ki_aktiv:
                 _b.setToolTip(_("artikel.ki.tooltip_inaktiv"))
-        # dirty tracking
+        # dirty tracking — alle Signale laufen auf den Zustandsvergleich
+        # (_refresh_dirty); ein blindes _mark_dirty() an textChanged würde durch die
+        # Rechtschreibprüfung Fehlalarm auslösen, siehe Docstring dort.
         for w in [self._nr, self._bez, self._preis,
                   self._ean, self._herstellernr, self._lieferzeit,
-                  self._gewicht_kg, self._uvp]:
-            w.textChanged.connect(lambda: self._mark_dirty())
-        self._sicherheitshinw.textChanged.connect(lambda: self._mark_dirty())
-        self._herstellerinfo.textChanged.connect(lambda: self._mark_dirty())
-        self._besc.textChanged.connect(self._refresh_besc_dirty)
-        self._einh.currentTextChanged.connect(lambda: self._mark_dirty())
-        self._mwst.currentIndexChanged.connect(lambda: self._mark_dirty())
+                  self._gewicht_kg, self._uvp,
+                  self._besc, self._sicherheitshinw, self._herstellerinfo]:
+            w.textChanged.connect(lambda: self._refresh_dirty())
+        self._einh.currentTextChanged.connect(lambda: self._refresh_dirty())
+        self._mwst.currentIndexChanged.connect(lambda: self._refresh_dirty())
         # Fallback-Gelb wieder entfernen, sobald der Benutzer selbst eine Auswahl trifft.
         self._einh.activated.connect(lambda: self._einh.setStyleSheet(""))
         self._mwst.activated.connect(lambda: self._mwst.setStyleSheet(""))
         self._warengruppe.currentIndexChanged.connect(self._on_warengruppe_changed)
         self._artikelgruppe.currentTextChanged.connect(self._on_artikelgruppe_changed)
         self._untergruppe.currentTextChanged.connect(self._on_untergruppe_changed)
-        self._gruppe.currentTextChanged.connect(lambda: self._mark_dirty())
+        self._gruppe.currentTextChanged.connect(lambda: self._refresh_dirty())
         self._marke.currentTextChanged.connect(self._on_marke_changed)
-        self._aktiv.toggled.connect(lambda: self._mark_dirty())
-        self._speditionsware.toggled.connect(lambda: self._mark_dirty())
+        self._aktiv.toggled.connect(lambda: self._refresh_dirty())
+        self._speditionsware.toggled.connect(lambda: self._refresh_dirty())
         # Linke + rechte Spalte in QSplitter packen (Spaltenbreite anpassbar).
         # Wrapper-Widget mit VBox + Stretch hält die Form oben fest, sodass
         # ein gestrecktes Splitter-Child nicht die Zeilenabstände aufbläht.
@@ -945,16 +964,16 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         lay.addWidget(btn_bar_w)
 
     def _on_warengruppe_changed(self):
-        self._mark_dirty()
         self._reload_artikelgruppen()
+        self._refresh_dirty()     # erst nach dem Nachladen: es ändert die Folge-Combos
 
     def _on_artikelgruppe_changed(self):
-        self._mark_dirty()
         self._reload_untergruppen()
+        self._refresh_dirty()
 
     def _on_untergruppe_changed(self):
-        self._mark_dirty()
         self._reload_gruppen()
+        self._refresh_dirty()
 
     def _reload_artikelgruppen(self, keep_text=""):
         wg_id = self._warengruppe.currentData()
@@ -1104,6 +1123,47 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 pass
         self._bild_pfad.setText("")
 
+    def _logo_auswaehlen(self):
+        """Logo der gewählten Marke setzen — gilt für **alle** Artikel dieser Marke.
+
+        Ablage konventionsbasiert wie im Firmenstamm → Parameter → Marken:
+        {marken_logo_pfad}\\{firmen_nr}\\{marke_slug}.<ext>.
+        """
+        bez = self._marke.currentText().strip() if self._marke.currentData() else ""
+        if not bez:
+            QMessageBox.information(self, _("msg.hinweis"), _("artikel.logo_braucht_marke"))
+            return
+        _art, logo_basis, firmen_nr = self._basis_pfade()
+        sub = os.path.join(logo_basis, firmen_nr)
+        start = sub if os.path.isdir(sub) else logo_basis
+        f, _flt = QFileDialog.getOpenFileName(
+            self, _("dlg.bild_auswaehlen"), start, _("dlg.bilder_filter"))
+        if not f:
+            return
+        try:
+            ziel = self._kopiere_bild(f, logo_basis, firmen_nr, marke_slug(bez))
+        except OSError as ex:
+            zeige_fehler(self, _("msg.fehler"), str(ex))
+            return
+        self._marke_logo.setText(ziel)   # textChanged → Vorschau
+
+    def _logo_loeschen(self):
+        pfad = self._marke_logo.text().strip()
+        if not pfad or not os.path.isfile(pfad):
+            self._marke_logo.setText("")
+            return
+        # Rückfrage, weil die Datei markenweit gilt (anders als das Artikelbild).
+        bez = self._marke.currentText().strip()
+        if QMessageBox.question(
+                self, _("msg.loeschen"),
+                _("artikel.logo_frage_loeschen", marke=bez)) != QMessageBox.StandardButton.Yes:
+            return
+        try:
+            os.remove(pfad)
+        except OSError:
+            pass
+        self._marke_logo.setText("")
+
     def _update_logo_vorschau(self):
         pfad = self._marke_logo.text().strip()
         if pfad and os.path.exists(pfad):
@@ -1128,7 +1188,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._bild_vorschau.clear()
 
     def _on_marke_changed(self, text):
-        self._mark_dirty()
+        self._refresh_dirty()
         _art, logo_basis, firmen_nr = self._basis_pfade()
         bez = text.strip() if self._marke.currentData() else ""
         # setText löst über textChanged das Logo-Vorschau-Update aus
@@ -1229,8 +1289,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._nr.setText(a["artikelnr"])
             self._nr.setReadOnly(True)
             self._bez.setText(a["bezeichnung"])
-            self._besc_snapshot = a.get("beschreibung") or ""
-            self._besc.setPlainText(self._besc_snapshot)
+            self._besc.setPlainText(a.get("beschreibung") or "")
             einh_gefunden = self._lade_einheiten(behalte_id=a.get("einheit_id"))
             if not a.get("einheit_id") or not einh_gefunden:
                 # Einheit des Artikels fehlt/gelöscht → erste Einheit (Fallback).
@@ -1283,16 +1342,49 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         for f in [self._nr, self._bez, self._preis, self._ean,
                   self._herstellernr, self._lieferzeit, self._gewicht_kg, self._uvp]:
             f.setCursorPosition(0)
+        self._clear_dirty()
+
+    def _zustand(self):
+        """Alle speicherbaren Eingaben als Tupel — Grundlage des Dirty-Vergleichs.
+
+        Bild- und Logo-Pfad stehen bewusst nicht darin: Sie werden konventions-
+        basiert ermittelt und gar nicht gespeichert.
+        """
+        return (
+            self._nr.text(), self._bez.text(), self._preis.text(),
+            self._ean.text(), self._herstellernr.text(), self._lieferzeit.text(),
+            self._gewicht_kg.text(), self._uvp.text(),
+            self._besc.toPlainText(), self._sicherheitshinw.toPlainText(),
+            self._herstellerinfo.toPlainText(),
+            self._einh.currentText(), self._mwst.currentText(),
+            self._warengruppe.currentText(), self._artikelgruppe.currentText(),
+            self._untergruppe.currentText(), self._gruppe.currentText(),
+            self._marke.currentText(),
+            self._aktiv.isChecked(), self._speditionsware.isChecked(),
+            self._ueb_bez.state(), self._ueb_besc.state(),
+            self._ueb_sich.state(), self._ueb_hist.state(),
+            self._druck_besc.state(), self._druck_sich.state(),
+            self._druck_hist.state(),
+        )
+
+    def _clear_dirty(self):
+        """Aktuellen Stand als „gespeichert" merken und den Punkt ausblenden."""
+        self._saved = self._zustand()
         self._dirty = False
         self._dirty_dot.hide()
 
-    def _mark_dirty(self):
-        self._dirty = True
-        self._dirty_dot.show()
+    def _refresh_dirty(self, *_args):
+        """Punkt nur bei echter Abweichung vom geladenen Stand zeigen.
 
-    def _refresh_besc_dirty(self):
-        if self._besc.toPlainText() != self._besc_snapshot:
-            self._mark_dirty()
+        Bekannte Fehlerklasse dieses Projekts (vgl. E-Mail-Tab, KI-Tab): Der
+        `SpellCheckHighlighter` ruft kurz nach dem Laden `rehighlight()` auf →
+        `textChanged` **ohne** Textänderung. Ein blindes `_mark_dirty()` an den
+        Feldsignalen machte daraus einen Punkt am unbenutzten Dialog.
+        Nebeneffekt des Vergleichs: Nimmt der Anwender eine Änderung zurück,
+        verschwindet der Punkt wieder.
+        """
+        self._dirty = self._saved is not None and self._zustand() != self._saved
+        self._dirty_dot.setVisible(self._dirty)
 
     def _speichern(self):
         if not self._bez.text().strip():

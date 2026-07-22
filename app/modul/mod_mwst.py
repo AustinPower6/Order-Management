@@ -30,20 +30,20 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         form = QFormLayout()
         form.setVerticalSpacing(6)
         self._bez = SpellCheckLineEdit()
-        self._bez.textChanged.connect(lambda: self._mark_dirty())
+        self._bez.textChanged.connect(lambda: self._refresh_dirty())
         form.addRow("Bezeichnung:", self._bez)
         self._hinweis = QTextEdit(); self._hinweis.setFixedHeight(50)
         self._hinweis._spell_hl = SpellCheckHighlighter(self._hinweis.document())
-        self._hinweis.textChanged.connect(lambda: self._mark_dirty())
+        self._hinweis.textChanged.connect(lambda: self._refresh_dirty())
         form.addRow(_("mwst.klasse.lbl.hinweis_text"), self._hinweis)
         self._igl = QCheckBox()
-        self._igl.stateChanged.connect(lambda: self._mark_dirty())
+        self._igl.stateChanged.connect(lambda: self._refresh_dirty())
         form.addRow(_("mwst.klasse.lbl.igl"), self._igl)
         # DATEV-Steuerschlüssel (BU-Schlüssel) je Klasse — nur bei DATEV-Export relevant
         self._datev_ss = QLineEdit()
         self._datev_ss.setValidator(QIntValidator(0, 9999, self))
         self._datev_ss.setMaxLength(4)
-        self._datev_ss.textChanged.connect(lambda: self._mark_dirty())
+        self._datev_ss.textChanged.connect(lambda: self._refresh_dirty())
         form.addRow(_("field.datev_steuerschluessel"), self._datev_ss)
         form.setRowVisible(self._datev_ss, self._datev_aktiv())
         lay.addLayout(form)
@@ -59,13 +59,13 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             satz_form.setVerticalSpacing(6)
             self._ss = QLineEdit()
             self._ss.setPlaceholderText("1-99")
-            self._ss.textChanged.connect(lambda: self._mark_dirty())
+            self._ss.textChanged.connect(lambda: self._refresh_dirty())
             satz_form.addRow("Steuerschlüssel:", self._ss)
             self._satz = QLineEdit("19.0")
-            self._satz.textChanged.connect(lambda: self._mark_dirty())
+            self._satz.textChanged.connect(lambda: self._refresh_dirty())
             satz_form.addRow("Satz (%):", self._satz)
             self._datum = DatumEdit(self)
-            self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
+            self._datum._edit.dateChanged.connect(lambda: self._refresh_dirty())
             satz_form.addRow("Gültig ab:", self._datum)
             lay.addLayout(satz_form)
         btn_bar_w = QWidget()
@@ -80,8 +80,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         btn_cancel.clicked.connect(self.reject)
         btn_bar_lay.addWidget(btn_cancel)
         lay.addWidget(btn_bar_w)
-        self._dirty = False
-        self._dirty_dot.hide()
+        self._clear_dirty()
         self.adjustSize()
 
     def _datev_aktiv(self) -> bool:
@@ -97,9 +96,32 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         t = self._datev_ss.text().strip()
         return int(t) if t.isdigit() else None
 
-    def _mark_dirty(self):
-        self._dirty = True
-        self._dirty_dot.show()
+    def _zustand(self):
+        """Alle Eingaben als Tupel — Grundlage des Dirty-Vergleichs."""
+        werte = [self._bez.text(), self._hinweis.toPlainText(),
+                 self._igl.isChecked(), self._datev_ss.text()]
+        if self.neu:   # nur bei Neuanlage: erster Satz
+            werte += [self._ss.text(), self._satz.text(), self._datum.text()]
+        return tuple(werte)
+
+    def _clear_dirty(self):
+        """Aktuellen Stand als „gespeichert" merken und den Punkt ausblenden."""
+        self._saved = self._zustand()
+        self._dirty = False
+        self._dirty_dot.hide()
+
+    def _refresh_dirty(self, *_args):
+        """Punkt nur bei echter Abweichung vom geladenen Stand zeigen.
+
+        Bekannte Fehlerklasse dieses Projekts (vgl. Artikel-Dialog, E-Mail-Tab,
+        `KommunikationDialog`): Der `SpellCheckHighlighter` des Hinweis-Feldes
+        ruft kurz nach dem Öffnen `rehighlight()` auf → `textChanged` **ohne**
+        Textänderung. Ein blindes `_mark_dirty()` setzte den Punkt daraufhin am
+        unbenutzten Dialog.
+        """
+        self._dirty = getattr(self, "_saved", None) is not None \
+            and self._zustand() != self._saved
+        self._dirty_dot.setVisible(self._dirty)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:

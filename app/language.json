@@ -220,6 +220,14 @@
     "h": "31a56651d9a2",
     "rs_de": "c48f8119ea17"
   },
+  "artikel.logo_braucht_marke": {
+    "de": "Bitte zuerst eine Marke auswählen.",
+    "en": "Please select a brand first."
+  },
+  "artikel.logo_frage_loeschen": {
+    "de": "Logo der Marke „{marke}“ löschen? Es gilt für alle Artikel dieser Marke.",
+    "en": "Delete the logo of brand “{marke}”? It applies to every article of this brand."
+  },
   "artikel.ueb.tip_an": {
     "de": "Übersetzung für dieses Feld aktiviert (unabhängig vom Firmenstamm)",
     "en": "Translation enabled for this field (independent of company settings)",
@@ -1410,6 +1418,10 @@
     "en": "Reminder No.",
     "ts": "2026-06-25 17:24",
     "h": "7b682e87dce8"
+  },
+  "col.marke": {
+    "de": "Marke",
+    "en": "Brand"
   },
   "col.menge": {
     "de": "Menge",

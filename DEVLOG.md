@@ -1,3 +1,60 @@
+## 2026-07-22 14:04 — Sechs Oberflächen-Änderungen aus dem Mehrplatz-Ableger übernommen
+
+Übernahme der heute in `Order-Management-Multi` entstandenen Arbeit, damit
+Einzel- und Mehrplatzvariante dieselbe Oberfläche haben. Alles reine UI —
+kein Schema, kein Datenbankzugriffscode. `db/db_artikel.py::get_artikel()`
+liefert `marke_bez` hier bereits per LEFT JOIN, deshalb war die Marken-Spalte
+ohne Datenbankarbeit möglich.
+
+**1. Kundendialog aufgeräumt** (`modul/mod_kunden.py::KundeDialog._build`):
+Briefanrede, Notizen, Zahlungs- und Mahnkondition stehen jetzt in der rechten
+Spalte unter „E-Rechnung-Version", abgesetzt durch eine 10 px hohe Leerzeile.
+Die linke Spalte endet bei „BIC"; der Dialog wird dadurch niedriger.
+
+**2. Spalte „Marke" in beiden Artikellisten** — Artikel-Auswahl im Beleg
+(`modul/beleg_dialoge.py::ArtikelAuswahlDialog`) und Artikelstamm
+(`modul/mod_artikel.py::ArtikelFenster`), jeweils zwischen Artikel-Nr. und
+Bezeichnung. Das Suchfeld „Bezeichnung" durchsucht zusätzlich die Marke. Die
+Spaltenbreiten-Schlüssel wurden auf `artikel_auswahl2` bzw. `artikel2` gezogen,
+sonst hätte die gespeicherte Breitenliste die Spalten verschoben. Im Artikelstamm
+wandert die Preis-Rechtsbündigkeit von Spaltenindex 3 auf 4.
+
+**3. Dirty-Punkt beim bloßen Öffnen** (`modul/mod_artikel.py::ArtikelDialog`,
+`modul/mod_mwst.py::KlasseDialog`): Der `SpellCheckHighlighter` ruft kurz nach
+dem Laden `rehighlight()` auf → `textChanged` ohne Textänderung. Beide Dialoge
+nutzen jetzt das im Projekt etablierte Muster `_zustand()` / `_clear_dirty()` /
+`_refresh_dirty()` an allen Feldsignalen statt eines blinden `_mark_dirty()`.
+`_besc_snapshot`/`_refresh_besc_dirty` entfallen. Nebeneffekt: Eine
+zurückgenommene Änderung blendet den Punkt wieder aus. `SatzDialog` bleibt
+unverändert — dort gibt es kein Spellcheck-Textfeld.
+
+**4. Logo-Buttons im Artikel-Dialog**: Unter der Marken-Logo-Vorschau stehen
+jetzt „Logoauswahl" und „Löschen", in derselben 1:1-Aufteilung wie die
+Vorschauen. Ablage konventionsbasiert wie im Firmenstamm → Parameter → Marken.
+Gelöscht wird **mit Rückfrage**, weil das Logo markenweit gilt.
+
+Neue i18n-Schlüssel: `col.marke`, `artikel.logo_braucht_marke`,
+`artikel.logo_frage_loeschen`.
+
+**Übernahmeweg:** `mod_mwst.py`, `beleg_dialoge.py`, `mod_artikel.py`
+(Listen-Teil) und `mod_kunden.py` ließen sich als Patch übernehmen — für den
+Kundendialog mit umgeschriebenem Dateinamen, weil der Dialog dort in
+`mod_kunden_dialog.py` liegt. Der `ArtikelDialog`-Teil wurde von Hand
+nachgezogen: Er liegt drüben in `mod_artikel_dialog.py`, hier weiterhin in
+`mod_artikel.py`.
+
+**Verifikation** (offscreen gegen die lokale DB, 7.856 Artikel / 280 Kunden):
+
+- `python -m ruff check app` grün, `py_compile` der vier Dateien, `language.json`
+  gültig.
+- Kundendialog: Werte geladen (Briefanrede, Zahlungs-/Mahnkondition), kein Feld
+  gestaucht, Fokuskette in Sichtfolge bis `mahnkondition`.
+- Artikel-Auswahl und Artikelstamm: Spaltenköpfe korrekt, Marke gefüllt, Suche
+  „viessmann" → 311 Zeilen, Preis rechtsbündig.
+- Artikel-Dialog: 32 Dirty-Zusicherungen bestanden (bearbeiten und neu anlegen);
+  Button-Prüfung inkl. Position der Logo-Buttons bestanden.
+- MwSt-Klassen-Dialog: 18 Dirty-Zusicherungen bestanden.
+
 ## 2026-07-21 21:30 — Fehler-Hinweis im E-Mail-Postausgang war unsichtbar
 
 Beim Abschluss-Smoke des Refactorings meldete Qt fünfmal „Could not parse

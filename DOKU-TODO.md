@@ -23,7 +23,27 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-_(derzeit keine offenen Punkte)_
+- [ ] (2026-07-22) Artikel-Auswahl im Beleg **und** Artikelliste im Artikelstamm
+      zeigen eine neue Spalte **Marke** (links von der Bezeichnung); das Suchfeld
+      „Bezeichnung" durchsucht in beiden zusätzlich die Marke.
+  - Code: `app/modul/beleg_dialoge.py::ArtikelAuswahlDialog`,
+    `app/modul/mod_artikel.py::ArtikelFenster`
+  - Doku: Kapitel Belege → Positionen erfassen (Artikel-Auswahl) sowie
+    „Artikelliste — Spalten": Spaltenliste und Suchverhalten ergänzen.
+
+- [ ] (2026-07-22) Artikel-Dialog: Unter der Marken-Logo-Vorschau gibt es jetzt
+      **Logoauswahl** und **Löschen**. Das Logo gilt markenweit (gleiche Ablage
+      wie Firmenstamm → Parameter → Marken); Löschen fragt deshalb nach.
+  - Code: `app/modul/mod_artikel.py::ArtikelDialog` (`_logo_auswaehlen`,
+    `_logo_loeschen`)
+  - Doku: Artikelstamm → Bearbeitungsdialog, „Rechte Spalte — Medien &
+    Hinweise": bisher nur Artikelbild-Buttons beschrieben.
+
+- [ ] (2026-07-22) Kundendialog: Briefanrede, Notizen, Zahlungs- und
+      Mahnkondition stehen jetzt in der rechten Spalte unter der E-Rechnung.
+  - Code: `app/modul/mod_kunden.py::KundeDialog._build`
+  - Doku: nur prüfen — die Feldtabelle im Kundenstamm-Kapitel beschreibt keine
+    Spaltenzuordnung, vermutlich ist keine Anpassung nötig.
 
 Stand 2026-07-20: `app/doku.de.html` und `app/doku.en.html` sind **synchron** auf dem
 aktuellen Code-Stand nachgezogen — zuletzt der neue Abschnitt „Statusfarben in der

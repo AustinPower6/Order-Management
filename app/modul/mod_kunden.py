@@ -658,26 +658,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             ("bank",        "field.kunde.bank"),
             ("iban",        "field.kunde.iban"),
             ("bic",         "field.kunde.bic"),
-            ("briefanrede", "field.kunde.briefanrede"),
-            ("notizen",     "field.kunde.notizen"),
         ]:
             _add(form_l, key, lbl_key)
-
-        self._zk_cb = QComboBox()
-        self._zk_cb.insertItem(0, _("zk.keine"), None)
-        for zk in self.db.get_zahlungskonditionen():
-            self._zk_cb.addItem(_("zk.eintrag", bezeichnung=zk['bezeichnung'], tage=zk['tage']), zk['id'])
-        form_l.addRow(_("lbl.zahlungskondition"), self._zk_cb)
-        self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
-        self._zk_cb.activated.connect(lambda: self._zk_cb.setStyleSheet(""))
-
-        self._mk_cb = QComboBox()
-        self._mk_cb.insertItem(0, _("zk.keine"), None)
-        for mk in self.db.get_mahnkonditionen():
-            self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
-        form_l.addRow(_("lbl.mahnkondition"), self._mk_cb)
-        self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
-        self._mk_cb.activated.connect(lambda: self._mk_cb.setStyleSheet(""))
 
         # Rechte Spalte – E-Mail
         _add(form_r, "email", "field.kunde.email")
@@ -719,6 +701,30 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         form_r.addRow(_("field.kunde.e_rechnung_version"), e_rg_widget)
         self._e_rechnung_version_cb.currentIndexChanged.connect(
             lambda: (self._mark_dirty(), self._update_version_hint()))
+
+        # Rechte Spalte – Anrede, Notizen & Konditionen (kleiner Abstand davor,
+        # damit der Block nicht zur E-Rechnung gezählt wird)
+        _abstand = QWidget()
+        _abstand.setFixedHeight(10)
+        form_r.addRow("", _abstand)
+        _add(form_r, "briefanrede", "field.kunde.briefanrede")
+        _add(form_r, "notizen", "field.kunde.notizen")
+
+        self._zk_cb = QComboBox()
+        self._zk_cb.insertItem(0, _("zk.keine"), None)
+        for zk in self.db.get_zahlungskonditionen():
+            self._zk_cb.addItem(_("zk.eintrag", bezeichnung=zk['bezeichnung'], tage=zk['tage']), zk['id'])
+        form_r.addRow(_("lbl.zahlungskondition"), self._zk_cb)
+        self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+        self._zk_cb.activated.connect(lambda: self._zk_cb.setStyleSheet(""))
+
+        self._mk_cb = QComboBox()
+        self._mk_cb.insertItem(0, _("zk.keine"), None)
+        for mk in self.db.get_mahnkonditionen():
+            self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
+        form_r.addRow(_("lbl.mahnkondition"), self._mk_cb)
+        self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+        self._mk_cb.activated.connect(lambda: self._mk_cb.setStyleSheet(""))
 
         # Pflichtfeld-Verknüpfungen & Validator
         for key in self._E_RECHNUNG_PFLICHTFELDER:
