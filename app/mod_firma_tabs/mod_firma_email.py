@@ -129,15 +129,34 @@ class EmailTab(SimpleFormTab):
         form.addRow(_("firma.parameter.smtp_port"), e_smtp_port)
         self._felder["smtp_port"] = e_smtp_port
 
+        # IMAP-Server für den E-Mail-Abruf des KIS (nur beim Client "smtp";
+        # bei "gmail" steht imap.gmail.com fest, Zugangsdaten sind dieselben)
+        e_imap_host = QLineEdit()
+        e_imap_host.setPlaceholderText("imap.example.com")
+        form.addRow(_("firma.parameter.imap_host"), e_imap_host)
+        self._felder["imap_host"] = e_imap_host
+
+        e_imap_port = QSpinBox()
+        e_imap_port.setRange(1, 65535)
+        e_imap_port.setValue(993)
+        e_imap_port.setMaximumWidth(100)
+        form.addRow(_("firma.parameter.imap_port"), e_imap_port)
+        self._felder["imap_port"] = e_imap_port
+
         self._smtp_felder = (
             "smtp_host", "smtp_user", "smtp_password",
             "smtp_tls_mode", "smtp_port_manuell", "smtp_port",
+            "imap_host", "imap_port",
         )
 
-        # Test-Button
+        # Test-Buttons
         self._btn_test = QPushButton(_("btn.test_email_senden"))
         self._btn_test.clicked.connect(self._test_email_senden)
         form.addRow("", self._btn_test)
+
+        self._btn_abruf_test = QPushButton(_("btn.test_email_abruf"))
+        self._btn_abruf_test.clicked.connect(self._test_abruf)
+        form.addRow("", self._btn_abruf_test)
 
         # Verbindungen
         self._cmb_email_client.currentIndexChanged.connect(self._toggle_client_felder)
@@ -234,6 +253,7 @@ class EmailTab(SimpleFormTab):
             self._update_tls_labels()
 
         self._btn_test.setVisible(client != "keine")
+        self._btn_abruf_test.setVisible(client in ("gmail", "smtp"))
 
     # ── Dirty-Tracking, Werte, Snapshot ─────────────────────────────────────
 
@@ -445,6 +465,41 @@ class EmailTab(SimpleFormTab):
         except Exception as ex:
             zeige_fehler(self, _("msg.fehler"),
                          _("email.msg.smtp_fehler", detail=str(ex)))
+
+    def _test_abruf(self):
+        """IMAP-Login mit den Formularwerten prüfen (liest nur, ändert nichts)."""
+        import imaplib
+        client = self._cmb_email_client.currentData()
+        if client == "gmail":
+            host, port = "imap.gmail.com", 993
+            user = self._felder["gmail_user"].text().strip()
+            pw = self._felder["gmail_app_password"].text().strip()
+        elif client == "smtp":
+            host = self._felder["imap_host"].text().strip()
+            port = self._felder["imap_port"].value()
+            user = self._felder["smtp_user"].text().strip()
+            pw = self._felder["smtp_password"].text().strip()
+        else:
+            return
+        if not host or not user or not pw:
+            zeige_warnung(self, _("msg.fehler"), _("email.abruf_test.unvollstaendig"))
+            return
+        try:
+            imap = imaplib.IMAP4_SSL(host, port, timeout=15)
+            try:
+                imap.login(user, pw)
+                status, daten = imap.select("INBOX", readonly=True)
+                anzahl = int(daten[0]) if status == "OK" else 0
+            finally:
+                try:
+                    imap.logout()
+                except (imaplib.IMAP4.error, OSError):
+                    pass
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("email.abruf_test.erfolg", anzahl=anzahl))
+        except Exception as ex:                                   # noqa: BLE001
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.abruf_test.fehler", detail=str(ex)))
 
     def _test_brevo(self, empfaenger, betreff, text):
         api_key = self._felder["brevo_api_key"].text().strip()

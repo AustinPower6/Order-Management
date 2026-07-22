@@ -86,6 +86,97 @@ def _melde_fallback(firma, soll_wert, soll_quelle, benutzter_wert, hinweis):
         pass
 
 
+def kommunikations_mailtext(firma, text: str) -> str:
+    """Mailtext einer KIS-Kommunikation inkl. Signatur und Datenschutzerklärung.
+
+    Eigene Funktion, damit die Vorschau im Kommunikations-Dialog exakt das
+    zeigt, was später versendet wird — ohne den Aufbau zu doppeln.
+    """
+    text = (text or "").strip()
+    signatur = (firma.get("signatur") or "").strip()
+    datenschutz = (firma.get("datenschutzerklaerung") or "").strip()
+    if signatur:
+        text = text + "\n\n" + signatur
+    if datenschutz:
+        text = text + "\n\n" + datenschutz
+    return text
+
+
+def erzeuge_kommunikations_email(db, firma, kunde, betreff, text, kommunikation_id,
+                                 kennung, anhaenge=()):
+    """E-Mail aus dem Kundeninformationssystem: JSON + Postausgang-Eintrag.
+
+    Anders als erzeuge_email gibt es keine Vorlage und keinen Beleg — Betreff
+    (inkl. der bereits angehängten KIS-Kennung) und Text kommen direkt aus dem
+    Kommunikations-Dialog. Im Postausgang erscheint der Eintrag als
+    beleg_typ='kommunikation' mit der Kennung als Belegnummer; beleg_id
+    referenziert den Historieneintrag (kommunikation.id).
+    `anhaenge` sind fertige Dateipfade (die Original-PDFs der beigelegten
+    Belege) und gehen wie beim Belegversand in das JSON-Feld "anhaenge".
+    Gibt email_versand.id zurück. Wirft RuntimeError, wenn das JSON nicht
+    geschrieben werden kann."""
+    empfaenger = (kunde.get("email") or "").strip()
+    if not empfaenger:
+        return None
+
+    text = kommunikations_mailtext(firma, text)
+
+    fallback_felder = []
+    absender = (firma.get("email") or "").strip()
+    if not absender:
+        fallback_felder.append("absender")
+        _melde_fallback(
+            firma,
+            soll_wert="Absender-E-Mail",
+            soll_quelle="Firma → E-Mail-Adresse",
+            benutzter_wert="(leer)",
+            hinweis="Firmenstamm → E-Mail: Absender-Adresse hinterlegen.")
+
+    firma_id = firma.get("id") or db._firma_id()
+    jetzt = datetime.now().isoformat(timespec="seconds")
+    db_id = db.save_email_versand({
+        "firma_id": firma_id,
+        "beleg_typ": "kommunikation",
+        "beleg_id": kommunikation_id,
+        "belegnr": kennung,
+        "kunden_id": kunde.get("id"),
+        "an": empfaenger,
+        "betreff": betreff,
+        "json_pfad": "",
+        "status": "ausstehend",
+        "erstellt_am": jetzt,
+        "hat_fallback": 1 if fallback_felder else 0,
+    })
+
+    payload = {
+        "version": "1.0",
+        "erstellt_am": jetzt,
+        "status": "ausstehend",
+        "an": empfaenger,
+        "von": absender,
+        "betreff": betreff,
+        "text": text,
+        "anhaenge": [str(p) for p in (anhaenge or [])],
+        "meta": {
+            "db_id": db_id,
+            "beleg_typ": "kommunikation",
+            "beleg_id": kommunikation_id,
+            "belegnr": kennung,
+            "kunden_id": kunde.get("id"),
+            "firma_id": firma_id,
+            "_fallback": fallback_felder,
+        },
+    }
+    try:
+        pfad = _get_email_json_path(firma, "kommunikation", kennung)
+        pfad.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError as e:
+        db.delete_email_versand_hart(db_id)
+        raise RuntimeError(_("msg.email_json_schreibfehler", err=e)) from e
+    db.update_email_json_pfad(db_id, str(pfad))
+    return db_id
+
+
 def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_pfad=None):
     """Erzeugt E-Mail-JSON-Datei + DB-Eintrag. Gibt email_versand.id zurück oder None."""
     firma = daten.get("firma") or {}

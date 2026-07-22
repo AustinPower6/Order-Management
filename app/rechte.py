@@ -59,6 +59,7 @@ MODUL_KEYS = (
     "firma",
     *FIRMA_TAB_KEYS,
     "kunden",
+    "kundeninfo",
     "artikel",
     "mwst",
     "angebote",

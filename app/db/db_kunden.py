@@ -162,7 +162,8 @@ class DBKundenMixin:
     # nachname wird auf 'anonymisiert' gesetzt (NOT NULL DEFAULT ''), der Rest auf ''.
     _ANON_LEER_FELDER = (
         "anrede", "vorname", "firma_name", "adresszusatz", "strasse", "plz", "ort",
-        "land", "telefon", "email", "notizen", "ust_id", "briefanrede", "leitweg_id",
+        "land", "telefon", "mobil", "fax", "ansprechpartner", "email", "notizen",
+        "ust_id", "briefanrede", "leitweg_id",
         "iban", "bic", "bank",
     )
 

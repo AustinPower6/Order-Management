@@ -79,6 +79,7 @@
   <a href="#kunden" class="sub">Customers</a>
   <a href="#artikel" class="sub">Articles</a>
   <div class="sep"></div>
+  <a href="#kundeninfo">Customer Information System</a>
   <a href="#ki">AI &amp; Multilingual Printing</a>
   <a href="#firma-ki" class="sub">Setting up the AI Connection</a>
   <a href="#sprachen-laender" class="sub">Languages &amp; Countries</a>
@@ -566,6 +567,172 @@
   <tr><td><strong>&minus;</strong> (red)</td><td><em>Never</em> print for this article.</td></tr>
 </table>
 <p>Safety and manufacturer info are pulled live from the article master at print time.</p>
+
+<hr>
+
+<h2 id="kundeninfo">Customer Information System</h2>
+<p><strong>Customer Info</strong> brings together everything known about a customer on <em>one</em> page: master data, revenue, every document and the complete history of your correspondence. From here you place calls, write emails and letters &mdash; and each of those actions is recorded in the history automatically.</p>
+<p>Open it from the <strong>sidebar &rarr; Customer Info</strong>, or from the <a href="#kunden">customer master</a> using the <strong>Customer Info</strong> button &mdash; the selected customer is then already chosen. Customer Info is a separate part of the program in the <a href="#benutzer-rechte">permission matrix</a>; without read permission it does not appear at all.</p>
+<p>You pick the customer at the very top. That field is a <strong>search box</strong>: type part of the name or customer number instead of scrolling the list. Four areas follow below.</p>
+
+<h3 id="kundeninfo-kundendaten">Customer data &amp; getting in touch</h3>
+<p>The header shows the master data compactly in <strong>three rows</strong>, leaving plenty of room for documents and history below:</p>
+<table>
+  <tr><th>Row</th><th>Contents</th></tr>
+  <tr><td>1</td><td>Name (salutation, first name, last name), company name, contact person</td></tr>
+  <tr><td>2</td><td>Street (with address supplement), postcode and city, country</td></tr>
+  <tr><td>3</td><td>Phone, mobile, fax, email</td></tr>
+</table>
+<p>The values can be selected and copied with the mouse but not edited &mdash; editing happens in the <a href="#kunden">customer master</a>. The customer number appears in the customer selector above.</p>
+
+<p>Three buttons sit to the right:</p>
+<table>
+  <tr><th>Button</th><th>Effect</th></tr>
+  <tr><td><strong>Call</strong></td><td>Dials through the telephony program registered on your system (<code>tel:</code> link). If both <em>phone</em> and <em>mobile</em> are filled in, a small menu asks which number to use. A <strong>call note</strong> then opens immediately with the dialled number in the subject &mdash; so no conversation gets lost.</td></tr>
+  <tr><td><strong>Send email</strong></td><td>Creates a history entry of type <em>Email</em>. Without a stored email address you get a notice.</td></tr>
+  <tr><td><strong>Write letter</strong></td><td>Creates a history entry of type <em>Letter</em>.</td></tr>
+</table>
+
+<div class="tip">
+  <strong>Practical tip:</strong> Select the documents you want in the document list <em>before</em> clicking &ldquo;Send email&rdquo; or &ldquo;Write letter&rdquo; (multi-select with <span class="kbd">Ctrl</span>) &mdash; they are then carried over as <a href="#kundeninfo-kommunikation">attachments</a> automatically.
+</div>
+
+<h3 id="kundeninfo-umsatz">Revenue</h3>
+<p>The <strong>Revenue (gross)</strong> area shows three rows &mdash; month, quarter, year &mdash; each with the <strong>last four periods</strong> side by side. The order is chronological, with the <em>current</em> period on the far right. The customer's <strong>total revenue</strong> is shown at the bottom right.</p>
+<p>There is deliberately <strong>no period selector</strong>: the ranges follow from today's date, so the area shows what matters without a single setting.</p>
+<ul>
+  <li>The basis is the customer's <strong>invoices</strong>, gross.</li>
+  <li><strong>Cancellation invoices</strong> are offset &mdash; they carry negative amounts and reduce the revenue of their period.</li>
+  <li>A dash (&ldquo;&mdash;&rdquo;) means: no revenue in that period.</li>
+</ul>
+
+<h3 id="kundeninfo-belege">Documents</h3>
+<p>The document list shows all documents of the customer with <strong>type</strong>, number, date, status and subject. The selector at the top left controls what appears:</p>
+<table>
+  <tr><th>Selection</th><th>Display</th></tr>
+  <tr><td><strong>All documents</strong></td><td>Every document type mixed, sorted by date descending</td></tr>
+  <tr><td>Invoices, quotes, orders, delivery notes, reminders</td><td>Only the chosen type. <strong>Invoices</strong> is the default when opening.</td></tr>
+</table>
+
+<h4>Document chain by double-click</h4>
+<p>A <strong>double-click</strong> on a document filters the list down to <strong>every link of its document chain</strong> &mdash; from the quote to the last reminder level, across all document types and in the order of the chain. While that filter is active, the selector gains an extra entry, <strong>Document chain</strong>.</p>
+<p>You clear the filter by choosing another document type or switching customers; the &ldquo;Document chain&rdquo; entry then disappears again. This lets you follow a case without leaving the window &mdash; the detailed view is still available under <a href="#belegkette">The document chain in detail</a>.</p>
+
+<h3 id="kundeninfo-kommunikation">Correspondence history</h3>
+<p>This is where what was discussed with the customer, and what was sent to them, is recorded &mdash; with type, time, <strong>user</strong>, follow-up date and subject. Use <strong>New</strong>, <strong>Edit</strong> and <strong>Delete</strong> to maintain the entries; a double-click opens the selected one.</p>
+<table>
+  <tr><th>Type</th><th>Meaning</th></tr>
+  <tr><td>Call note</td><td>Note on a conversation &mdash; also created automatically after &ldquo;Call&rdquo;</td></tr>
+  <tr><td>Email</td><td>Outgoing email; runs through the <a href="#emails">email outbox</a></td></tr>
+  <tr><td>Letter</td><td>Letter as a PDF in the document layout</td></tr>
+  <tr><td>Note</td><td>Free note without sending anything</td></tr>
+  <tr><td>Email (incoming)</td><td>Received email from the <a href="#kundeninfo-abruf">email retrieval</a> &mdash; view only</td></tr>
+</table>
+
+<h4>From draft to dispatch</h4>
+<p>A new entry starts as a <strong>draft</strong>. Only <strong>Print</strong> or <strong>Send</strong> completes it &mdash; after that it is locked and can only be viewed and issued again.</p>
+
+<div class="diagram" aria-label="Life cycle of a correspondence entry">
+<svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Life cycle of a correspondence entry: draft, dispatch, lock</title>
+  <defs>
+    <marker id="ah-kis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+    </marker>
+    <marker id="ah-kis-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
+
+  <rect class="d-box" x="20" y="60" width="150" height="64" rx="6"/>
+  <text class="d-text-bold" x="95" y="86" text-anchor="middle">Draft</text>
+  <text class="d-text-small" x="95" y="106" text-anchor="middle">editable</text>
+
+  <rect class="d-box-alt" x="240" y="60" width="150" height="64" rx="6"/>
+  <text class="d-text-bold" x="315" y="86" text-anchor="middle">Preview</text>
+  <text class="d-text-small" x="315" y="106" text-anchor="middle">check, nothing sent</text>
+
+  <rect class="d-box" x="460" y="60" width="170" height="64" rx="6"/>
+  <text class="d-text-bold" x="545" y="86" text-anchor="middle">Print / Send</text>
+  <text class="d-text-small" x="545" y="106" text-anchor="middle">records dispatch time</text>
+
+  <rect class="d-box-warn" x="700" y="60" width="160" height="64" rx="6"/>
+  <text class="d-text-bold" x="780" y="86" text-anchor="middle">Locked</text>
+  <text class="d-text-small" x="780" y="106" text-anchor="middle">view only</text>
+
+  <line class="d-arrow" x1="170" y1="92" x2="240" y2="92" marker-end="url(#ah-kis)"/>
+  <line class="d-arrow" x1="390" y1="92" x2="460" y2="92" marker-end="url(#ah-kis)"/>
+  <line class="d-arrow" x1="630" y1="92" x2="700" y2="92" marker-end="url(#ah-kis)"/>
+
+  <path class="d-arrow-dashed" d="M315,124 L315,160 L95,160 L95,124" marker-end="url(#ah-kis-d)"/>
+  <text class="d-text-small" x="205" y="176" text-anchor="middle">back to editing &mdash; a preview changes nothing</text>
+
+  <path class="d-arrow-back" d="M780,124 L780,210 L545,210" marker-end="url(#ah-kis-d)"/>
+  <text class="d-text-small" x="700" y="226" text-anchor="middle">print again / send again</text>
+
+  <rect class="d-box-alt" x="20" y="240" width="840" height="46" rx="6"/>
+  <text class="d-text" x="40" y="262">When an entry becomes locked:</text>
+  <text class="d-text-small" x="40" y="278">Letter and email &mdash; as soon as printed or sent. Call note and note &mdash; at the end of the day they were created.</text>
+</svg>
+<div class="caption">An entry stays editable until it goes out &mdash; after that it is a record of what was communicated.</div>
+</div>
+
+<table>
+  <tr><th>Type</th><th>Editable</th><th>Afterwards</th></tr>
+  <tr><td>Letter, email</td><td><strong>Until it is sent</strong> &mdash; as long as nothing has been printed or sent, everything can be changed.</td><td>Only <strong>View</strong> and <strong>Print again / Send again</strong>.</td></tr>
+  <tr><td>Call note, note</td><td><strong>Only on the day it was created.</strong> To add something later, create a new entry.</td><td>View only.</td></tr>
+</table>
+
+<div class="info">
+  <strong>Why the lock?</strong> What has reached the customer cannot be rewritten afterwards &mdash; otherwise the history would consist of what one would <em>now</em> like to have written. What counts is the <em>stored</em> type of the entry; switching the selector does not lift the lock.
+</div>
+
+<h4>Preview, copy and reissuing</h4>
+<ul>
+  <li><strong>Preview</strong> shows what will go out before it does: for a letter the finished PDF, for an email the full text including the signature and privacy notice from the company master, plus the names of the attachments. The entry is saved in the process but <strong>not</strong> sent.</li>
+  <li><strong>Copy</strong> puts the text on the clipboard &mdash; for locked entries too. That way proven wordings can be reused.</li>
+  <li><strong>Print again</strong> opens the PDF that was <em>actually sent</em>; it is deliberately <strong>not</strong> rebuilt, as it would otherwise differ from what the customer received. <strong>Send again</strong> creates a new entry in the outbox for emails.</li>
+</ul>
+
+<h4>Documents as attachments</h4>
+<p>The documents selected in the <a href="#kundeninfo-belege">document list</a> are carried over as <strong>attachments</strong> when you create an email or a letter and are listed in the dialog; there they can be removed individually before sending.</p>
+<ul>
+  <li><strong>Letter:</strong> the attachments are <strong>appended</strong> to the letter PDF &mdash; producing <em>one</em> file, so one print job.</li>
+  <li><strong>Email:</strong> the attachments are sent as file attachments.</li>
+</ul>
+<div class="warn">
+  <strong>Only printed documents can be attached:</strong> a document that has never been printed as an original has no PDF. Such documents are <strong>reported</strong> when sending rather than silently omitted &mdash; print them first.
+</div>
+
+<h4>The letter</h4>
+<p>Letters appear in the <strong>layout of your documents</strong>: company header with logo, the address at the envelope-window position configured in <a href="#firma-layout">Company master &rarr; Layout</a>, an info block on the right with date and customer number, and the footer with bank and tax details. Maintained <a href="#firma-drucktexte">print texts</a> apply as well &mdash; whatever wording you have set for the header and footer labels is used in the letter too. A signature block is deliberately <strong>not</strong> included: a letter is signed, not printed.</p>
+<p>It is stored under <code>{export path}/Letters/{company number}/{year}</code>. As everywhere in the program, <strong>no path is stored in the database</strong> &mdash; the location follows from the path definition (<a href="#firma-pfade">Company master &rarr; Paths</a>) and the file name, which carries the number of the history entry.</p>
+
+<h3 id="kundeninfo-abruf">Email retrieval (incoming)</h3>
+<p>So far this has been about <em>outgoing</em> correspondence. The <strong>Retrieve emails</strong> button adds the <em>incoming</em> side: it searches the company mailbox and files matching messages as entries of type <strong>Email (incoming)</strong>. Retrieval applies to the <strong>whole company</strong>, not just the customer currently selected.</p>
+
+<h4>How a message is matched to a customer</h4>
+<ol>
+  <li><strong>By the tag in the subject.</strong> Every email sent from Customer Info carries a unique tag of the form <code>[KIS-<em>company number</em>-<em>number</em>]</code>. When the customer replies, it stays in the subject line &mdash; which puts the reply precisely on the right case.</li>
+  <li><strong>By the sender address</strong> when no tag is present &mdash; but only on an <strong>unambiguous</strong> match in the customer master.</li>
+  <li><strong>Everything else is skipped.</strong> That is intentional: a company mailbox also holds messages that are none of the program's business.</li>
+</ol>
+
+<div class="info">
+  <strong>Retrieval does not alter your mailbox.</strong> It only reads &mdash; nothing is moved, deleted or marked as read. Each run looks at the messages of the last <strong>30 days</strong>; the database makes sure nothing is imported twice, even when several workstations retrieve from the same mailbox.
+</div>
+
+<table>
+  <tr><th>Email client</th><th>Retrieval</th></tr>
+  <tr><td>Gmail, generic SMTP server</td><td><strong>Automatic via IMAP.</strong> For the SMTP server, enter <em>IMAP server (retrieval)</em> and <em>IMAP port</em> in <a href="#firma-parameter">Company master &rarr; Email</a>; the credentials used for sending are reused. The <strong>Test email retrieval</strong> button checks the connection right away.</td></tr>
+  <tr><td>Brevo, Outlook 365 classic, New Outlook, none</td><td><strong>No automatic retrieval</strong> &mdash; these routes have no read access to the mailbox. Instead the program offers to import saved <strong>.eml files</strong>: save the messages in your mail program, select them here &mdash; matching and attachments then work identically.</td></tr>
+</table>
+
+<p>Received entries open <strong>read-only</strong> &mdash; a message you have received is not something you edit. Attachments are stored alongside, listed under the entry and opened by double-click; they live under <code>{email path}/{company number}/Eingang/{year}/{number}</code> &mdash; that folder name is fixed and not translated.</p>
+
+<div class="tip">
+  <strong>Data protection:</strong> When a customer is <a href="#dsgvo">anonymised</a>, their correspondence entries disappear as well, including the stored attachment files. The subject access report lists both.
+</div>
 
 <hr>
 

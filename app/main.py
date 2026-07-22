@@ -26,6 +26,7 @@ import shutil
 import lock_manager
 from modul.mod_firma import FirmaFenster
 from modul.mod_kunden import KundenFenster
+from modul.mod_kundeninfo import KundeninfoFenster
 from modul.mod_artikel import ArtikelFenster
 from modul.mod_angebote import AngeboteFenster
 from modul.mod_auftraege import AuftrageFenster
@@ -589,6 +590,7 @@ class MainWindow(QMainWindow):
     # Titel wird zur Laufzeit per _() aufgelöst, damit Sprachwechsel greift.
     TAB_REGISTRY = {
         "kunden":      ("tab.kunden",       lambda db, dr: KundenFenster(db)),
+        "kundeninfo":  ("tab.kundeninfo",   lambda db, dr: KundeninfoFenster(db)),
         "artikel":     ("tab.artikel",      lambda db, dr: ArtikelFenster(db)),
         "angebote":    ("tab.angebote",     lambda db, dr: AngeboteFenster(db, dr)),
         "auftraege":   ("tab.auftraege",    lambda db, dr: AuftrageFenster(db, dr)),
@@ -607,6 +609,7 @@ class MainWindow(QMainWindow):
     SIDEBAR_RECHTE_KEYS = {
         "firma": "firma",
         "kunden": "kunden",
+        "kundeninfo": "kundeninfo",
         "artikel": "artikel",
         "angebote": "angebote",
         "auftraege": "auftraege",
@@ -677,6 +680,19 @@ class MainWindow(QMainWindow):
             lambda: widget)
 
     def _open_kunden(self):    self._open_tab("kunden")
+    def _open_kundeninfo(self): self._open_tab("kundeninfo")
+
+    def oeffne_kundeninfo(self, kunden_id):
+        """Kundeninformationssystem öffnen und den Kunden vorwählen
+        (Aufruf aus dem Kundenstamm)."""
+        self._open_tab("kundeninfo")
+        idx = self._tab_mgr._keys.get("kundeninfo")
+        if idx is None:
+            return   # kein Recht — _open_tab hat den Hinweis bereits gezeigt
+        widget = ui_widgets.scroll_inhalt(self._tabs.widget(idx))
+        if widget is not None and hasattr(widget, "set_kunde"):
+            widget.set_kunde(kunden_id)
+
     def _open_artikel(self):   self._open_tab("artikel")
     def _open_angebote(self):  self._open_tab("angebote")
     def _open_auftraege(self): self._open_tab("auftraege")

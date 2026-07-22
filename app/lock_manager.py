@@ -36,6 +36,7 @@ class Module:
     RECHNUNGEN    = "Rechnungen"
     MAHNUNGEN     = "Mahnungen"
     BENUTZER      = "Benutzerverwaltung"
+    KOMMUNIKATION = "Kommunikation"
 
 
 # ──────────────────────────────────────────────────────────────────────────────

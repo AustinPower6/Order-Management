@@ -255,6 +255,8 @@ CREATE TABLE IF NOT EXISTS firma (
     smtp_password     TEXT    DEFAULT '',
     smtp_tls_mode     TEXT    DEFAULT 'starttls',
     smtp_port_manuell INTEGER DEFAULT 0,
+    imap_host         TEXT    DEFAULT '',
+    imap_port         INTEGER DEFAULT 993,
     adress_provider        TEXT    DEFAULT 'nominatim',
     adress_google_api_key  TEXT    DEFAULT '',
     adress_nominatim_url   TEXT    DEFAULT '',
@@ -380,6 +382,9 @@ CREATE TABLE IF NOT EXISTS kunden (
     beleg_kopie_kundensprache INTEGER DEFAULT 1,
     dsgvo_status TEXT DEFAULT '',
     dsgvo_am TEXT DEFAULT '',
+    mobil TEXT DEFAULT '',
+    fax TEXT DEFAULT '',
+    ansprechpartner TEXT DEFAULT '',
     FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
     FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     UNIQUE(firma_id, kundennr)
@@ -1083,3 +1088,72 @@ CREATE TABLE IF NOT EXISTS app_config (
     wert       TEXT DEFAULT ''
 );
 """
+
+# ── v78: Kundeninformationssystem — Tabellen `kommunikation(_belege)` ─────────
+# Eigener Block (statt nur innerhalb von _SCHEMA_SQL), damit DB-Pflege._to_v78
+# für bestehende DBs exakt dieselben Statements ausführt — kein Drift zwischen
+# frischer Anlage und Migration. Übernommen aus dem Mehrplatz-Ableger (dort
+# v82–v84) und auf SQLite umgesetzt: AUTOINCREMENT statt IDENTITY, Fremd-
+# schlüssel inline statt nachträglichem ALTER TABLE, keine Spalte `lock_sitzung`
+# (die erkennt im Mehrplatzbetrieb abgestürzte Sitzungen und hat hier keinen
+# Zweck). Sperrtabelle wie `kunden` — Aufnahme in db_utils._LOCK_TABELLEN.
+# `kennung` = Betreff-Kennung "KIS-{firmen_nr}-{id}" für die automatische
+# Zuordnung abgerufener Antwort-E-Mails; `message_id` = Message-ID-Header der
+# abgerufenen Mail, der partielle Unique-Index verhindert Doppel-Einträge beim
+# wiederholten Abruf (Einfügen per ON CONFLICT DO NOTHING).
+KOMMUNIKATION_SQL = """
+CREATE TABLE IF NOT EXISTS kommunikation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id INTEGER DEFAULT 1,
+    kunden_id INTEGER,
+    art TEXT DEFAULT 'notiz',
+    richtung TEXT DEFAULT 'aus',
+    zeitpunkt TEXT DEFAULT '',
+    benutzer TEXT DEFAULT '',
+    wiedervorlage_am TEXT DEFAULT '',
+    betreff TEXT DEFAULT '',
+    inhalt TEXT DEFAULT '',
+    kennung TEXT DEFAULT '',
+    message_id TEXT DEFAULT '',
+    email_versand_id INTEGER DEFAULT NULL,
+    beleg_typ TEXT DEFAULT '',
+    beleg_id INTEGER DEFAULT NULL,
+    gesendet_am TEXT DEFAULT '',
+    erstellt_am TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    geloescht INTEGER DEFAULT 0,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
+    FOREIGN KEY(kunden_id) REFERENCES kunden(id),
+    FOREIGN KEY(email_versand_id) REFERENCES email_versand(id)
+);
+
+-- Belege, die einer Kommunikation als Anlage beiliegen. Eigene Tabelle statt
+-- beleg_typ/beleg_id in `kommunikation`, weil einem Brief mehrere Belege
+-- beiliegen können. Gespeichert wird nur die Referenz — der Pfad zum PDF steht
+-- in der jeweiligen Belegzeile (`pdf_pfad`), nicht hier.
+CREATE TABLE IF NOT EXISTS kommunikation_belege (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id INTEGER DEFAULT 1,
+    kommunikation_id INTEGER NOT NULL,
+    beleg_typ TEXT NOT NULL,
+    beleg_id INTEGER NOT NULL,
+    UNIQUE(firma_id, kommunikation_id, beleg_typ, beleg_id),
+    FOREIGN KEY(kommunikation_id) REFERENCES kommunikation(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_kommunikation_kunde   ON kommunikation (kunden_id, firma_id);
+CREATE INDEX IF NOT EXISTS idx_kommunikation_kennung ON kommunikation (firma_id, kennung);
+CREATE INDEX IF NOT EXISTS idx_kommunikation_wv      ON kommunikation (firma_id, wiedervorlage_am);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_kommunikation_msgid
+    ON kommunikation (firma_id, message_id) WHERE message_id <> '';
+CREATE INDEX IF NOT EXISTS idx_kommunikation_belege_komm
+    ON kommunikation_belege (kommunikation_id, firma_id);
+"""
+
+# Frische Datenbanken bekommen den Block direkt mit (db_core._create_schema führt
+# _SCHEMA_SQL aus) — bestehende über DB-Pflege._to_v78 mit demselben Text.
+_SCHEMA_SQL = _SCHEMA_SQL + KOMMUNIKATION_SQL

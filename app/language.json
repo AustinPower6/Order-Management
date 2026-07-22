@@ -867,11 +867,19 @@
     "ts": "2026-06-25 17:24",
     "h": "3efbd3cb467f"
   },
+  "btn.kundeninfo": {
+    "de": "Kundeninfo",
+    "en": "Customer info"
+  },
   "btn.neuer_export": {
     "de": "Neuer Export",
     "en": "New export",
     "ts": "2026-06-25 17:24",
     "h": "8547f1bd14d4"
+  },
+  "btn.test_email_abruf": {
+    "de": "E-Mail-Abruf testen",
+    "en": "Test email retrieval"
   },
   "btn.wiederholen": {
     "de": "Wiederholen",
@@ -1124,6 +1132,10 @@
     "en": "Active",
     "ts": "2026-06-25 17:24",
     "h": "2e77b08c012e"
+  },
+  "col.nr": {
+    "de": "Nr.",
+    "en": "No."
   },
   "col.speditionsware": {
     "de": "Spedition",
@@ -1512,6 +1524,10 @@
     "en": "Phone",
     "ts": "2026-06-25 17:24",
     "h": "6adf1c555073"
+  },
+  "col.typ": {
+    "de": "Typ",
+    "en": "Type"
   },
   "col.untergruppe": {
     "de": "Untergruppe",
@@ -2650,6 +2666,10 @@
     "ts": "2026-06-25 17:24",
     "h": "3480ce4c0ae9"
   },
+  "druck.default.brief_datum": {
+    "de": "Datum:",
+    "en": "Date:"
+  },
   "druck.default.brutto_gesamt": {
     "de": "Gesamtbetrag brutto:",
     "en": "Total amount gross:",
@@ -2823,6 +2843,10 @@
     "en": "Invoice ledger",
     "ts": "2026-07-12 11:30",
     "h": "950a849c9c59"
+  },
+  "druck.default.kunden_nr": {
+    "de": "Kundennummer:",
+    "en": "Customer no.:"
   },
   "druck.default.kundenkopie_label": {
     "de": "Kundenkopie in {sprache}",
@@ -4066,6 +4090,18 @@
     "en": "Select company logo",
     "ts": "2026-06-25 17:24",
     "h": "6a4fe9cc2409"
+  },
+  "email.abruf_test.erfolg": {
+    "de": "IMAP-Anmeldung erfolgreich. Der Posteingang enthält {anzahl} E-Mails.",
+    "en": "IMAP login successful. The inbox contains {anzahl} emails."
+  },
+  "email.abruf_test.fehler": {
+    "de": "E-Mail-Abruf fehlgeschlagen:\n{detail}",
+    "en": "Email retrieval failed:\n{detail}"
+  },
+  "email.abruf_test.unvollstaendig": {
+    "de": "Für den Abruf-Test fehlen Server oder Zugangsdaten.\nBitte die Felder im Reiter ausfüllen.",
+    "en": "Server or credentials are missing for the retrieval test.\nPlease fill in the fields on this tab."
   },
   "email.filter.alle": {
     "de": "Alle",
@@ -6576,6 +6612,14 @@
     "en": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards",
     "ts": "2026-06-25 17:24",
     "h": "03cd6e1508e9"
+  },
+  "firma.parameter.imap_host": {
+    "de": "IMAP-Server (Abruf):",
+    "en": "IMAP server (retrieval):"
+  },
+  "firma.parameter.imap_port": {
+    "de": "IMAP-Port:",
+    "en": "IMAP port:"
   },
   "firma.pfade.durchsuchen": {
     "de": "Durchsuchen …",
@@ -10828,5 +10872,233 @@
     "en": "There are no additional languages yet that could be updated.",
     "ts": "2026-07-06 06:15",
     "h": "eb0b3f110dce"
+  },
+  "komm.anlage.ohne_pdf": {
+    "de": "(kein Ausdruck vorhanden)",
+    "en": "(no printout available)"
+  },
+  "komm.art.email_ein": {
+    "de": "E-Mail (Eingang)",
+    "en": "Email (inbound)"
+  },
+  "komm.btn.anlage_entfernen": {
+    "de": "Anlage entfernen",
+    "en": "Remove attachment"
+  },
+  "komm.btn.ansehen": {
+    "de": "Ansehen",
+    "en": "View"
+  },
+  "komm.btn.drucken": {
+    "de": "Drucken",
+    "en": "Print"
+  },
+  "komm.btn.erneut_drucken": {
+    "de": "Erneut drucken",
+    "en": "Print again"
+  },
+  "komm.btn.erneut_senden": {
+    "de": "Erneut senden",
+    "en": "Send again"
+  },
+  "komm.btn.kopie": {
+    "de": "Kopie",
+    "en": "Copy"
+  },
+  "komm.btn.kopie_tt": {
+    "de": "Inhalt in die Zwischenablage kopieren, um ihn erneut zu verwenden",
+    "en": "Copy the content to the clipboard for reuse"
+  },
+  "komm.btn.senden": {
+    "de": "Senden",
+    "en": "Send"
+  },
+  "komm.btn.vorschau": {
+    "de": "Vorschau",
+    "en": "Preview"
+  },
+  "komm.col.art": {
+    "de": "Art",
+    "en": "Type"
+  },
+  "komm.col.benutzer": {
+    "de": "Benutzer",
+    "en": "User"
+  },
+  "komm.col.wiedervorlage": {
+    "de": "Wiedervorlage",
+    "en": "Follow-up"
+  },
+  "komm.col.zeitpunkt": {
+    "de": "Zeitpunkt",
+    "en": "Time"
+  },
+  "komm.dlg.titel_ansehen": {
+    "de": "Kommunikation ansehen",
+    "en": "View communication"
+  },
+  "komm.dlg.titel_bearbeiten": {
+    "de": "Kommunikation bearbeiten",
+    "en": "Edit communication"
+  },
+  "komm.dlg.titel_neu": {
+    "de": "Neue Kommunikation",
+    "en": "New communication"
+  },
+  "komm.lbl.anhaenge": {
+    "de": "Anhänge (Doppelklick öffnet):",
+    "en": "Attachments (double-click to open):"
+  },
+  "komm.lbl.anlagen": {
+    "de": "Anlagen:",
+    "en": "Enclosures:"
+  },
+  "komm.lbl.art": {
+    "de": "Art:",
+    "en": "Type:"
+  },
+  "komm.lbl.benutzer": {
+    "de": "Bearbeiter:",
+    "en": "Editor:"
+  },
+  "komm.lbl.betreff": {
+    "de": "Betreff:",
+    "en": "Subject:"
+  },
+  "komm.lbl.gesendet": {
+    "de": "Versand:",
+    "en": "Dispatch:"
+  },
+  "komm.lbl.inhalt": {
+    "de": "Inhalt:",
+    "en": "Content:"
+  },
+  "komm.lbl.wiedervorlage": {
+    "de": "Wiedervorlage:",
+    "en": "Follow-up:"
+  },
+  "komm.lbl.zeitpunkt": {
+    "de": "Zeitpunkt:",
+    "en": "Time:"
+  },
+  "komm.msg.anhang_fehlt": {
+    "de": "Die Anhang-Datei wurde nicht gefunden:\n{pfad}",
+    "en": "The attachment file was not found:\n{pfad}"
+  },
+  "komm.msg.anlage_ohne_pdf": {
+    "de": "Von diesen Belegen liegt kein Ausdruck vor; sie werden nicht beigelegt:\n\n{belege}\n\nBelege zuerst drucken, dann erneut versuchen.",
+    "en": "No printout exists for these documents, so they will not be enclosed:\n\n{belege}\n\nPrint the documents first, then try again."
+  },
+  "komm.msg.anlage_waehlen": {
+    "de": "Bitte eine Anlage auswählen.",
+    "en": "Please select an enclosure."
+  },
+  "komm.msg.bitte_auswaehlen": {
+    "de": "Bitte einen Eintrag auswählen.",
+    "en": "Please select an entry."
+  },
+  "komm.msg.brief_fehlt": {
+    "de": "Der Brief wurde nicht gefunden:\n{pfad}",
+    "en": "The letter was not found:\n{pfad}"
+  },
+  "komm.msg.loeschen_frage": {
+    "de": "Ausgewählten Kommunikationseintrag löschen?",
+    "en": "Delete the selected communication entry?"
+  },
+  "komm.status.entwurf": {
+    "de": "Entwurf (noch nicht verschickt)",
+    "en": "Draft (not yet sent)"
+  },
+  "kundeninfo.anruf_betreff": {
+    "de": "Telefonat {nr}",
+    "en": "Phone call {nr}"
+  },
+  "kundeninfo.beleg_filter.alle": {
+    "de": "Alle Belege",
+    "en": "All documents"
+  },
+  "kundeninfo.beleg_filter.kette": {
+    "de": "Belegkette",
+    "en": "Document chain"
+  },
+  "kundeninfo.btn.anrufen": {
+    "de": "Anrufen",
+    "en": "Call"
+  },
+  "kundeninfo.btn.brief": {
+    "de": "Brief schreiben",
+    "en": "Write letter"
+  },
+  "kundeninfo.btn.email": {
+    "de": "E-Mail senden",
+    "en": "Send email"
+  },
+  "kundeninfo.btn.email_abruf": {
+    "de": "E-Mails abrufen",
+    "en": "Retrieve emails"
+  },
+  "kundeninfo.btn.email_abruf_laeuft": {
+    "de": "Abruf läuft …",
+    "en": "Retrieving …"
+  },
+  "kundeninfo.eml_filter": {
+    "de": "E-Mail-Dateien (*.eml)",
+    "en": "Email files (*.eml)"
+  },
+  "kundeninfo.gbx.belege": {
+    "de": "Belege",
+    "en": "Documents"
+  },
+  "kundeninfo.gbx.kommunikation": {
+    "de": "Kommunikation",
+    "en": "Communication"
+  },
+  "kundeninfo.gbx.kopf": {
+    "de": "Kundendaten",
+    "en": "Customer data"
+  },
+  "kundeninfo.gbx.umsatz": {
+    "de": "Umsatz (brutto)",
+    "en": "Revenue (gross)"
+  },
+  "kundeninfo.hint.belegkette": {
+    "de": "Doppelklick filtert auf die Belegkette des Belegs",
+    "en": "Double-click filters to the document chain"
+  },
+  "kundeninfo.lbl.kunde": {
+    "de": "Kunde:",
+    "en": "Customer:"
+  },
+  "kundeninfo.msg.abruf_ergebnis": {
+    "de": "E-Mail-Abruf abgeschlossen:\n{neu} neu übernommen\n{doppelt} bereits vorhanden\n{ignoriert} nicht zuordenbar (übersprungen)",
+    "en": "Email retrieval finished:\n{neu} newly added\n{doppelt} already present\n{ignoriert} not attributable (skipped)"
+  },
+  "kundeninfo.msg.abruf_fehler_anzahl": {
+    "de": "{anzahl} E-Mails konnten nicht verarbeitet werden (Details in der Fehler-Nachverfolgung):",
+    "en": "{anzahl} emails could not be processed (details in error tracking):"
+  },
+  "kundeninfo.msg.email_postausgang": {
+    "de": "Die E-Mail wurde erzeugt und liegt im Postausgang (E-Mails) zum Versand bereit.",
+    "en": "The email has been created and is ready to send in the outbox (Emails)."
+  },
+  "kundeninfo.msg.eml_import_frage": {
+    "de": "Automatischer Abruf ist nicht möglich:\n{grund}\n\nStattdessen gespeicherte E-Mail-Dateien (.eml) importieren?",
+    "en": "Automatic retrieval is not available:\n{grund}\n\nImport saved email files (.eml) instead?"
+  },
+  "kundeninfo.msg.kein_tel_handler": {
+    "de": "Auf diesem Arbeitsplatz ist kein Programm für Telefonanrufe (tel:-Links) eingerichtet.",
+    "en": "No application for phone calls (tel: links) is configured on this workstation."
+  },
+  "kundeninfo.msg.keine_email": {
+    "de": "Für diesen Kunden ist keine E-Mail-Adresse hinterlegt.",
+    "en": "No email address is stored for this customer."
+  },
+  "kundeninfo.umsatz.gesamt": {
+    "de": "Gesamt",
+    "en": "Total"
+  },
+  "kundeninfo.umsatz.quartal_spalte": {
+    "de": "Q{q}/{jahr}",
+    "en": "Q{q}/{jahr}"
   }
 }

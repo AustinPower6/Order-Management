@@ -96,6 +96,14 @@ class KundenFenster(QWidget):
                 b.setEnabled(False)
                 b.setStyleSheet(f"color: {theme.color('status_muted')};")
                 b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("kunden")))
+        # Kundeninformationssystem: hängt am eigenen Recht "kundeninfo"
+        b = QPushButton(_("btn.kundeninfo"))
+        b.clicked.connect(self._kundeninfo)
+        btn_bar.addWidget(b)
+        if not rechte.darf(self.db, "kundeninfo", rechte.LESEN):
+            b.setEnabled(False)
+            b.setStyleSheet(f"color: {theme.color('status_muted')};")
+            b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("kundeninfo")))
         self._geloescht_cb = QCheckBox(_("btn.geloescht_anzeigen"))
         self._geloescht_cb.stateChanged.connect(self._refresh)
         btn_bar.addWidget(self._geloescht_cb)
@@ -381,6 +389,17 @@ class KundenFenster(QWidget):
                 self.db.delete_kunde(id_)
                 self._refresh()
 
+    def _kundeninfo(self):
+        """Kundeninformationssystem mit dem markierten Kunden öffnen."""
+        kid = self._sel_id()
+        if not kid:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.bitte_auswaehlen", typ=_("tab.kunden")))
+            return
+        win = self.window()
+        if hasattr(win, "oeffne_kundeninfo"):
+            win.oeffne_kundeninfo(kid)
+
     def _dsgvo(self):
         """Kundenspezifisches DSGVO-Menü für den ausgewählten Kunden: Auskunft,
         Anonymisieren/Löschen, Verarbeitung einschränken. Der firmenweite Sammellauf
@@ -654,6 +673,9 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             ("land",        "field.kunde.land"),
             ("sprache",     "field.kunde.sprache"),
             ("telefon",     "field.kunde.telefon"),
+            ("mobil",       "field.kunde.mobil"),
+            ("fax",         "field.kunde.fax"),
+            ("ansprechpartner", "field.kunde.ansprechpartner"),
             ("ust_id",      "field.kunde.ust_id"),
             ("bank",        "field.kunde.bank"),
             ("iban",        "field.kunde.iban"),

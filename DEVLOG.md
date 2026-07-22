@@ -1,3 +1,66 @@
+## 2026-07-22 14:44 — Kundeninformationssystem aus dem Mehrplatz-Ableger übernommen (DB v78)
+
+Das KIS gab es bisher nur im Mehrplatz-Ableger (dort DB v82–v84). Übernommen
+wurde alles: Tab „Kundeninfo" mit Stammdaten-Kopf, Umsatzperioden, Belegliste mit
+Kettenfilter und Kommunikationshistorie, die Aktionen Anrufen / E-Mail senden /
+Brief schreiben sowie der IMAP-Abruf eingehender Antworten.
+
+**Schema (DB v78, `_to_v78` fasst v82–v84 des Ablegers zusammen):** Tabellen
+`kommunikation` und `kommunikation_belege` samt Indizes (Definition zentral in
+`db_schema.KOMMUNIKATION_SQL`, denselben Text führen frische DBs über
+`_SCHEMA_SQL` aus — kein Drift), `kunden` um `mobil`/`fax`/`ansprechpartner`,
+`firma` um `imap_host`/`imap_port`. `kommunikation` ist Sperrtabelle
+(`db_utils._LOCK_TABELLEN`, `lock_manager.Module.KOMMUNIKATION`).
+
+**Neue Dateien:** `db/db_kommunikation.py`, `modul/mod_kundeninfo.py`,
+`modul/mod_kundeninfo_komm.py`, `brief_gen.py`, `email_abruf.py`.
+**Eingebunden in:** `database.py`, `main.py` (Tab + `oeffne_kundeninfo`),
+`main_sidebar.py`, `rechte.py` (Programmteil `kundeninfo`), `modul/mod_kunden.py`
+(Absprung + die drei neuen Felder im Dialog), `email_gen.py`
+(`kommunikations_mailtext`, `erzeuge_kommunikations_email`),
+`mod_firma_tabs/mod_firma_email.py` (IMAP-Felder + Abruf-Test).
+
+**Zwei Unterschiede zum Ableger, die Anpassungen erzwangen:**
+
+1. **Kein `_version`/`KonfliktError`.** Das ist der Mehrplatz-Schutz gegen Lost
+   Updates zweier Arbeitsplätze; hier gibt es ihn nicht, und `_save_record`
+   deutete `_version` als Spalte. Der Kommunikations-Dialog speichert deshalb
+   ohne Versionsprüfung (Kommentar an der Stelle).
+2. **`lastrowid` taugt in SQLite nicht als Einfüge-Nachweis.** Nach
+   `ON CONFLICT DO NOTHING` behält es den vorherigen Wert der Verbindung und
+   hätte einen Eintrag vorgetäuscht (die PostgreSQL-Schicht liefert dort `None`).
+   `email_abruf._speichere_eingang` prüft jetzt `cursor.rowcount`. Der
+   Abruf-Thread öffnet seine eigene `sqlite3`-Verbindung mit `timeout=15`.
+
+**DSGVO-Pflicht erfüllt:** Die drei neuen Kundenfelder stehen in
+`db_kunden._ANON_LEER_FELDER` **und** `dsgvo_export._STAMM_FELDER`.
+
+**i18n + Doku:** 68 fehlende Schlüssel (`kundeninfo.*`, `komm.*`, IMAP, Buttons)
+aus dem Ableger übernommen — die Datei wuchs um genau 272 Zeilen, ohne dass eine
+bestehende Zeile berührt wurde. Das Kapitel `#kundeninfo` steht in
+`doku.de.html` und `doku.en.html` samt Navigationseintrag.
+
+**Verifikation** — durchgehend gegen eine **Kopie** der Datenbank, die
+Arbeits-DB blieb unverändert:
+
+- Migration 77 → 78 auf der Kopie: Tabellen, Spalten und alle fünf Indizes
+  stehen; der partielle Unique-Index ist wirklich partiell; Drift-Vergleich
+  gegen eine frisch aus `_SCHEMA_SQL` erzeugte DB zeigt keinen Unterschied.
+- Datenzugriff: anlegen, lesen, Kundenliste, Kennung, Soft-Delete,
+  `umsatz_brutto`.
+- Abruf: zweiter Eingang mit gleicher Message-ID wird verworfen (1.=id 2,
+  2.=None) — der `rowcount`-Fix ist damit belegt.
+- Oberfläche: Tab lädt Kunde, Kopf und Kommunikationsliste; alle Buttons
+  übersetzt; Firmenstamm → E-Mail zeigt IMAP-Felder, Abruf-Test-Button und
+  schaltet sie mit der Client-Auswahl.
+- Doku: Tag-Struktur beider Dateien ausgeglichen, **alle** internen Verweise
+  haben ein Ziel, `HELP_ANCHOR = "kundeninfo"` trifft das neue Kapitel.
+- `ruff check app` grün.
+
+**Noch offen:** Die Migration der Arbeits-DB läuft beim nächsten regulären
+Programmstart über DB-Pflege. Sicherung vorher:
+`app/daten/auftragsabwicklung_vor_KIS_20260722_1426.db`.
+
 ## 2026-07-22 14:04 — Sechs Oberflächen-Änderungen aus dem Mehrplatz-Ableger übernommen
 
 Übernahme der heute in `Order-Management-Multi` entstandenen Arbeit, damit

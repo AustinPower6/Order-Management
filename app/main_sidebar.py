@@ -182,6 +182,7 @@ def build_sidebar(win, firma):
         ("sidebar.section.stammdaten",
             [("sidebar.btn.firma",   win._open_firma,   "firma"),
              ("sidebar.btn.kunden",  win._open_kunden,  "kunden"),
+             ("sidebar.btn.kundeninfo", win._open_kundeninfo, "kundeninfo"),
              ("sidebar.btn.artikel", win._open_artikel, "artikel")]),
         ("sidebar.section.belege",
             [("sidebar.btn.angebote",      win._open_angebote,      "angebote"),

@@ -103,6 +103,9 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from db.db_schema import KOMMUNIKATION_SQL  # noqa: E402  (nach sys.path-Ergänzung)
+
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -1861,7 +1864,39 @@ def _to_v77(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 77
+def _to_v78(conn):
+    """Kundeninformationssystem (KIS) — aus dem Mehrplatz-Ableger übernommen.
+
+    Fasst die dortigen Schritte v82–v84 in einem zusammen, weil hier noch keine
+    DB einen Zwischenstand hat:
+
+    1. `kunden` erhält `mobil`, `fax`, `ansprechpartner` — der Kopfbereich des
+       KIS zeigt alle Kommunikationsdaten des Kunden, gepflegt werden sie im
+       Kundendialog.
+    2. Neue Sperrtabelle `kommunikation` (Kommunikationshistorie: Art, Richtung,
+       Zeitpunkt, Benutzer, Wiedervorlage, Betreff, Inhalt, Betreff-Kennung für
+       den E-Mail-Abruf, Message-ID) samt `kommunikation_belege` (Belege als
+       Anlage) und Indizes. Definition zentral in db_schema.KOMMUNIKATION_SQL —
+       frische DBs führen exakt denselben Block über _SCHEMA_SQL aus (kein Drift).
+    3. `firma` erhält `imap_host`/`imap_port` für den Abruf eingehender
+       Antworten; das Passwort liegt wie die übrigen Zugangsdaten im key_store.
+    """
+    kunden_cols = [c[1] for c in conn.execute("PRAGMA table_info(kunden)").fetchall()]
+    for spalte in ("mobil", "fax", "ansprechpartner"):
+        if spalte not in kunden_cols:
+            conn.execute(f"ALTER TABLE kunden ADD COLUMN {spalte} TEXT DEFAULT ''")
+
+    conn.executescript(KOMMUNIKATION_SQL)   # CREATE ... IF NOT EXISTS: idempotent
+
+    firma_cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "imap_host" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN imap_host TEXT DEFAULT ''")
+    if "imap_port" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN imap_port INTEGER DEFAULT 993")
+    conn.commit()
+
+
+CURRENT_VERSION = 78
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1940,6 +1975,7 @@ MIGRATIONEN: dict = {
     75: _to_v75,
     76: _to_v76,
     77: _to_v77,
+    78: _to_v78,
 }
 
 
