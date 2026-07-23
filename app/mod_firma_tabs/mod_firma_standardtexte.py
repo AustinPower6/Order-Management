@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QTextEdit,
                              QLabel, QToolButton, QMessageBox,
                              QHBoxLayout)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtGui import QCursor
 import theme
 from ui_widgets import FlowWidget as _FlowWidget
@@ -98,8 +98,19 @@ class StandardtexteTab(SimpleFormTab):
     RECHT_KEY = "firma_standardtexte"
     HELP_ANCHOR = "standardtexte"
 
+    def eventFilter(self, obj, event):
+        # Zuletzt fokussiertes Textfeld merken — der Marker-Klick fügt dort ein,
+        # selbst wenn der Button beim Klick kurz den Fokus übernimmt.
+        if event.type() == QEvent.Type.FocusIn and obj in self._felder.values():
+            self._last_te = obj
+        return super().eventFilter(obj, event)
+
     def _insert_marker(self, marker):
         te = QApplication.focusWidget()
+        if not (isinstance(te, QTextEdit) and te in self._felder.values()):
+            # Der Marker-Button hat beim Klick den Fokus übernommen → auf das
+            # zuletzt fokussierte Textfeld zurückgreifen (robust gegen Fokus-Steal).
+            te = getattr(self, "_last_te", None)
         if isinstance(te, QTextEdit) and te in self._felder.values():
             cursor = te.textCursor()
             cursor.insertText(marker)
@@ -116,6 +127,9 @@ class StandardtexteTab(SimpleFormTab):
             btn = QToolButton()
             btn.setText(marker)
             btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+            # NoFocus: der Hilfs-Button darf beim Klick dem Textfeld nicht den
+            # Fokus entziehen, sonst wüsste _insert_marker kein Ziel.
+            btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
             btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
             btn.setToolTip(f"{marker} – {get_marker_beschreibung(marker)}")
@@ -167,6 +181,12 @@ class StandardtexteTab(SimpleFormTab):
         hinweis = QLabel(_("firma.std.hinweis"))
         hinweis.setStyleSheet(theme.small_hint_style())
         layout.addWidget(hinweis)
+
+        # Marker-Klick fügt in das zuletzt fokussierte Textfeld ein (siehe
+        # eventFilter/_insert_marker) — Filter auf allen Textfeldern installieren.
+        self._last_te = None
+        for te in self._felder.values():
+            te.installEventFilter(self)
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
