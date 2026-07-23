@@ -516,7 +516,8 @@ class FirmaFenster(QWidget):
 
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.gj.dlg_neu"))
-        dlg.setFixedSize(340, 120)
+        # Nur Breite fest; feste Höhe würde die Felder stauchen (Text abgeschnitten).
+        dlg.setFixedWidth(340)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         form.setVerticalSpacing(6)
@@ -593,10 +594,9 @@ class FirmaFenster(QWidget):
 
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.btn.neue_firma"))
-        if ist_erste:
-            dlg.setFixedSize(420, 210)
-        else:
-            dlg.setFixedSize(380, 140)
+        # Nur die Breite festlegen; die Höhe ergibt sich aus dem Inhalt. Eine feste
+        # Höhe würde die Felder unter ihre benötigte Höhe stauchen (Text abgeschnitten).
+        dlg.setFixedWidth(420 if ist_erste else 380)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         form.setVerticalSpacing(6)

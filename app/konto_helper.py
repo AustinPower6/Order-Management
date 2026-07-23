@@ -91,7 +91,7 @@ class KontoSucheDialog(settings.DialogSizeMixin, QDialog):
         from PyQt6.QtWidgets import QComboBox, QFormLayout
         fw = QWidget()
         form = QFormLayout(fw)
-        form.setVerticalSpacing(4)
+        form.setVerticalSpacing(6)
 
         self._klasse_cb = QComboBox()
         self._klasse_cb.currentIndexChanged.connect(self._refresh)

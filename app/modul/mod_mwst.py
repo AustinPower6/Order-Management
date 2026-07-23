@@ -215,7 +215,8 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         self.setWindowTitle("Satz bearbeiten" if satz_id else "Neuer Satz")
-        self.setFixedSize(340, 160)
+        # Nur Breite fest; feste Höhe würde die Felder stauchen (Text abgeschnitten).
+        self.setFixedWidth(340)
         lay = QVBoxLayout(self)
         form = QFormLayout()
         form.setVerticalSpacing(6)
