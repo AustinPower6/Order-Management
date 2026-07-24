@@ -9456,12 +9456,6 @@
     "ts": "2026-06-25 17:24",
     "h": "08e9c5b8b432"
   },
-  "msg.rechnung_standardtext": {
-    "de": "Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.",
-    "en": "I would like to invoice the following.",
-    "ts": "2026-06-25 17:24",
-    "h": "29131ffb0062"
-  },
   "msg.storno_bearbeiten_kopie_anbieten": {
     "de": "Dies ist eine Stornorechnung, die Bearbeitung ist nicht möglich!\n\nSoll eine Kopie der zugehörigen Rechnung angelegt werden?",
     "en": "This is a cancellation invoice and cannot be edited.\n\nShould a copy of the related invoice be created?",

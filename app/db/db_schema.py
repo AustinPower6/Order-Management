@@ -706,7 +706,7 @@ CREATE TABLE IF NOT EXISTS rechnungen (
     datum TEXT NOT NULL,
     lieferdatum TEXT DEFAULT '',
     betreff TEXT DEFAULT '',
-    freitext_oben TEXT DEFAULT 'Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.',
+    freitext_oben TEXT DEFAULT '',
     freitext_unten TEXT DEFAULT '',
     status TEXT DEFAULT 'offen',
     notizen TEXT DEFAULT '',

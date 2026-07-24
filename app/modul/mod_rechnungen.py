@@ -335,11 +335,11 @@ class RechnungEditDialog(BelegEditDialog):
         ("zahlungskondition_id", None),
     ]
 
-    def __init__(self, parent, db, beleg_id, callback):
-        super().__init__(parent, db, beleg_id, callback)
-        if not beleg_id:
-            self._text_oben.setPlainText(
-                _("msg.rechnung_standardtext"))
+    # Kein eigener __init__: Der Freitext „oben" kommt ausschließlich aus dem
+    # Firmenstamm (Textbausteine Belege) — die Basisklasse setzt ihn in _load().
+    # Früher schrieb hier ein fester Programmtext darüber, wodurch der gepflegte
+    # Textbaustein auf keiner neuen Rechnung erschien. Ist keiner gepflegt,
+    # bleibt das Feld leer.
 
     def _new_nummer(self): return self.db.next_rechnungsnr()
     def _nr_field(self): return "rechnungsnr"

@@ -23,6 +23,18 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-24) **Neue Rechnung: kein vorgegebener Einleitungstext mehr.**
+      Bisher stand in einer neuen Rechnung oben automatisch „Hiermit erlaube ich
+      mir, Ihnen folgendes in Rechnung zu stellen." — dieser feste Satz ist
+      entfallen. Der Text oben kommt jetzt ausschließlich aus **Firmenstamm →
+      Textbausteine Belege**; ist dort für die Rechnung nichts hinterlegt, bleibt
+      das Feld leer und kann im Beleg frei gefüllt werden. Betrifft nur
+      Rechnungen — die übrigen Belegarten hatten nie einen vorgegebenen Text.
+  - Code: `app/modul/mod_rechnungen.py`, `app/db/db_schema.py`,
+    `app/language.json` (Schlüssel `msg.rechnung_standardtext` entfernt)
+  - Doku: Kapitel **Rechnungen** — Hinweis auf den automatischen Einleitungstext
+    streichen und auf die Textbausteine im Firmenstamm verweisen.
+
 - [ ] (2026-07-22) Artikel-Auswahl im Beleg **und** Artikelliste im Artikelstamm
       zeigen eine neue Spalte **Marke** (links von der Bezeichnung); das Suchfeld
       „Bezeichnung" durchsucht in beiden zusätzlich die Marke.

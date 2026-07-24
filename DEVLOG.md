@@ -1,3 +1,45 @@
+## 2026-07-24 05:25 — Fix: Neue Rechnung überschrieb den Textbaustein „oben"
+
+Aus dem Mehrplatz-Projekt übernommen (dort am 2026-07-24 gefunden und am echten
+Dialog verifiziert). Der Fehler steckte hier zeichengleich.
+
+- **`mod_rechnungen.py`:** Der Konstruktor von `RechnungEditDialog` setzte nach
+  `super().__init__()` — also **nach** dem Laden — bedingungslos
+  `_("msg.rechnung_standardtext")` in das obere Freitextfeld und überschrieb
+  damit den Textbaustein, den die Basisklasse (`beleg_edit.py`) gerade aus dem
+  Firmenstamm geholt hatte. Folge: Auf **keiner** neuen Rechnung erschien je der
+  unter Firmenstamm → Textbausteine Belege gepflegte Text „oben". Nur Rechnungen
+  waren betroffen — deshalb kam der untere Text immer korrekt. Der eigene
+  `__init__` ist ersatzlos entfallen; ist kein Textbaustein gepflegt, bleibt das
+  Feld leer.
+- **`db_schema.py`:** `rechnungen.freitext_oben` trug als **einzige** Spalte
+  aller Belegtabellen einen Klartext-Default („Hiermit erlaube ich mir, Ihnen
+  folgendes in Rechnung zu stellen."). Ein Belegtext im Schema ist unabhängig von
+  Firma und Sprache und nicht pflegbar; Angebot, Auftrag, Lieferschein und
+  Mahnung hatten immer `''`. Jetzt ebenfalls `''`.
+- **`language.json`:** Schlüssel `msg.rechnung_standardtext` entfernt (1877
+  Keys). In den Zusatzsprachdateien bleibt er als Waise, bis der
+  Sprachdatei-Generator aufräumt; gelesen wird er nicht mehr.
+
+**Bewusst ohne Migrationsschritt** (Abweichung von der Schema-Regel, hier
+begründet): SQLite kennt kein `ALTER TABLE … ALTER COLUMN … SET DEFAULT`; der
+einzige Weg wäre ein kompletter Neubau der Tabelle `rechnungen` samt Daten,
+Indizes und Fremdschlüsseln. Dem steht kein Nutzen gegenüber — der Default kann
+gar nicht greifen: **Alle** Anlagewege setzen die Spalte explizit
+(`db_belege.py` Z. 196/508 für Rechnungen, der Dialog über `_save`). Bestands-DBs
+behalten den alten Spalten-Default daher folgenlos; frische DBs bekommen den
+leeren. `CURRENT_VERSION` bleibt 79.
+
+**Nicht übertragbar:** Der zugehörige Fix am Textquelle-Schalter der
+Abrechnungsstelle entfällt hier — dieses Feature (Mehrplatz, DB v85) gibt es im
+Einzelplatz nicht.
+
+**Verifikation:** `ruff check app` (clean), `language.json` valide (1877 Keys).
+Struktureller Abgleich beider Projekte: in beiden kein Klartext-Default im
+Schema, kein Programmtext-Override im Rechnungsdialog, kein i18n-Schlüssel mehr,
+Basisklasse belegt weiterhin aus dem Firmenstamm vor. Sichtprüfung im laufenden
+Programm steht noch aus.
+
 ## 2026-07-22 15:10 — DB v79: vier tote Spalten aus `firma` entfernt
 
 Aufgefallen beim Schema-Abgleich zur KIS-Übernahme: Die Tabelle `firma` trug
