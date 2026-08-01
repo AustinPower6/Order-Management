@@ -1,3 +1,41 @@
+## 2026-08-01 11:25 — Kommunikationsdaten des Kunden werden nicht mehr eingefroren
+
+Aus dem Mehrplatz-Projekt übernommen (dort heute entwickelt und verifiziert). Der
+Code stand hier zeichengleich.
+
+**Das Problem:** `kunde_snapshot` fror beim Erstdruck den vollständigen
+Kundendatensatz ein. Ändert ein Kunde danach seine E-Mail-Adresse, ging ein
+Nachversand der Rechnung weiter an die alte — der Versand liest die Adresse über
+`kunde_fuer_beleg` aus dem Snapshot. Für Name und Anschrift ist das Einfrieren
+richtig (§ 14 UStG), für den Weg zum Empfänger nicht.
+
+**`app/db/db_kunden.py`:**
+- Neu `_KOMM_FELDER` (12 Felder): E-Mail, Telefon, Mobil, Fax, Ansprechpartner,
+  die vier Versandschalter sowie `e_rechnung_aktiv`, `e_rechnung_version` und
+  `leitweg_id` — letztere drei sind der Zustellweg der elektronischen Rechnung,
+  wie die Versandschalter der der E-Mail (`leitweg_id` = BT-10, die Adresse des
+  Empfängers im behördlichen Verfahren).
+- `_kunde_snapshot_json` lässt sie beim Einfrieren weg.
+- `kunde_fuer_beleg` überlagert den Snapshot **immer** mit dem Live-Stamm — so
+  wirkt die Änderung auch für Altbelege, deren Snapshot die Felder noch mitführt.
+  Ist der Kunde nicht auffindbar, bleibt der Snapshot stehen: lieber der alte
+  Stand als eine still verlorene Adresse.
+- Neuer Helfer `_kunde_kontakt(beleg)` liest mit der **firma_id des Belegs**,
+  nicht der aktiven — der Kunde kann einer anderen Firma gehören, `get_kunde`
+  käme dann leer zurück und die Adresse fiele still weg.
+
+**`CLAUDE.md`:** DSGVO-Regel um den neuen Punkt 2 erweitert, Punkte umnummeriert.
+Wer den Snapshot ersetzt, muss die `kunden_id` kappen — sonst holt die
+Überlagerung die echten Daten zurück. (Ein `anonym_druck.py` gibt es hier nicht,
+die Regel gilt trotzdem für künftige Stellen.)
+
+Kein Schema-Eingriff, keine Migration.
+
+**Verifikation:** `ruff check app` sauber; Funktionslauf gegen eine temporäre
+SQLite-Datei, 8/8 Prüfungen — Snapshot ohne Kommunikationsdaten, E-Mail und
+Leitweg-ID kommen live, Anschrift bleibt eingefroren, Adresse kommt auch bei
+fremder aktiver Firma an, ohne `kunden_id` bleibt der Snapshot stehen.
+
 ## 2026-07-24 05:25 — Fix: Neue Rechnung überschrieb den Textbaustein „oben"
 
 Aus dem Mehrplatz-Projekt übernommen (dort am 2026-07-24 gefunden und am echten

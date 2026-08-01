@@ -116,26 +116,84 @@ class DBKundenMixin:
     # ─── DSGVO: Kundendaten-Snapshot je Beleg ──────────────────────────────
     # Belege referenzieren den Kunden nur über kunden_id. Damit der Kundenstamm
     # DSGVO-konform anonymisiert/gelöscht werden kann (Art. 17) und festgeschriebene
-    # Belege ihre Anschrift zum Belegzeitpunkt behalten (§14 UStG), wird der komplette
+    # Belege ihre Anschrift zum Belegzeitpunkt behalten (§14 UStG), wird der
     # Kundendatensatz als JSON im Belegkopf (Spalte kunde_snapshot) eingefroren.
 
+    #: Kommunikationsdaten des Kunden — **nicht** eingefroren, immer live aus dem
+    #: Stamm (siehe kunde_fuer_beleg). Eine Adresse beschreibt nicht den Beleg,
+    #: sondern nur den Weg zum Empfänger: Zieht ein Kunde nach der Rechnung um
+    #: oder wechselt sein Postfach, muss der Nachversand an die **neue** Adresse
+    #: gehen. Für Name und Anschrift gilt das Gegenteil (§14 UStG), sie bleiben
+    #: eingefroren. Zweiter Grund: Eine Adresse im Snapshot überlebte die
+    #: Anonymisierung des Stamms (Art. 17) — dafür gibt es hier keinen
+    #: steuerlichen Rechtfertigungsgrund.
+    #: Der Rechnungs-Schalter heißt schlicht `email_versand` (email_gen._VERSAND_FELD);
+    #: für Lieferscheine gibt es keinen, der E-Mail-Versand kennt sie nicht. Die drei
+    #: E-Rechnungs-Felder gehören aus demselben Grund dazu: `leitweg_id` ist die
+    #: Adresse des Empfängers im behördlichen Verfahren (BT-10). Beides eingefroren
+    #: zu lassen hieße: Der Wunsch „per E-Mail" wirkt sofort, der Wunsch „als
+    #: E-Rechnung" nie.
+    _KOMM_FELDER = ("email", "telefon", "mobil", "fax", "ansprechpartner",
+                    "email_versand", "email_versand_angebot",
+                    "email_versand_auftrag", "email_versand_mahnungen",
+                    "e_rechnung_aktiv", "e_rechnung_version", "leitweg_id")
+
     def _kunde_snapshot_json(self, kunden_id) -> str:
-        """Serialisiert den vollständigen Kundendatensatz als JSON-String zum Einfrieren
-        im Beleg. Bewusst komplett (nicht nur personenbezogene Felder), damit der Snapshot
+        """Serialisiert den Kundendatensatz als JSON-String zum Einfrieren im Beleg.
+        Bewusst fast komplett (nicht nur personenbezogene Felder), damit der Snapshot
         ein vollwertiger Ersatz für get_kunde ist (Druck, E-Rechnung, Sprache, Leitweg-ID …).
-        Leerer String, wenn kein Kunde vorhanden — dann greift der Live-Fallback."""
+        Ausgenommen sind die `_KOMM_FELDER`. Leerer String, wenn kein Kunde vorhanden —
+        dann greift der Live-Fallback."""
         if not kunden_id:
             return ""
         row = self.get_kunde(kunden_id)
         if not row:
             return ""
-        return json.dumps(dict(row), ensure_ascii=False)
+        return json.dumps({k: v for k, v in dict(row).items()
+                           if k not in self._KOMM_FELDER}, ensure_ascii=False)
+
+    def _kunde_kontakt(self, beleg):
+        """Aktuelle Kommunikationsdaten zum Kunden eines Belegs — dict oder None.
+
+        Gelesen wird mit der **firma_id des Belegs**, nicht der aktiven Firma:
+        Der Kunde kann einer anderen Firma gehören als der gerade gewählten.
+        `get_kunde` filtert auf die aktive Firma und käme dann leer zurück — die
+        E-Mail-Adresse fiele beim Versand still weg. Der Filter `AND firma_id=?`
+        bleibt erhalten, die Mandanten-Isolation also gewahrt.
+        """
+        def _feld(name):
+            try:
+                return beleg[name] if beleg is not None else None
+            except (KeyError, IndexError, TypeError):
+                return None
+
+        kid = _feld("kunden_id")
+        if not kid:
+            return None
+        fid = _feld("firma_id") or self._firma_id()
+        spalten = ", ".join(self._KOMM_FELDER)
+        row = self.conn.execute(
+            f"SELECT {spalten} FROM kunden WHERE id=? AND firma_id=?",
+            (kid, fid)).fetchone()
+        return dict(row) if row else None
 
     def kunde_fuer_beleg(self, beleg):
         """Zentrale Auflösung der Kundendaten eines Belegs. Liefert den eingefrorenen
         Snapshot (JSON aus beleg['kunde_snapshot']), falls vorhanden, sonst die aktuellen
         Stammdaten über get_kunde(kunden_id). Dadurch bleiben festgeschriebene Belege auch
         nach Anonymisierung/Löschung des Kunden vollständig reproduzierbar.
+
+        **Die Kommunikationsdaten kommen dagegen live aus dem Stamm** und
+        überlagern den Snapshot. Sie sind kein Bestandteil des Belegs, sondern der
+        Weg zum Empfänger: Eine nach der Rechnungsstellung geänderte Adresse muss
+        beim Nachversand greifen. Das gilt auch für Altbelege, deren Snapshot die
+        Felder noch mitführt — überlagert wird immer, nicht nur bei Lücken.
+        Ist der Kunde nach einer Anonymisierung leer, bleibt auch hier nichts
+        übrig, und es lässt sich nichts mehr versenden (Art. 17).
+
+        Ist der Kunde **nicht auffindbar** (hart gelöscht, oder das übergebene
+        Beleg-dict führt keine kunden_id), bleibt der Snapshot unangetastet:
+        lieber der alte Stand als eine still verlorene Adresse.
 
         `beleg` darf ein sqlite3.Row oder ein dict sein. Rückgabe: dict oder None."""
         snap = ""
@@ -145,9 +203,14 @@ class DBKundenMixin:
             snap = ""
         if snap:
             try:
-                return json.loads(snap)
+                daten = json.loads(snap)
             except (ValueError, TypeError):
-                pass
+                daten = None
+            if daten is not None:
+                live = self._kunde_kontakt(beleg)
+                if live is not None:
+                    daten.update(live)
+                return daten
         try:
             kid = beleg["kunden_id"]
         except (KeyError, IndexError, TypeError):
