@@ -1922,7 +1922,30 @@ def _to_v79(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 79
+CURRENT_VERSION = 80
+
+def _to_v80(conn):
+    """Herkunft einer Rechnungs-Kopie fuer die Belegkette.
+
+    Der Weg "Stornorechnung -> Bearbeiten" (`db_belege.rechnung_kopieren`) legt
+    eine bearbeitbare Kopie an und entfernt dabei bewusst alle FK-Verknuepfungen
+    (`auftrag_id`, `lieferschein_id`, `mahnung_id`, `storno_von_rechnung_id`) —
+    sonst hinge die Korrekturrechnung als zweiter Beleg an der Kette des
+    urspruenglichen Auftrags. Damit war ihre Herkunft aber nirgends festgehalten
+    und sie tauchte in keiner Belegkette auf.
+
+    `kopie_von_rechnung_id` haelt genau diesen Bezug und wird **nur** von der
+    Belegkette ausgewertet — Auftragsfluss, Druck und Buchungsexport bleiben
+    unberuehrt. Kein Fremdschluessel, wie schon bei `storno_von_rechnung_id`.
+
+    Aus dem Mehrplatz-Projekt uebernommen (dort DB v117).
+    """
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(rechnungen)").fetchall()]
+    if "kopie_von_rechnung_id" not in cols:
+        conn.execute("ALTER TABLE rechnungen ADD COLUMN "
+                     "kopie_von_rechnung_id INTEGER DEFAULT NULL")
+    conn.commit()
+
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -2003,6 +2026,7 @@ MIGRATIONEN: dict = {
     77: _to_v77,
     78: _to_v78,
     79: _to_v79,
+    80: _to_v80,
 }
 
 

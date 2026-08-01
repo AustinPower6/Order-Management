@@ -10098,6 +10098,14 @@
     "ts": "2026-06-25 17:24",
     "h": "a7ac409d4faf"
   },
+  "kette.rolle.korrektur": {
+    "de": "Korrekturrechnung",
+    "en": "Correction invoice"
+  },
+  "kette.rolle.storno": {
+    "de": "Stornorechnung",
+    "en": "Cancellation invoice"
+  },
   "status.storno": {
     "de": "Storno",
     "en": "Cancel",

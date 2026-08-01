@@ -1,3 +1,41 @@
+## 2026-08-01 14:10 — Storno-Kette in der Belegkette sichtbar (DB v80)
+
+Aus dem Mehrplatz-Projekt übernommen (dort heute an einem echten Fall gefunden
+und als DB v117 umgesetzt). Der Code stand hier zeichengleich.
+
+**Das Problem:** Die Belegkette kennt nur Angebot → Auftrag → Lieferschein →
+Rechnung plus Mahnungen. Eine Stornorechnung und eine über „Stornorechnung →
+Bearbeiten" erzeugte Korrekturfassung tauchten dort **nie** auf — der
+Storno-Bezug wurde nicht ausgewertet, und die Kopie trägt gar keinen Verweis:
+`db_belege.rechnung_kopieren` entfernt alle FK-Felder, damit sie nicht als
+zweiter Beleg an der Kette des alten Auftrags hängt.
+
+**Geändert:**
+- **DB v80:** neue Spalte `rechnungen.kopie_von_rechnung_id`
+  (`db/db_schema.py` + `DB-Pflege.py::_to_v80`, `CURRENT_VERSION` 79 → 80).
+  Kein Fremdschlüssel, wie schon bei `storno_von_rechnung_id`. Das Feld wirkt
+  **nur** in der Belegkette.
+- `db/db_belege.py`: `rechnung_kopieren` setzt den Verweis; neuer Getter
+  `get_rechnung_kopien` (firma-isoliert, ohne LIMIT — aus einer Rechnung können
+  nacheinander mehrere Korrekturfassungen entstehen).
+- `modul/beleg_kette.py`: neue `_storno_strang()` sammelt in beide Richtungen
+  alle verwandten Rechnungen, **mit Merkliste besuchter IDs** (Rechnung und
+  Storno verweisen gegenseitig aufeinander). Die Zusatzbelege hängen hinter den
+  Mahnungen, weil die bestehenden fw/bw-Zuweisungen feste Indizes nutzen.
+  Beschriftung „Stornorechnung"/„Korrekturrechnung" statt dreimal „Rechnung"
+  (neue i18n-Schlüssel `kette.rolle.*`; die Datei hatte bisher keinen
+  i18n-Import, die vorhandenen `CHAIN_LABELS` bleiben hartcodiert).
+
+**Verifikation:** `ruff check app` sauber, Migration über den regulären Weg
+(`DB-Pflege`, v79 → v80, Backup `auftragsabwicklung.db.79`). Prüfskript 4/4 am
+echten Bestand: Rechnung `RE2026-0001` zeigt jetzt ihren Storno `RE2026-0006`
+als „Stornorechnung", `_storno_strang` terminiert (1,7 ms), und gewöhnliche
+Rechnungen zeigen unverändert genau eine Rechnung in der Kette.
+
+**Unterschied zum Mehrplatz-Projekt:** Dort gab es einen Bestandsfall mit
+Korrekturrechnung, der nachgetragen wurde. Hier enthält der Bestand nur ein
+Storno-Paar ohne Kopie — nichts nachzutragen.
+
 ## 2026-08-01 11:25 — Kommunikationsdaten des Kunden werden nicht mehr eingefroren
 
 Aus dem Mehrplatz-Projekt übernommen (dort heute entwickelt und verifiziert). Der

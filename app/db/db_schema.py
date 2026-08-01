@@ -731,6 +731,11 @@ CREATE TABLE IF NOT EXISTS rechnungen (
     festgeschrieben INTEGER DEFAULT 0,
     buchungsexport_id INTEGER DEFAULT NULL,
     storno_von_rechnung_id INTEGER DEFAULT NULL,
+    -- Herkunft einer über „Stornorechnung → Bearbeiten" erzeugten Kopie
+    -- (db_belege.rechnung_kopieren). Rein für die Belegkette: Die Kopie darf
+    -- NICHT über auftrag_id/lieferschein_id an den alten Beleg gehängt werden,
+    -- sonst hinge sie als zweiter Beleg an dessen Kette.
+    kopie_von_rechnung_id INTEGER DEFAULT NULL,
     storniert_durch_id INTEGER DEFAULT NULL,
     kunde_snapshot TEXT DEFAULT '',
     kopf_snapshot TEXT DEFAULT '',

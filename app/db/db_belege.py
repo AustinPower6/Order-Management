@@ -392,6 +392,13 @@ class DBBelegeMixin:
         kopie["festgeschrieben"] = 0
         kopie["storno_von_rechnung_id"] = None
         kopie["storniert_durch_id"] = None
+        # Herkunft festhalten — nur für die Belegkette (v117). Sie ersetzt die
+        # unten entfernten FK-Felder ausdrücklich NICHT: Über `auftrag_id` hinge
+        # die Kopie als zweiter Beleg an der Kette des ursprünglichen Auftrags,
+        # über `storno_von_rechnung_id` würde sie überall als Stornobeleg
+        # behandelt (Druck, Status, Buchungsexport). Ohne diesen Verweis war die
+        # Korrekturrechnung in keiner Kette zu finden.
+        kopie["kopie_von_rechnung_id"] = rechnung_id
         # Export-Markierung nicht erben — die Kopie ist eine neue Rechnung und
         # muss beim Festschreiben in den naechsten Buchungsexport.
         kopie["buchungsexport_id"] = None
@@ -985,6 +992,19 @@ class DBBelegeMixin:
             sql += " AND geloescht=0"
         sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
         return self.conn.execute(sql, (auftrag_id, self._firma_id())).fetchone()
+
+    def get_rechnung_kopien(self, rechnung_id, include_deleted=True):
+        """Rechnungen, die als Kopie dieser Rechnung entstanden sind (v117).
+
+        Anders als die übrigen Ketten-Getter **keine** LIMIT-1-Abfrage: Aus
+        einer Rechnung können nacheinander mehrere Korrekturfassungen entstehen.
+        `include_deleted` ist hier standardmäßig True — die Belegkette zeigt
+        gelöschte Belege bewusst mit Marker an."""
+        sql = "SELECT * FROM rechnungen WHERE kopie_von_rechnung_id=? AND firma_id=?"
+        if not include_deleted:
+            sql += " AND COALESCE(geloescht,0)=0"
+        sql += " ORDER BY id ASC"
+        return self.conn.execute(sql, (rechnung_id, self._firma_id())).fetchall()
 
     def get_rechnung_fuer_lieferschein(self, lieferschein_id, include_deleted=False):
         sql = "SELECT * FROM rechnungen WHERE lieferschein_id=? AND firma_id=?"

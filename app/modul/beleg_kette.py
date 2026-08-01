@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QFont
 import settings
 import theme
+from i18n import _
 from typing import List, Dict, Optional, Any, Tuple
 from .beleg_utils import _apply_saved_columns, _connect_save_columns
 
@@ -31,6 +32,52 @@ def _beleg_entry(typ, rec, current_id):
 
 def _safe_dict(d: Any) -> Optional[Dict[str, Any]]:
     return dict(d) if d else None
+
+
+def _storno_strang(db: Any, rech: Optional[Dict]) -> List[Dict]:
+    """Alle mit `rech` über Storno bzw. Kopie verbundenen **anderen** Rechnungen.
+
+    Eine stornierte Rechnung, ihre Stornorechnung und die daraus über
+    „Stornorechnung → Bearbeiten" entstandene Korrekturfassung gehören fachlich
+    zusammen, hängen aber an keiner der vier Kettenstufen: Die Kopie bekommt
+    ihre FK-Felder bewusst nicht (sonst hinge sie als zweiter Beleg am alten
+    Auftrag, siehe `db_belege.rechnung_kopieren`).
+
+    Gesammelt wird in beide Richtungen, bis nichts Neues mehr dazukommt:
+    rückwärts über `storno_von_rechnung_id`/`kopie_von_rechnung_id`, vorwärts
+    über `storniert_durch_id` und `get_rechnung_kopien`. **Besuchte IDs werden
+    mitgeführt** — Rechnung und Storno verweisen gegenseitig aufeinander, ohne
+    diese Bremse liefe die Suche endlos.
+
+    Die Startrechnung selbst ist nicht enthalten; sie hat ihren festen Platz in
+    der Kette. Reihenfolge: nach Beleg-ID, also in Entstehungsfolge.
+    """
+    if not rech:
+        return []
+    start_id = rech["id"]
+    gesehen = {start_id}
+    offen = [rech]
+    gefunden: Dict[int, Dict] = {}
+    while offen:
+        akt = offen.pop()
+        kandidaten = []
+        for feld in ("storno_von_rechnung_id", "kopie_von_rechnung_id",
+                     "storniert_durch_id"):
+            rid = akt.get(feld)
+            if rid and rid not in gesehen:
+                kandidaten.append(_safe_dict(db.get_rechnung(rid)))
+        try:
+            kandidaten.extend(_safe_dict(k) for k in db.get_rechnung_kopien(akt["id"]))
+        except AttributeError:
+            pass                      # Getter fehlt (ältere Datenbankschicht)
+        for kand in kandidaten:
+            if not kand or kand["id"] in gesehen:
+                continue
+            gesehen.add(kand["id"])
+            gefunden[kand["id"]] = kand
+            offen.append(kand)
+    return [gefunden[i] for i in sorted(gefunden)]
+
 
 
 def load_chain(db: Any, current_id: Optional[int], current_typ: str) -> Tuple[Optional[Dict], Optional[Dict], Optional[Dict], Optional[Dict], List[Dict]]:
@@ -168,6 +215,21 @@ def build_chain_data(db, current_id, current_typ):
             entry["info"]["mahnstufe"] = stufe
         result.append(entry)
 
+    # Storno/Korrekturfassungen **hinter** den Mahnungen anhängen: Die festen
+    # Indizes 0–3 und der Mahnungsblock darüber werden von den fw/bw-Zuweisungen
+    # weiter unten vorausgesetzt.
+    storno_rechnungen = _storno_strang(db, rech)
+    for r in storno_rechnungen:
+        entry = _beleg_entry("rechnungen", r, current_id)
+        # Rolle mitgeben, sonst stünde in der Kette dreimal „Rechnung" und der
+        # Anwender müsste raten, welche davon der Storno ist.
+        if entry["info"]:
+            if r.get("storno_von_rechnung_id"):
+                entry["info"]["rolle"] = "storno"
+            elif r.get("kopie_von_rechnung_id"):
+                entry["info"]["rolle"] = "korrektur"
+        result.append(entry)
+
     # Vorwärts-/Rückwärts-Links pro Entry direkt zuweisen
     for entry in result:
         entry["fw"] = {}
@@ -205,6 +267,23 @@ def build_chain_data(db, current_id, current_typ):
             result[mah_idx]["fw"]["mahnungen"] = mahnen[i + 1]["id"]
         if i > 0:
             result[mah_idx]["bw"]["mahnungen"] = mahnen[i - 1]["id"]
+
+    # Storno-Strang verlinken: jede Fassung zeigt zurück auf ihren Ursprung
+    # (Storno bzw. Kopie) und vorwärts auf ihre Folgefassung. Verlinkt wird nur,
+    # was auch in der Kette steht — sonst zeigte ein Pfeil ins Leere.
+    if storno_rechnungen:
+        idx_von_id = {}
+        if rech:
+            idx_von_id[rech["id"]] = 3
+        for i, r in enumerate(storno_rechnungen):
+            idx_von_id[r["id"]] = 4 + len(mahnen) + i
+        for r in storno_rechnungen:
+            eigen = idx_von_id[r["id"]]
+            for feld in ("storno_von_rechnung_id", "kopie_von_rechnung_id"):
+                quelle = r.get(feld)
+                if quelle in idx_von_id:
+                    result[eigen]["bw"]["rechnungen"] = quelle
+                    result[idx_von_id[quelle]]["fw"]["rechnungen"] = r["id"]
 
     return result
 
@@ -326,6 +405,8 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
             if typ == "mahnungen" and info:
                 stufe = info.get("mahnstufe", 1)
                 besch = f"{stufe}. {self.CHAIN_LABELS['mahnungen']}"
+            elif typ == "rechnungen" and info and info.get("rolle"):
+                besch = _(f"kette.rolle.{info['rolle']}")
             if current:
                 besch = f"★ {besch} (aktuell)"
 
