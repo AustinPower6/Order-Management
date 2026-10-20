@@ -10,8 +10,10 @@ from modul.mod_belege import (_EscRejectFilter, _id_col_visible, _locks_col_visi
                         _format_lock, _apply_lock_style,
                         _apply_saved_columns, _connect_save_columns)
 from spellcheck import SpellCheckLineEdit
-from ui_widgets import SaveBar, zeige_fehler
+from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
+from db.db_config import KonditionInVerwendungError
+from .mod_firma_zahlungskonditionen import kunden_liste
 import rechte
 import ui_widgets
 
@@ -424,7 +426,14 @@ class MahnkonditionenTab(QWidget):
         if QMessageBox.question(self, _("msg.loeschen"),
                                 _("firma.mahn.frage_kond_loeschen")) \
                 == QMessageBox.StandardButton.Yes:
-            self.db.delete_mahnkondition(mk_id, commit=False)
+            try:
+                self.db.delete_mahnkondition(mk_id, commit=False)
+            except KonditionInVerwendungError as e:
+                # Der Grund gehört in die Meldung: welche Kunden, und was zu tun ist.
+                zeige_warnung(self, _("msg.loeschen_nicht_moeglich"), _(
+                    "firma.mahn.in_verwendung", anzahl=e.anzahl,
+                    kunden=kunden_liste(e.kunden)))
+                return
             self._save_bar.set_dirty(True)
             self._refresh()
 

@@ -37,6 +37,17 @@ _VERSAND_FIRMA_KEY = {
 }
 
 
+def _verwendung_liste(verwendung: dict) -> str:
+    """Aufzählung „• 5 Rechnungen" je Fundstelle aus `db.kunde_verwendung`.
+
+    Einzahl und Mehrzahl haben eigene Schlüssel (`…_1`): „1 Rechnung(en)" wäre
+    in einer Meldung, die der Anwender verstehen soll, eine Zumutung.
+    """
+    return "\n".join(
+        "• " + _(f"kunde.verwendung.{tbl}" + ("_1" if anzahl == 1 else ""), n=anzahl)
+        for tbl, anzahl in verwendung.items())
+
+
 class KundenFenster(QWidget):
     HELP_ANCHOR = "kunden"
 
@@ -381,9 +392,15 @@ class KundenFenster(QWidget):
                 self.db.restore_kunde(id_)
                 self._refresh()
         else:
-            if self.db.kunde_verwendet(id_):
+            verwendung = self.db.kunde_verwendung(id_)
+            if verwendung:
+                # Den Grund nennen: Hier stand bis 2026-10-20 der Text der
+                # Rückfrage („… wirklich löschen?") — die Meldung fragte, statt
+                # zu begründen.
                 zeige_warnung(self, _("msg.loeschen_nicht_moeglich"),
-                                    _("dlg.kunde_loeschen_frage", name=kunde_anzeigename(k)))
+                              _("dlg.kunde_loeschen_verwendet",
+                                name=kunde_anzeigename(k),
+                                liste=_verwendung_liste(verwendung)))
                 return
             if QMessageBox.question(self, _("dlg.kunde_loeschen"),
                                     _("dlg.kunde_loeschen_frage", name=kunde_anzeigename(k))) == QMessageBox.StandardButton.Yes:

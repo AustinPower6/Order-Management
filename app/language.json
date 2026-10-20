@@ -2027,6 +2027,10 @@
     "ts": "2026-06-25 17:24",
     "h": "bd4dfabc9b53"
   },
+  "dlg.kunde_loeschen_verwendet": {
+    "de": "Kunde '{name}' kann nicht gelöscht werden, weil noch Einträge auf ihn verweisen:\n\n{liste}\n\nDie Belege müssen erhalten bleiben. Um die Daten des Kunden zu entfernen, die Schaltfläche „DSGVO“ → „Anonymisieren / Löschen (DSGVO)“ verwenden.",
+    "en": "Customer '{name}' cannot be deleted because entries still refer to it:\n\n{liste}\n\nThe documents must be kept. To remove the customer's data, use the button \"GDPR\" → \"Anonymise / delete (GDPR)\"."
+  },
   "dlg.kunde_neu": {
     "de": "Neuer Kunde",
     "en": "New Customer",
@@ -3736,6 +3740,54 @@
     "en": "Search (multiple terms = AND) …",
     "ts": "2026-06-25 17:24",
     "h": "32b0745a0b9c"
+  },
+  "kunde.verwendung.angebote": {
+    "de": "{n} Angebote",
+    "en": "{n} quotations"
+  },
+  "kunde.verwendung.angebote_1": {
+    "de": "1 Angebot",
+    "en": "1 quotation"
+  },
+  "kunde.verwendung.auftraege": {
+    "de": "{n} Aufträge",
+    "en": "{n} orders"
+  },
+  "kunde.verwendung.auftraege_1": {
+    "de": "1 Auftrag",
+    "en": "1 order"
+  },
+  "kunde.verwendung.kommunikation": {
+    "de": "{n} Kommunikationseinträge",
+    "en": "{n} communication entries"
+  },
+  "kunde.verwendung.kommunikation_1": {
+    "de": "1 Kommunikationseintrag",
+    "en": "1 communication entry"
+  },
+  "kunde.verwendung.lieferscheine": {
+    "de": "{n} Lieferscheine",
+    "en": "{n} delivery notes"
+  },
+  "kunde.verwendung.lieferscheine_1": {
+    "de": "1 Lieferschein",
+    "en": "1 delivery note"
+  },
+  "kunde.verwendung.mahnungen": {
+    "de": "{n} Mahnungen",
+    "en": "{n} dunning letters"
+  },
+  "kunde.verwendung.mahnungen_1": {
+    "de": "1 Mahnung",
+    "en": "1 dunning letter"
+  },
+  "kunde.verwendung.rechnungen": {
+    "de": "{n} Rechnungen",
+    "en": "{n} invoices"
+  },
+  "kunde.verwendung.rechnungen_1": {
+    "de": "1 Rechnung",
+    "en": "1 invoice"
   },
   "firma.adresse.anrede_ap": {
     "de": "Anrede Ansprechpartner:",
@@ -5730,6 +5782,10 @@
     "ts": "2026-06-25 17:24",
     "h": "8577ed281b72"
   },
+  "firma.kond.kunde_zeile": {
+    "de": "• {nr} {name}",
+    "en": "• {nr} {name}"
+  },
   "firma.kopieren.bitte_quelle": {
     "de": "Bitte wählen Sie eine Quell-Firma aus.",
     "en": "Please select a source company.",
@@ -6305,6 +6361,10 @@
     "en": "{n} reminder level(s) will be deleted. Continue?",
     "ts": "2026-06-25 17:24",
     "h": "7b2df6ca71cf"
+  },
+  "firma.mahn.in_verwendung": {
+    "de": "Die Mahnkondition ist noch bei {anzahl} Kunden hinterlegt und kann nicht gelöscht werden (höchstens 10 aufgeführt):\n\n{kunden}\n\nBitte zuerst im Kundenstamm beim jeweiligen Kunden im Feld „Mahnkondition“ eine andere auswählen. Bestehende Belege behalten ihre Kondition.",
+    "en": "The dunning terms are still assigned to {anzahl} customers and cannot be deleted (at most 10 listed):\n\n{kunden}\n\nPlease first select different terms in the \"Reminder Terms\" field of each customer in the customer master data. Existing documents keep their terms."
   },
   "firma.mahn.mahngebuehr": {
     "de": "Mahngebühr (€)",
@@ -8135,6 +8195,10 @@
     "en": "The days are added to the document date to compute the due date.",
     "ts": "2026-06-25 17:24",
     "h": "96c139e6608e"
+  },
+  "firma.zk.in_verwendung": {
+    "de": "Die Zahlungskondition ist noch bei {anzahl} Kunden hinterlegt und kann nicht gelöscht werden (höchstens 10 aufgeführt):\n\n{kunden}\n\nBitte zuerst im Kundenstamm beim jeweiligen Kunden im Feld „Zahlungskondition“ eine andere auswählen. Bestehende Belege behalten ihre Kondition.",
+    "en": "The payment terms are still assigned to {anzahl} customers and cannot be deleted (at most 10 listed):\n\n{kunden}\n\nPlease first select different terms in the \"Payment Terms\" field of each customer in the customer master data. Existing documents keep their terms."
   },
   "firma.zk.tage": {
     "de": "Tage",

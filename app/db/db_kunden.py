@@ -96,16 +96,32 @@ class DBKundenMixin:
                 f"Kundennummer {nr} liegt außerhalb des Bereichs {von}–{bis}.")
         self._save_record("kunden", data)
 
-    def kunde_verwendet(self, kunde_id):
+    #: Tabellen, die über `kunden_id` auf einen Kunden zeigen — jede verlöre beim
+    #: Löschen ihren Bezug. Mahnungen und Kommunikation fehlten bis 2026-10-20:
+    #: Ein Kunde mit KIS-Eintrag ließ sich löschen, der Eintrag zeigte ins Leere.
+    VERWENDUNG_TABELLEN = ("angebote", "auftraege", "lieferscheine",
+                           "rechnungen", "mahnungen", "kommunikation")
+
+    def kunde_verwendung(self, kunde_id) -> dict:
+        """Wo der Kunde vorkommt: `{tabelle: anzahl}`, leer wenn nirgends.
+
+        Grundlage der Löschsperre **und** ihrer Begründung. Gelöschte Belege
+        zählen bewusst mit: Sie lassen sich wiederherstellen und zeigten danach
+        auf einen gelöschten Kunden.
+        """
         fir = self._firma_id()
-        for tbl in ("angebote", "auftraege", "lieferscheine", "rechnungen"):
+        gefunden = {}
+        for tbl in self.VERWENDUNG_TABELLEN:
             r = self.conn.execute(
                 f"SELECT COUNT(*) FROM {tbl} WHERE kunden_id=? AND firma_id=?",
                 (kunde_id, fir)
             ).fetchone()
             if r[0] > 0:
-                return True
-        return False
+                gefunden[tbl] = r[0]
+        return gefunden
+
+    def kunde_verwendet(self, kunde_id) -> bool:
+        return bool(self.kunde_verwendung(kunde_id))
 
     def delete_kunde(self, id):
         self._soft_delete("kunden", id)

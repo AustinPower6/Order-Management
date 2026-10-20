@@ -1,3 +1,42 @@
+## 2026-10-20 11:17 — Paket 2 aus dem Multi-Ableger: Konditionen, Warengruppen und Kunden löschen
+
+**Anlass:** Abgleich mit dem Multi-Ableger (dort `c094d8c`, `6747c01`, nur gelesen).
+Alle drei Fehler waren hier noch vorhanden.
+
+**Geändert:**
+- **A2a Konditionen** `app/db/db_config.py`: `delete_zahlungskondition` und
+  `delete_mahnkondition` setzen die Kondition in Belegen nicht mehr auf NULL.
+  Bisher traf das alle Belegarten, auch festgeschriebene Rechnungen, sodass
+  Fälligkeit und Mahnstufen fehlten. Führen noch Kunden der aktiven Firma die
+  Kondition, wird das Löschen mit `KonditionInVerwendungError` abgewiesen
+  (Helfer `_kunden_mit_kondition`). Die Reiter Zahlungs- und Mahnkonditionen
+  zeigen dann die Anzahl, bis zu zehn Kunden und die Abhilfe, also das Feld im
+  Kundenstamm (neue Schlüssel `firma.zk.in_verwendung`,
+  `firma.mahn.in_verwendung`, `firma.kond.kunde_zeile`).
+- **A2b Warengruppen** `app/db/db_artikel.py`: Neuer Helfer
+  `_artikel_von_gruppen_loesen` leert `artikel.gruppe_id`, bevor `gruppen`
+  gelöscht werden. Er läuft in `delete_warengruppe`, `delete_artikelgruppe` und
+  `delete_untergruppe`; bisher gab es dort einen FK-Fehler, sobald ein Artikel
+  an einer Gruppe hing. `mod_firma_warengruppen.py` macht im Fehlerfall ein
+  rollback, damit kein halber Löschvorgang mit einem späteren Commit dauerhaft
+  wird.
+- **B13 Kunde löschen** `db_kunden.kunde_verwendung` liefert `{tabelle: anzahl}`
+  und zählt jetzt auch Mahnungen und Kommunikation. `kunde_verwendet` ist nur
+  noch eine Hülle darum. `mod_kunden.py` nennt die Fundstellen mit Einzahl und
+  Mehrzahl sowie den DSGVO-Weg; bisher stand dort der Text der Rückfrage (neue
+  Schlüssel `dlg.kunde_loeschen_verwendet`, `kunde.verwendung.*`).
+- `app/test_paket2_loeschen.py` (neu): Regressionstests auf einer Speicher-DB
+  mit Fremdschlüsseln.
+
+**Verifikation:** Der Test gegen den alten Stand schlug fehl (A2b dreimal
+`FOREIGN KEY constraint failed`), danach 10/10. Paket-1-Test 19/19,
+`test_beleg_konvertierung` 5/5, `test_firma_lazy` 8/8, `ruff` sauber,
+`audit_firma_id` ohne Fehler. Ein Fehlalarm des Audits durch SQL-ähnlichen Text
+in einem Docstring wurde durch Umformulieren behoben. Die Meldungen auf DE und
+EN wurden gerendert und geprüft. Belege, die ihre Kondition schon früher
+verloren haben, lassen sich nicht automatisch reparieren, weil nicht mehr
+festgehalten ist, welche Kondition sie hatten.
+
 ## 2026-10-20 11:04 — Paket 1 aus dem Multi-Ableger: Mandantenschutz, Hausnummer, Rechtschreib-Schleife, Absturz beim Beenden
 
 **Anlass:** Abgleich mit dem Multi-Ableger (dort `00a381e`, `17a84c3`, `8814f72`,

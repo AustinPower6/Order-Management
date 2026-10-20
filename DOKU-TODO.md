@@ -23,6 +23,20 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-10-20) **Löschregeln für Konditionen und Kunden.**
+      Eine Zahlungs- oder Mahnkondition lässt sich nur noch löschen, wenn kein
+      (nicht gelöschter) Kunde sie führt; sonst nennt die Meldung die Kunden
+      (bis zu zehn) und verweist auf das Feld „Zahlungskondition“ bzw.
+      „Mahnkondition“ im Kundenstamm. Bestehende Belege behalten ihre Kondition
+      nach dem Löschen (früher wurde sie ihnen genommen). Die Löschsperre beim
+      Kunden zählt jetzt auch Mahnungen und Kommunikationseinträge und nennt die
+      Fundstellen mit Anzahl sowie den Weg über „DSGVO“ → „Anonymisieren /
+      Löschen (DSGVO)“.
+  - Code: `app/db/db_config.py` (`delete_zahlungskondition`/`delete_mahnkondition`),
+    `app/db/db_kunden.py::kunde_verwendung`, `app/modul/mod_kunden.py`
+  - Doku: Kapitel **Firmenstamm → Zahlungskonditionen / Mahnkonditionen**
+    (Löschen) und **Kundenstamm** (Kunde löschen) ergänzen.
+
 - [ ] (2026-07-24) **Neue Rechnung: kein vorgegebener Einleitungstext mehr.**
       Bisher stand in einer neuen Rechnung oben automatisch „Hiermit erlaube ich
       mir, Ihnen folgendes in Rechnung zu stellen." — dieser feste Satz ist

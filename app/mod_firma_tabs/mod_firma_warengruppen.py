@@ -386,6 +386,7 @@ class WarengruppenTab(QWidget):
             try:
                 self.db.delete_warengruppe(rec_id)
             except Exception as e:
+                self.db.conn.rollback()     # keinen halben Löschvorgang stehen lassen
                 zeige_fehler(self, _("msg.fehler"), _("firma.err.loeschen", err=e))
                 return
             self._refresh()
@@ -397,6 +398,7 @@ class WarengruppenTab(QWidget):
             try:
                 self.db.delete_artikelgruppe(rec_id)
             except Exception as e:
+                self.db.conn.rollback()     # keinen halben Löschvorgang stehen lassen
                 zeige_fehler(self, _("msg.fehler"), _("firma.err.loeschen", err=e))
                 return
             self._refresh()
@@ -408,6 +410,7 @@ class WarengruppenTab(QWidget):
             try:
                 self.db.delete_untergruppe(rec_id)
             except Exception as e:
+                self.db.conn.rollback()     # keinen halben Löschvorgang stehen lassen
                 zeige_fehler(self, _("msg.fehler"), _("firma.err.loeschen", err=e))
                 return
             self._refresh()

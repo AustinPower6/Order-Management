@@ -3,6 +3,17 @@ from datetime import datetime, timedelta
 from . import db_utils
 
 
+class KonditionInVerwendungError(RuntimeError):
+    """Eine Zahlungs- oder Mahnkondition soll gelöscht werden, die noch Kunden
+    führen. `anzahl` ist die Zahl dieser Kunden, `kunden` bis zu zehn davon als
+    `(kundennr, name)` — für eine Meldung, aus der heraus der Anwender handeln kann."""
+
+    def __init__(self, anzahl, kunden):
+        super().__init__(f"Kondition wird von {anzahl} Kunden geführt")
+        self.anzahl = anzahl
+        self.kunden = kunden
+
+
 class DBConfigMixin:
     # ─── MwSt ────────────────────────────────────────────────────────────────
     def get_mwst_klassen(self, inkl_geloescht=False):
@@ -142,15 +153,34 @@ class DBConfigMixin:
         data['firma_id'] = self._firma_id()
         self._save_config("zahlungskonditionen", ("firma_id", "bezeichnung", "tage"), data, commit=commit)
 
+    def _kunden_mit_kondition(self, spalte, id):
+        """Kunden der aktiven Firma, die diese Kondition führen —
+        `(anzahl, bis zu zehn (kundennr, name))`. Gelöschte Kunden zählen nicht,
+        sie bekommen keine Belege mehr."""
+        wo = f"FROM kunden WHERE {spalte}=? AND firma_id=? AND COALESCE(geloescht,0)=0"
+        params = (id, self._firma_id())
+        anzahl = self.conn.execute(f"SELECT count(*) {wo}", params).fetchone()[0]
+        zeilen = self.conn.execute(
+            "SELECT kundennr, TRIM(COALESCE(NULLIF(firma_name,''), "
+            "COALESCE(vorname,'') || ' ' || COALESCE(nachname,''))) "
+            f"{wo} ORDER BY kundennr LIMIT 10", params).fetchall()
+        return anzahl, [(z[0] or "", z[1] or "") for z in zeilen]
+
     def delete_zahlungskondition(self, id, commit=True):
+        """Löscht die Kondition weich (`geloescht=1`).
+
+        **Abgewiesen, solange Kunden sie führen** (`KonditionInVerwendungError`):
+        Jeder neue Beleg dieser Kunden stünde sonst ohne Kondition da.
+        **Belege behalten sie** — sie sind unter ihr entstanden, und die Zeile
+        bleibt über die id lesbar (Fälligkeit, Druck, E-Rechnung). Bis 2026-10-20
+        wurde sie ihnen genommen, auch festgeschriebenen Rechnungen."""
         fir = self._firma_id()
         zk = self.conn.execute("SELECT firma_id FROM zahlungskonditionen WHERE id=? LIMIT 1", (id,)).fetchone()
         if not zk or zk['firma_id'] != fir:
             return
-        zk_firma = zk['firma_id']
-        self.conn.execute("UPDATE kunden SET zahlungskondition_id=NULL WHERE zahlungskondition_id=? AND firma_id=?", (id, zk_firma))
-        for t in ("angebote", "auftraege", "lieferscheine", "rechnungen"):
-            self.conn.execute(f"UPDATE {t} SET zahlungskondition_id=NULL WHERE zahlungskondition_id=? AND firma_id=?", (id, zk_firma))
+        anzahl, kunden = self._kunden_mit_kondition("zahlungskondition_id", id)
+        if anzahl:
+            raise KonditionInVerwendungError(anzahl, kunden)
         self.conn.execute("UPDATE zahlungskonditionen SET geloescht=1 WHERE id=? AND firma_id=?", (id, fir))
         if commit:
             self.conn.commit()
@@ -194,14 +224,15 @@ class DBConfigMixin:
         self._save_config("mahnkonditionen", ("firma_id", "bezeichnung"), data, commit=commit)
 
     def delete_mahnkondition(self, id, commit=True):
+        """Wie `delete_zahlungskondition`: weich, abgewiesen bei Kunden; Belege
+        und ihre Mahnstufen bleiben erhalten."""
         fir = self._firma_id()
         mk = self.conn.execute("SELECT firma_id FROM mahnkonditionen WHERE id=? LIMIT 1", (id,)).fetchone()
         if not mk or mk['firma_id'] != fir:
             return
-        mk_firma = mk['firma_id']
-        self.conn.execute("UPDATE kunden SET mahnkondition_id=NULL WHERE mahnkondition_id=? AND firma_id=?", (id, mk_firma))
-        for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-            self.conn.execute(f"UPDATE {t} SET mahnkondition_id=NULL WHERE mahnkondition_id=? AND firma_id=?", (id, mk_firma))
+        anzahl, kunden = self._kunden_mit_kondition("mahnkondition_id", id)
+        if anzahl:
+            raise KonditionInVerwendungError(anzahl, kunden)
         self.conn.execute("UPDATE mahnkonditionen SET geloescht=1 WHERE id=? AND firma_id=?", (id, fir))
         if commit:
             self.conn.commit()

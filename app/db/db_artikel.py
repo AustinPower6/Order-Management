@@ -139,6 +139,7 @@ class DBArtikelMixin:
             ug_ids = [r[0] for r in self.conn.execute(
                 "SELECT id FROM untergruppen WHERE artikelgruppe_id=? AND firma_id=?", (ag_id, fid)).fetchall()]
             for ug_id in ug_ids:
+                self._artikel_von_gruppen_loesen(ug_id)
                 self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=? AND firma_id=?", (ug_id, fid))
                 self.conn.execute(
                     "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
@@ -241,6 +242,7 @@ class DBArtikelMixin:
         ug_ids = [r[0] for r in self.conn.execute(
             "SELECT id FROM untergruppen WHERE artikelgruppe_id=? AND firma_id=?", (ag_id, fid)).fetchall()]
         for ug_id in ug_ids:
+            self._artikel_von_gruppen_loesen(ug_id)
             self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=? AND firma_id=?", (ug_id, fid))
             self.conn.execute(
                 "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
@@ -306,12 +308,25 @@ class DBArtikelMixin:
     def delete_untergruppe(self, ug_id: int):
         """Loescht eine Untergruppe samt allen Gruppen."""
         fid = self._firma_id()
+        self._artikel_von_gruppen_loesen(ug_id)
         self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=? AND firma_id=?", (ug_id, fid))
         self.conn.execute(
             "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
             (ug_id, fid))
         self.conn.execute("DELETE FROM untergruppen WHERE id=? AND firma_id=?", (ug_id, fid))
         self.conn.commit()
+
+    def _artikel_von_gruppen_loesen(self, ug_id: int):
+        """`artikel.gruppe_id` für alle Gruppen der Untergruppe leeren (ohne commit).
+
+        Muss vor dem Löschen der Gruppen laufen: `artikel.gruppe_id` hat einen
+        Fremdschlüssel, ohne diesen Schritt bricht das Löschen ab, sobald ein
+        Artikel an einer der Gruppen hängt (wie in `delete_gruppe`)."""
+        fid = self._firma_id()
+        self.conn.execute(
+            "UPDATE artikel SET gruppe_id=NULL WHERE firma_id=? AND gruppe_id IN "
+            "(SELECT id FROM gruppen WHERE untergruppe_id=? AND firma_id=?)",
+            (fid, ug_id, fid))
 
     # ─── Gruppen (4. Ebene) ──────────────────────────────────────────────────
 

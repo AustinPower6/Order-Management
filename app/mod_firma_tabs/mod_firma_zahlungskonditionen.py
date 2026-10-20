@@ -8,13 +8,20 @@ from lock_manager import Module
 from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
                         _EscRejectFilter, _apply_saved_columns, _connect_save_columns)
 from spellcheck import SpellCheckLineEdit
-from ui_widgets import SaveBar, zeige_fehler
+from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
+from db.db_config import KonditionInVerwendungError
 import rechte
 import ui_widgets
 
 
 _RECHT_KEY = "firma_zahlungskonditionen"
+
+
+def kunden_liste(kunden) -> str:
+    """Die Kunden aus `KonditionInVerwendungError` als Zeilen für die Meldung —
+    auch für die Mahnkonditionen."""
+    return "\n".join(_("firma.kond.kunde_zeile", nr=nr, name=name) for nr, name in kunden)
 
 
 class _ZahlungskonditionDialog(settings.DialogSizeMixin, QDialog):
@@ -275,6 +282,11 @@ class ZahlungskonditionenTab(QWidget):
                 self.db.delete_zahlungskondition(zk_id, commit=False)
                 self._save_bar.set_dirty(True)
                 self._refresh()
+            except KonditionInVerwendungError as e:
+                # Der Grund gehört in die Meldung: welche Kunden, und was zu tun ist.
+                zeige_warnung(self, _("msg.loeschen_nicht_moeglich"), _(
+                    "firma.zk.in_verwendung", anzahl=e.anzahl,
+                    kunden=kunden_liste(e.kunden)))
             except Exception as e:
                 self.db.conn.rollback()
                 zeige_fehler(self, _("msg.fehler"), _("firma.err.loeschen", err=e))
