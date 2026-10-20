@@ -1,3 +1,45 @@
+## 2026-10-20 10:27 — Firmenstamm öffnet schneller (8,5 s → 1,1 s)
+
+**Anlass:** Auf einem Laptop war der Firmenstamm sehr träge. Gemessen am
+angezeigten Fenster (DB-Kopie, 20 Reiter): 8,5–9,9 s ab Klick. Vorbild waren
+zwei Umbauten im Multi-Ableger (`f0c99d8`, `2d9aaf6`), dort nur gelesen.
+
+| Schritt | ab Klick | alle Reiter einmal öffnen |
+|---|---|---|
+| Ausgangslage | 8,5 s | 3,8 s |
+| 1. Schlüssel merken | 8,5 s | 2,9 s |
+| 2. Einstellungen merken | 4,0 s | 1,2 s |
+| 3. Reiter erst beim Öffnen | **1,1 s** | 2,8 s (je Reiter ≤ 0,6 s) |
+
+**Geändert:**
+- `key_store.py::_fernet`: abgeleiteter Schlüssel wird je (Passwort, Salt) im
+  Speicher gemerkt (`_FERNET_CACHE`). Vorher je `get_firma` eine PBKDF2-Ableitung
+  mit 480.000 Runden (~0,14 s). Runden unverändert; `speichere` erzeugt weiter je
+  Schreiben einen neuen Salt, ein veralteter Eintrag ist ausgeschlossen.
+- `settings.py`: Benutzer- **und** globale Einstellungsdatei werden gemerkt und nur
+  bei geändertem Zeitstempel/geänderter Größe neu gelesen (`_lies_json`,
+  `_merke_geschrieben`); vorher rund 4.000 Dateizugriffe je Öffnen. Umzugsprüfungen
+  nur bei fehlender Datei. `_get` liest ohne Kopie, gibt aber Dict/Liste als Kopie
+  zurück (Abweichung zum Ableger: Aufrufer können den gemerkten Stand nicht
+  verfälschen). `_load`/`_load_global` liefern weiter Kopien.
+- `ui_widgets.py`: `leerer_scrollbereich` / `scrollbereich_fuellen`.
+- `mod_firma_tabs/mod_firma_base.py`: Reiter entstehen erst beim ersten Anzeigen
+  (`_TAB_FABRIK`, `__getattr__`, `_nach_dem_bau`); `_simple_tabs` →
+  `_FORMULAR_TABS` (Namen); `_SELBSTLADEND`, `_gebaute`, `_falls_gebaut`.
+  `_load` versorgt und lädt nur gebaute Reiter neu; neues Geschäftsjahr setzt
+  `_pending_f`, damit noch ungebaute Reiter den neuen Stand laden.
+- `CLAUDE.md`: neue STRENGE REGEL „Firmenstamm-Reiter entstehen erst beim Öffnen";
+  Verweis im Rollbalken-Abschnitt angepasst.
+
+**Verifikation:** `app/test_firma_lazy.py` neu, 8/8 (nur Adresse beim Öffnen
+gebaut; jeder Reiter über die Reiterleiste geöffnet, mit Inhalt und Firma;
+Firmendaten; Firmenwechsel für gebaute und später gebaute Reiter; ESC baut nichts;
+Settings-Änderung von außen sichtbar; Dict-Kopie; Schlüssel nur einmal
+abgeleitet). Gegenprobe: `_tab_steuern` aus `_FORMULAR_TABS` gestrichen → Test
+schlägt an. `test_key_store` 9/9, `audit_firma_id` ohne Fehler, `ruff` sauber.
+Sandbox: DB-Kopie, Einstellungs-/Schlüsseldateien im Temp-Verzeichnis.
+**Offen:** Sichtprüfung im laufenden Programm (Anwender), auch auf dem Laptop.
+
 ## 2026-08-01 14:10 — Storno-Kette in der Belegkette sichtbar (DB v80)
 
 Aus dem Mehrplatz-Projekt übernommen (dort heute an einem echten Fall gefunden

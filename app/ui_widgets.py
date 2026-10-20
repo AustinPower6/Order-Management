@@ -575,6 +575,44 @@ def in_scrollbereich(inhalt: QWidget) -> QWidget:
     return huelle
 
 
+def leerer_scrollbereich() -> QWidget:
+    """Eine Scrollhülle **ohne** Inhalt — er kommt später (`scrollbereich_fuellen`).
+
+    Für Reiter, die erst beim ersten Anzeigen entstehen: Die Hülle hängt von
+    Anfang an im `QTabWidget` und behält ihren Index, der teure Aufbau des
+    Reiters findet erst statt, wenn ihn jemand ansieht. Bis dahin liefert
+    `scroll_inhalt` für sie ``None``.
+    """
+    huelle = QWidget()
+    huelle.setProperty("_hat_scrollbereich", True)
+    huelle._scroll_inhalt = None
+    lay = QVBoxLayout(huelle)
+    lay.setContentsMargins(0, 0, 0, 0)
+    lay.setSpacing(6)
+    scroll = QScrollArea()
+    scroll.setWidgetResizable(True)
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
+    lay.addWidget(scroll)
+    huelle._scroll_area = scroll
+    return huelle
+
+
+def scrollbereich_fuellen(huelle: QWidget, inhalt: QWidget) -> QWidget:
+    """Den Inhalt in eine leere Hülle setzen — Gegenstück zu `leerer_scrollbereich`.
+
+    Die SaveBar wird wie in `in_scrollbereich` **unter** den Scrollbereich
+    verankert, damit Speichern und Abbrechen sichtbar bleiben.
+    """
+    save_bar = getattr(inhalt, "_save_bar", None)
+    if save_bar is not None:
+        save_bar.setParent(None)      # aus dem Layout des Inhalts lösen
+    huelle._scroll_area.setWidget(inhalt)
+    if save_bar is not None:
+        huelle.layout().addWidget(save_bar)
+    huelle._scroll_inhalt = inhalt
+    return inhalt
+
+
 def scroll_inhalt(widget):
     """Gibt zu einer `in_scrollbereich`-Hülle den ursprünglichen Inhalt zurück.
 

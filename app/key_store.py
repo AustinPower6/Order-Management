@@ -66,11 +66,25 @@ def _pfad(firmen_nr: str) -> str:
     return os.path.join(_daten_dir(), f"api_keys_{(firmen_nr or '').strip()}.json")
 
 
+#: Abgeleitete Schlüssel je (Passwort, Salt) — nur im Arbeitsspeicher.
+#: Eine Ableitung kostet ~0,14 s; der Firmenstamm las die Datei beim Öffnen
+#: 27-mal (über `get_firma`) und brauchte dafür allein ~3,8 s. Ein veralteter
+#: Eintrag ist ausgeschlossen: `speichere` erzeugt bei jedem Schreiben einen
+#: neuen Salt und damit einen neuen Schlüssel.
+_FERNET_CACHE: dict = {}
+
+
 def _fernet(passwort: str, salt: bytes) -> Fernet:
+    schluessel_id = (passwort or "", salt)
+    gemerkt = _FERNET_CACHE.get(schluessel_id)
+    if gemerkt is not None:
+        return gemerkt
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt,
                      iterations=_PBKDF2_ITER)
     schluessel = base64.urlsafe_b64encode(kdf.derive((passwort or "").encode("utf-8")))
-    return Fernet(schluessel)
+    fernet = Fernet(schluessel)
+    _FERNET_CACHE[schluessel_id] = fernet
+    return fernet
 
 
 def neues_passwort() -> str:

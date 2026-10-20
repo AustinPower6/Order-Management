@@ -1,4 +1,5 @@
 """Zentrale Einstellungen — global (settings.json) + pro User (settings_{user}.json)."""
+import copy
 import os
 import json
 
@@ -18,19 +19,67 @@ def _user_path(username: str) -> str:
 
 # ── Globale Settings (nur multiuser-Konfiguration) ────────────────────
 
-def _load_global() -> dict:
-    """Globale settings.json lesen (nur multiuser-Konfiguration)."""
+#: Gemerkter Inhalt der Einstellungsdateien: {pfad: ((mtime_ns, groesse), daten)}.
+#: Beim Öffnen des Firmenstamms wurden die Dateien rund 4.000-mal gelesen
+#: (jede eingefärbte Beschriftung fragt über `get_theme_dark` nach dem Thema,
+#: jeder DB-Zugriff über `get_current_firma_id` nach der aktiven Firma).
+#: Zeitstempel **und** Größe: Zwei Programmfenster desselben Benutzers schreiben
+#: in dieselbe Datei und müssen die Änderung des anderen weiter sehen; die
+#: Größe fängt zwei Schreibvorgänge mit demselben (groben) Zeitstempel ab.
+_CACHE: dict = {}
+
+
+def _lies_json(path: str):
+    """Datei lesen — aus dem Speicher, solange sie unverändert ist.
+
+    Gibt das **gemerkte Original** zurück (oder ``None``, wenn die Datei fehlt
+    oder unlesbar ist). Wer das Ergebnis verändern will, muss es kopieren.
+    """
     try:
-        with open(_GLOBAL_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+        st = os.stat(path)
+        stempel = (st.st_mtime_ns, st.st_size)
+    except OSError:
+        _CACHE.pop(path, None)
+        return None
+    gemerkt = _CACHE.get(path)
+    if gemerkt is not None and gemerkt[0] == stempel:
+        return gemerkt[1]
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        _CACHE.pop(path, None)
+        return None
+    _CACHE[path] = (stempel, data)
+    return data
+
+
+def _merke_geschrieben(path: str, data: dict):
+    """Den frisch geschriebenen Stand merken — sonst läse die nächste Abfrage
+    die Datei gleich wieder ein."""
+    try:
+        st = os.stat(path)
+        _CACHE[path] = ((st.st_mtime_ns, st.st_size), copy.deepcopy(data))
+    except OSError:
+        _CACHE.pop(path, None)
+
+
+def _load_global() -> dict:
+    """Globale settings.json lesen (nur multiuser-Konfiguration).
+
+    Gibt eine Kopie zurück: Aufrufer verändern das Ergebnis und schreiben es mit
+    `_save_global` zurück — eine geteilte Struktur trüge ungespeicherte
+    Änderungen in den Speicher.
+    """
+    data = _lies_json(_GLOBAL_PATH)
+    return copy.deepcopy(data) if isinstance(data, dict) else {}
 
 
 def _save_global(data: dict):
     """Globale settings.json schreiben."""
     with open(_GLOBAL_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    _merke_geschrieben(_GLOBAL_PATH, data)
 
 
 # ── Aktueller Benutzer ────────────────────────────────────────────────
@@ -41,7 +90,8 @@ def get_current_username() -> str:
     Reihenfolge: global settings.json user_override → Windows-Username → 'unbekannt'.
     """
     try:
-        ovr = _load_global().get("multiuser", {}).get("user_override")
+        # Nur lesen — daher ohne Kopie (wird bei jedem Settings-Zugriff gerufen).
+        ovr = (_lies_json(_GLOBAL_PATH) or {}).get("multiuser", {}).get("user_override")
         if ovr:
             return str(ovr)
     except Exception:
@@ -211,18 +261,28 @@ def _migrate_ui_to_namespace(data):
     return data
 
 
-def _load() -> dict:
-    """User-spezifische Settings lesen."""
-    _migrate_single_to_per_user()
-    _migrate_admin_to_global()
-    _ensure_user_settings()
+def _load(_kopie: bool = True) -> dict:
+    """User-spezifische Settings lesen — aus dem Speicher, solange unverändert.
+
+    Standardmäßig eine Kopie: Aufrufer verändern das Ergebnis und schreiben es
+    mit `_save` zurück. `_kopie=False` nur für reine Leser (`_get`).
+    """
     path = _user_path(get_current_username())
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return _migrate_ui_to_namespace(data)
-    except (FileNotFoundError, json.JSONDecodeError):
+    # Die Umzüge und das Anlegen für einen neuen Benutzer sind nur nötig, solange
+    # die Datei fehlt — bei jedem Lesezugriff ausgeführt, kosteten ihre
+    # Existenzprüfungen mehr als das Lesen selbst.
+    if not os.path.exists(path):
+        _migrate_single_to_per_user()
+        _migrate_admin_to_global()
+        _ensure_user_settings()
+        path = _user_path(get_current_username())
+    data = _lies_json(path)
+    if not isinstance(data, dict):
         return {}
+    # Ändert die Migration etwas, schreibt sie es selbst per `_save` zurück —
+    # der gemerkte Stand bleibt damit deckungsgleich mit der Datei.
+    data = _migrate_ui_to_namespace(data)
+    return copy.deepcopy(data) if _kopie else data
 
 
 def _save(data: dict):
@@ -232,18 +292,25 @@ def _save(data: dict):
     path = _user_path(get_current_username())
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    _merke_geschrieben(path, data)
 
 
 def _get(path, default=None):
+    """Einen Wert lesen — ohne Kopie des ganzen Bestands.
+
+    Einfache Werte (Zahl, Text, Schalter) kommen direkt aus dem Speicher; ein
+    Dict oder eine Liste als Kopie, damit ein Aufrufer, der sie verändert, nicht
+    den gemerkten Stand verfälscht.
+    """
     keys = path.split(".")
-    data = _load()
+    data = _load(_kopie=False)
     node = data
     for key in keys:
         if isinstance(node, dict) and key in node:
             node = node[key]
         else:
             return default
-    return node
+    return copy.deepcopy(node) if isinstance(node, (dict, list)) else node
 
 
 def _set(path, value):

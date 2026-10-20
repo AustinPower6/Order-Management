@@ -155,9 +155,10 @@ Speichern/Abbrechen immer sichtbar sind — bei einer `SaveBar` (Attribut
 `_save_bar`) erledigt das die Funktion selbst, bei Dialogen wird nur der
 Inhaltsbereich gehüllt und die Leiste separat ins äußere Layout gehängt.
 
-- **Neuer Firmenstamm-Reiter:** nichts zu tun. `mod_firma_base.py::_add_tab`
-  schickt jeden Reiter zentral hindurch. **Keine eigene `QScrollArea` einbauen** —
-  das ergäbe zwei ineinander liegende Rollbalken.
+- **Neuer Firmenstamm-Reiter:** `mod_firma_base.py::_add_tab` hängt für jeden
+  Reiter zentral eine Scrollhülle ein (siehe Regel „Firmenstamm-Reiter entstehen
+  erst beim Öffnen"). **Keine eigene `QScrollArea` einbauen** — das ergäbe zwei
+  ineinander liegende Rollbalken.
 - **Neuer Modul-Tab im Hauptfenster:** nichts zu tun.
   `main.py::TabManager.get_or_create` erledigt es zentral.
 - **Neuer Dialog:** nur nötig, wenn er wirklich zu hoch wird. Messkriterium:
@@ -194,6 +195,24 @@ Fallstricke bei der Messung: `DialogSizeMixin.showEvent` stellt die gespeicherte
 Dialoggröße wieder her, ein `resize()` **vor** `show()` wird also überschrieben.
 Und die internen `QLineEdit` editierbarer `QComboBox`-Widgets sind immer kleiner
 als ihr eigener `sizeHint` — sie gehören aus Stauchungs-Messungen ausgenommen.
+
+## ⚠️ STRENGE REGEL: Firmenstamm-Reiter entstehen erst beim Öffnen
+
+Der Firmenstamm baut seine Reiter nicht beim Öffnen des Fensters, sondern erst,
+wenn ein Reiter zum ersten Mal angezeigt wird (gemessen 2026-10-20: 8,5 s → 1,1 s).
+Im `QTabWidget` hängt bis dahin nur eine leere Hülle
+(`ui_widgets.leerer_scrollbereich` / `scrollbereich_fuellen`); der Zugriff
+`self._tab_<name>` baut den Reiter über `FirmaFenster.__getattr__`.
+
+- **Neuer Reiter:** Eintrag in `FirmaFenster._TAB_FABRIK` + `self._add_tab("_tab_<name>", modul_key, label_key)`
+  in `_build`. Formularreiter mit SaveBar zusätzlich in `_FORMULAR_TABS`; Reiter,
+  die selbst über die aktive Firma lesen, in `_SELBSTLADEND`. Sonderversorgung nach
+  dem Bau gehört in `_nach_dem_bau`.
+- **Kein Zugriff auf einen Reiter, um über ihn zu entscheiden** — der Zugriff baut
+  ihn. Schleifen über Reiter laufen über `_gebaute(namen)`, einzelne Aufrufe an
+  womöglich ungebaute Reiter über `_falls_gebaut(name, methode)`.
+- **Prüfung:** `python app/test_firma_lazy.py` (öffnet jeden Reiter über die
+  Reiterleiste, prüft Inhalt, Firma und Firmenwechsel; Sandbox mit DB-Kopie).
 
 ## ⚠️ STRENGE REGEL: Neue UI-Strings über i18n
 

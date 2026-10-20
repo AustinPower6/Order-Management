@@ -45,11 +45,116 @@ class FirmaFenster(QWidget):
         aktiv = ui_widgets.scroll_inhalt(tabs.currentWidget()) if tabs is not None else None
         return getattr(aktiv, "HELP_ANCHOR", None) or "firma"
 
+    # ─── Reiter entstehen erst beim ersten Anzeigen ───────────────────
+    #
+    # Alle Reiter sofort zu bauen kostete beim Öffnen mehrere Sekunden. Im
+    # QTabWidget hängt deshalb zunächst nur eine leere Scrollhülle; der Reiter
+    # selbst entsteht beim ersten Zugriff auf `self._tab_<name>` (`__getattr__`).
+    # Die Stellen, die einen Reiter ansprechen, bleiben dadurch unverändert.
+    #
+    # **Kein Zugriff auf einen Reiter, um über ihn zu entscheiden** — der Zugriff
+    # baut ihn. Wer nur gebaute Reiter meint, nimmt `_gebaute` / `_falls_gebaut`.
+
+    #: Name → Bauanweisung. Ein neuer Reiter braucht hier einen Eintrag und
+    #: einen `_add_tab`-Aufruf in `_build` (Formularreiter auch `_FORMULAR_TABS`).
+    _TAB_FABRIK = {
+        "_tab_adresse": lambda s: AdresseTab(),
+        "_tab_steuern": lambda s: SteuernTab(),
+        "_tab_email": lambda s: EmailTab(),
+        "_tab_nummern": lambda s: GeschaeftjahresTab(s._open_neues_geschaeftsjahr,
+                                                     s._set_aktives_geschaeftsjahr),
+        "_tab_unterschriften": lambda s: UnterschriftenTab(),
+        "_tab_exemplare": lambda s: ExemplareTab(),
+        "_tab_zk": lambda s: ZahlungskonditionenTab(s.db),
+        "_tab_mwst": lambda s: MwStTab(s.db),
+        "_tab_pfade": lambda s: PfadeTab(s._browse_export, s._browse_logo,
+                                         s._browse_buchungsexport, s._browse_artikel,
+                                         s._browse_e_rechnung, s._browse_email,
+                                         s._browse_ausdrucke, s._browse_marken_logo,
+                                         s._browse_dsgvo, s._browse_signatur,
+                                         s._browse_archiv),
+        "_tab_mahnkond": lambda s: MahnkonditionenTab(s.db),
+        "_tab_basiszins": lambda s: BasiszinssatzTab(s.db),
+        "_tab_einheiten": lambda s: ParameterTab(s.db),
+        "_tab_anbindung_fibu": lambda s: AnbindungFibuTab(),
+        "_tab_ki": lambda s: KiAnbindungTab(),
+        "_tab_kontenrahmen": lambda s: KontenrahmenFenster(),
+        "_tab_layout": lambda s: LayoutTab(),
+        "_tab_drucktexte": lambda s: DrucktexteTab(),
+        "_tab_standardtexte": lambda s: StandardtexteTab(),
+        "_tab_email_texte": lambda s: EmailtexteTab(),
+    }
+
+    #: Formularreiter mit SaveBar: bekommen db/firma_id und laden aus `_pending_f`.
+    _FORMULAR_TABS = (
+        "_tab_adresse", "_tab_steuern", "_tab_email", "_tab_nummern",
+        "_tab_anbindung_fibu", "_tab_ki",
+        "_tab_unterschriften", "_tab_exemplare", "_tab_pfade",
+        "_tab_layout",
+        "_tab_drucktexte", "_tab_standardtexte", "_tab_email_texte",
+    )
+
+    #: Reiter, die ihre Daten selbst über die aktive Firma lesen → Methode zum
+    #: Neuladen beim Firmenwechsel.
+    _SELBSTLADEND = {
+        "_tab_kontenrahmen": "refresh", "_tab_einheiten": "_refresh",
+        "_tab_zk": "_refresh", "_tab_mwst": "_refresh",
+        "_tab_mahnkond": "_refresh", "_tab_basiszins": "_refresh",
+    }
+
+    def __getattr__(self, name):
+        # Nur gerufen, wenn das Attribut (noch) fehlt — also für ungebaute Reiter.
+        fabrik = type(self)._TAB_FABRIK.get(name)
+        im_bau = self.__dict__.get("_im_bau")
+        if fabrik is None or im_bau is None or name in im_bau:
+            raise AttributeError(name)
+        im_bau.add(name)
+        try:
+            tab = fabrik(self)
+            self.__dict__[name] = tab
+            huelle = self._tab_huellen.get(name)
+            if huelle is not None:
+                ui_widgets.scrollbereich_fuellen(huelle, tab)
+            self._nach_dem_bau(name, tab)
+        finally:
+            im_bau.discard(name)
+        return tab
+
+    def _nach_dem_bau(self, name, tab):
+        """Frisch gebauten Reiter versorgen (db, Firma) — wie `_load` es für
+        bereits gebaute Reiter tut."""
+        firma_id = settings.get_current_firma_id()
+        if name == "_tab_anbindung_fibu":
+            tab.set_db_and_firma_id(
+                self.db, firma_id,
+                lambda: (self.saved.emit(),
+                         self._falls_gebaut("_tab_kontenrahmen", "refresh")))
+        elif name in self._FORMULAR_TABS:
+            tab.set_db_and_firma_id(self.db, firma_id, self.saved.emit)
+        elif name == "_tab_kontenrahmen":
+            tab.set_db(self.db)
+            tab.refresh()
+        elif name == "_tab_einheiten":
+            tab._refresh()
+
+    def _gebaute(self, namen):
+        """Die bereits gebauten Reiter aus `namen` — **ohne** einen zu bauen."""
+        return [self.__dict__[n] for n in namen if n in self.__dict__]
+
+    def _falls_gebaut(self, name, methode):
+        """`methode` des Reiters rufen, falls er schon gebaut ist (sonst lädt er
+        beim Bau ohnehin frisch)."""
+        tab = self.__dict__.get(name)
+        if tab is not None:
+            getattr(tab, methode)()
+
     def __init__(self, db):
         super().__init__()
         self.db = db
         self.setMinimumWidth(500)
-        self._simple_tabs = []
+        self._im_bau: set = set()
+        self._tab_huellen: dict = {}        # Name → Scrollhülle im QTabWidget
+        self._attr_je_index: dict = {}      # Tab-Index → Name
         self._loaded_tabs: set[int] = set()
         self._pending_f: dict | None = None
         self._build()
@@ -67,8 +172,8 @@ class FirmaFenster(QWidget):
         super().keyPressEvent(event)
 
     def _handle_esc(self):
-        # Prüfe ob irgendein Tab dirty ist
-        for tab in self._simple_tabs:
+        # Prüfe ob irgendein Tab dirty ist (ungebaute können es nicht sein)
+        for tab in self._gebaute(self._FORMULAR_TABS):
             save_bar = getattr(tab, '_save_bar', None)
             if save_bar and save_bar.is_dirty():
                 result = _frage_ungespeicherte_anderungen(self)
@@ -138,80 +243,37 @@ class FirmaFenster(QWidget):
         self._tabs_widget.setTabPosition(QTabWidget.TabPosition.West)
         layout.addWidget(self._tabs_widget)
 
-        self._tab_adresse = AdresseTab()
-        self._add_tab(self._tab_adresse, "firma_adresse", "firma.tab.adresse")
-
-        self._tab_steuern = SteuernTab()
-        self._add_tab(self._tab_steuern, "firma_steuern", "firma.tab.steuern")
-
-        self._tab_email = EmailTab()
-        self._add_tab(self._tab_email, "firma_email", "firma.tab.email")
-
-        self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
-                                             self._set_aktives_geschaeftsjahr)
-        self._add_tab(self._tab_nummern, "firma_geschaeftsjahre",
+        # Eingehängt werden nur leere Hüllen — die Reiter baut `__getattr__`
+        # beim ersten Anzeigen (Bauanweisungen in `_TAB_FABRIK`).
+        self._add_tab("_tab_adresse", "firma_adresse", "firma.tab.adresse")
+        self._add_tab("_tab_steuern", "firma_steuern", "firma.tab.steuern")
+        self._add_tab("_tab_email", "firma_email", "firma.tab.email")
+        self._add_tab("_tab_nummern", "firma_geschaeftsjahre",
                       "firma.tab.geschaeftsjahre")
-
-        self._tab_anbindung_fibu = AnbindungFibuTab()
-
-        self._tab_unterschriften = UnterschriftenTab()
-        self._add_tab(self._tab_unterschriften, "firma_unterschriften",
+        self._add_tab("_tab_unterschriften", "firma_unterschriften",
                       "firma.tab.unterschriften")
-
-        self._tab_exemplare = ExemplareTab()
-        self._add_tab(self._tab_exemplare, "firma_exemplare", "firma.tab.exemplare")
-
-        self._tab_zk = ZahlungskonditionenTab(self.db)
-        self._add_tab(self._tab_zk, "firma_zahlungskonditionen",
+        self._add_tab("_tab_exemplare", "firma_exemplare", "firma.tab.exemplare")
+        self._add_tab("_tab_zk", "firma_zahlungskonditionen",
                       "firma.tab.zahlungskonditionen")
-
         # MwSt hängt am eigenständigen Programmteil "mwst", nicht an einem
         # firma_*-Reiterrecht.
-        self._tab_mwst = MwStTab(self.db)
-        self._add_tab(self._tab_mwst, "mwst", "firma.tab.mwst")
-
-        self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
-                                   self._browse_buchungsexport, self._browse_artikel,
-                                   self._browse_e_rechnung, self._browse_email,
-                                   self._browse_ausdrucke, self._browse_marken_logo,
-                                   self._browse_dsgvo, self._browse_signatur,
-                                   self._browse_archiv)
-        self._add_tab(self._tab_pfade, "firma_pfade", "firma.tab.pfade")
-
-        self._tab_mahnkond = MahnkonditionenTab(self.db)
-        self._add_tab(self._tab_mahnkond, "firma_mahnkonditionen",
+        self._add_tab("_tab_mwst", "mwst", "firma.tab.mwst")
+        self._add_tab("_tab_pfade", "firma_pfade", "firma.tab.pfade")
+        self._add_tab("_tab_mahnkond", "firma_mahnkonditionen",
                       "firma.tab.mahnkonditionen")
-
-        self._tab_basiszins = BasiszinssatzTab(self.db)
-        self._add_tab(self._tab_basiszins, "firma_basiszinssatz",
+        self._add_tab("_tab_basiszins", "firma_basiszinssatz",
                       "firma.tab.basiszinssatz")
-
-        self._tab_einheiten = ParameterTab(self.db)
-        self._add_tab(self._tab_einheiten, "firma_parameter", "firma.tab.parameter")
-
-        self._add_tab(self._tab_anbindung_fibu, "firma_anbindung_fibu",
+        self._add_tab("_tab_einheiten", "firma_parameter", "firma.tab.parameter")
+        self._add_tab("_tab_anbindung_fibu", "firma_anbindung_fibu",
                       "firma.tab.anbindung_fibu")
-
-        self._tab_ki = KiAnbindungTab()
-        self._add_tab(self._tab_ki, "firma_ki", "firma.tab.ki")
-
-        self._tab_kontenrahmen = KontenrahmenFenster()
-        self._tab_kontenrahmen.set_db(self.db)
-        self._add_tab(self._tab_kontenrahmen, "firma_kontenrahmen",
+        self._add_tab("_tab_ki", "firma_ki", "firma.tab.ki")
+        self._add_tab("_tab_kontenrahmen", "firma_kontenrahmen",
                       "firma.tab.kontenrahmen")
-
-        self._tab_layout = LayoutTab()
-        self._add_tab(self._tab_layout, "firma_layout", "firma.tab.layout")
-
-        self._tab_drucktexte = DrucktexteTab()
-        self._add_tab(self._tab_drucktexte, "firma_drucktexte", "firma.tab.drucktexte")
-
-        self._tab_standardtexte = StandardtexteTab()
-        self._add_tab(self._tab_standardtexte, "firma_standardtexte",
+        self._add_tab("_tab_layout", "firma_layout", "firma.tab.layout")
+        self._add_tab("_tab_drucktexte", "firma_drucktexte", "firma.tab.drucktexte")
+        self._add_tab("_tab_standardtexte", "firma_standardtexte",
                       "firma.tab.standardtexte")
-
-        self._tab_email_texte = EmailtexteTab()
-        self._add_tab(self._tab_email_texte, "firma_email_texte",
+        self._add_tab("_tab_email_texte", "firma_email_texte",
                       "firma.tab.email_texte")
 
         # "Lock entsperren" nur für Administratoren sichtbar
@@ -224,23 +286,12 @@ class FirmaFenster(QWidget):
 
         self._tabs_widget.currentChanged.connect(self._on_tab_changed)
 
-        # Simple tabs mit SaveBar – db und firma_id übergeben
-        self._simple_tabs = [
-            self._tab_adresse, self._tab_steuern, self._tab_email, self._tab_nummern,
-            self._tab_anbindung_fibu, self._tab_ki,
-            self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
-            self._tab_layout,
-            self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
-        ]
+    def _add_tab(self, attr, modul_key, label_key):
+        """Leere Hülle für den Reiter `attr` einhängen — nur mit Leserecht auf
+        seinen Programmteil.
 
-    def _add_tab(self, widget, modul_key, label_key):
-        """Reiter einhängen — aber nur mit Leserecht auf seinen Programmteil.
-
-        Ohne Leserecht bleibt der Reiter unsichtbar. Das Widget wird trotzdem
-        erzeugt und behält seinen Platz in `_simple_tabs` & Co.: `_load` verteilt
-        db/firma_id über diese Listen, und ein fehlendes Attribut würde dort
-        auffliegen. Ein nicht eingehängtes Widget lädt nichts nach (`_on_tab_changed`
-        feuert für es nie) und kostet daher nichts.
+        Ohne Leserecht bleibt der Reiter unsichtbar und wird nie gebaut (ein
+        Zugriff auf `self.<attr>` baut ihn dann ohne Hülle, wie früher).
         """
         if rechte.darf(self.db, modul_key, rechte.LESEN):
             # Jeder Reiter kommt in einen Scrollbereich: Der Firmenstamm soll sich
@@ -248,7 +299,10 @@ class FirmaFenster(QWidget):
             # in die Fensterhöhe, wird gerollt statt die Zeilen zu stauchen
             # (sonst schneidet Qt die Einträge unten ab). Eine SaveBar bleibt
             # dabei fest unter dem Scrollbereich stehen.
-            self._tabs_widget.addTab(ui_widgets.in_scrollbereich(widget), _(label_key))
+            huelle = ui_widgets.leerer_scrollbereich()
+            idx = self._tabs_widget.addTab(huelle, _(label_key))
+            self._tab_huellen[attr] = huelle
+            self._attr_je_index[idx] = attr
 
     # ─── Laden ────────────────────────────────────────────────────────
 
@@ -264,13 +318,12 @@ class FirmaFenster(QWidget):
         # Multiuser: gemerkten aenderungs_anzahl-Stand beim Laden festhalten
         self._loaded_anzahl = (dict(f).get("aenderungs_anzahl") or 0) if f else 0
 
-        # Simple tabs mit db und firma_id verbinden
-        for tab in self._simple_tabs:
-            tab.set_db_and_firma_id(self.db, firma_id, self.saved.emit)
-        # Anbindung-FiBu-Tab: nach Speichern auch Kontenrahmen-Viewer aktualisieren
-        self._tab_anbindung_fibu.set_db_and_firma_id(
-            self.db, firma_id,
-            lambda: (self.saved.emit(), self._tab_kontenrahmen.refresh()))
+        # Gebaute Formularreiter mit db und firma_id verbinden — ungebaute
+        # bekommen beides beim Bau (`_nach_dem_bau`).
+        for name in self._FORMULAR_TABS:
+            tab = self.__dict__.get(name)
+            if tab is not None:
+                self._nach_dem_bau(name, tab)
 
         if f:
             f = dict(f)
@@ -282,14 +335,11 @@ class FirmaFenster(QWidget):
         if current != 0:
             self._load_tab(current)
 
-        self._tab_kontenrahmen.refresh()
-        self._tab_einheiten._refresh()
         # Selbstladende Reiter (lesen über die aktive Firma) explizit neu laden,
         # damit nach einem Firmenwechsel alle Reiter die gewählte Firma zeigen.
-        self._tab_zk._refresh()
-        self._tab_mwst._refresh()
-        self._tab_mahnkond._refresh()
-        self._tab_basiszins._refresh()
+        # Nur die gebauten — ein ungebauter liest beim Bau die aktuelle Firma.
+        for name, methode in self._SELBSTLADEND.items():
+            self._falls_gebaut(name, methode)
         if self._tab_locks is not None:
             self._tab_locks._refresh()
         self._populate_firma_select()
@@ -316,19 +366,20 @@ class FirmaFenster(QWidget):
             return
         self._show_loading()
         try:
-            # scroll_inhalt: `widget(idx)` liefert die Scrollbereich-Hülle des
-            # Reiters (_add_tab) — ohne Auflösung schlügen die Identitäts-
-            # vergleiche unten fehl und kein Reiter würde nachgeladen.
-            tab = ui_widgets.scroll_inhalt(self._tabs_widget.widget(idx))
+            # Der Reiter wird über seinen Namen geholt — der Zugriff baut ihn
+            # beim ersten Mal (`__getattr__`). Der Sperren-Reiter steht nicht im
+            # Register und lädt sich selbst.
+            name = self._attr_je_index.get(idx)
+            tab = getattr(self, name) if name else None
             f = self._pending_f
 
-            if tab is self._tab_nummern:
+            if name == "_tab_nummern":
                 if f:
                     tab.load(self.db, f)
-            elif tab in self._simple_tabs:
+            elif name in self._FORMULAR_TABS:
                 if f:
                     tab.load(f)
-                elif tab in (self._tab_pfade, self._tab_drucktexte, self._tab_email_texte):
+                elif name in ("_tab_pfade", "_tab_drucktexte", "_tab_email_texte"):
                     tab.load({})
             # Alle anderen Tabs (zk, mwst, mahnkond, basiszins, warengruppen,
             # kontenrahmen, locks) laden eigenständig – keine Aktion nötig.
@@ -566,9 +617,12 @@ class FirmaFenster(QWidget):
             # Tabs neu laden
             f = self.db.get_firma(firma_id)
             if f:
+                self._pending_f = dict(f)    # ungebaute Reiter laden später diesen Stand
                 self._tab_nummern.load(self.db, dict(f))
-                self._tab_anbindung_fibu.load(dict(f))
-                self._tab_kontenrahmen.refresh()
+                tab_fibu = self.__dict__.get("_tab_anbindung_fibu")
+                if tab_fibu is not None:
+                    tab_fibu.load(dict(f))
+                self._falls_gebaut("_tab_kontenrahmen", "refresh")
 
     def _set_aktives_geschaeftsjahr(self):
         """Geschäftsjahr als aktiv setzen."""
