@@ -109,8 +109,9 @@ class PromptMarkdownDialog(settings.DialogSizeMixin, QDialog):
         split.setSizes([400, 400])
         lay.addWidget(split, 1)
 
-        # Snapshot VOR setPlainText: der Highlighter-Timer feuert textChanged ohne echte
-        # Änderung – Dirty wird daher gegen den Snapshot verglichen, nicht blind gesetzt.
+        # Snapshot VOR setPlainText: textChanged feuert auch ohne echte Änderung
+        # (Formatänderungen der Rechtschreibprüfung) – Dirty wird daher gegen den
+        # Snapshot verglichen, nicht blind gesetzt.
         self._snapshot = text or ""
         self._edit.setPlainText(self._snapshot)
         self._preview.setMarkdown(self._snapshot)

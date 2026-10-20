@@ -114,15 +114,14 @@ def _find_misspelled_spans(text):
 
 
 class SpellCheckHighlighter(QSyntaxHighlighter):
-    """Rechtschreibprüfung für QTextEdit/QPlainTextEdit (mehrzeilig)."""
+    """Rechtschreibprüfung für QTextEdit/QPlainTextEdit (mehrzeilig).
 
-    def __init__(self, document):
-        super().__init__(document)
-        self._timer = QTimer(self)
-        self._timer.setSingleShot(True)
-        self._timer.setInterval(400)
-        self._timer.timeout.connect(self.rehighlight)
-        document.contentsChanged.connect(self._timer.start)
+    Bewusst **kein** Nachfärb-Timer: Bis 2026-10-20 startete `contentsChanged`
+    einen 400-ms-Timer mit `rehighlight()` über das ganze Dokument. Das setzt
+    Zeichenformate, Qt meldet das wieder als `contentsChanged` — eine Schleife,
+    die ohne jede Eingabe weiterlief (gemessen: 63 Blockprüfungen in 1,5 s
+    Leerlauf bei 20 Zeilen). `QSyntaxHighlighter` färbt geänderte Blöcke selbst.
+    """
 
     def highlightBlock(self, text):
         for start, length in _find_misspelled_spans(text):

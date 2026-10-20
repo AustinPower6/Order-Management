@@ -27,6 +27,7 @@ import spellcheck
 import theme
 from helpers import fmt_datum, parse_datum
 from i18n import _
+from db.db_core import MandantenSchutzError
 from lock_manager import Module
 from spellcheck import SpellCheckLineEdit
 from uebersetzung import firma_mit_drucktexten
@@ -159,9 +160,9 @@ class KommunikationDialog(settings.DialogSizeMixin, QDialog):
         spellcheck.attach(self._inhalt)
         lay.addWidget(self._inhalt)
 
-        # Snapshot-Vergleich statt blindem _mark_dirty(): Der SpellCheckHighlighter
-        # auf `_inhalt` löst ~400 ms nach dem Laden über rehighlight() ein
-        # textChanged **ohne** Textänderung aus — direkt gekoppelt ergäbe das einen
+        # Snapshot-Vergleich statt blindem _mark_dirty(): Nicht jedes
+        # textChanged bedeutet eine Änderung (auch Formatänderungen der
+        # Rechtschreibprüfung melden sich so) — direkt gekoppelt ergäbe das einen
         # falschen Dirty-Punkt beim bloßen Öffnen. Gleiches Muster wie in
         # BelegEditDialog und den Firmenstamm-Reitern; Nebeneffekt: Eine
         # zurückgenommene Änderung lässt den Punkt wieder verschwinden.
@@ -413,7 +414,14 @@ class KommunikationDialog(settings.DialogSizeMixin, QDialog):
             data["richtung"] = "aus"
             data["zeitpunkt"] = self._zeitpunkt
             data["benutzer"] = self._benutzer
-        self.saved_id = self.db.save_kommunikation(data)
+        try:
+            self.saved_id = self.db.save_kommunikation(data)
+        except MandantenSchutzError:
+            firma = dict(self.db.get_firma() or {})
+            zeige_fehler(self, _("msg.fehler"),
+                         _("msg.mandantenschutz_kommunikation",
+                           firma=firma.get("firmen_nr", "")))
+            return False
         neu = not self.komm_id
         self.komm_id = self.saved_id
         self.db.setze_kommunikation_belege(self.komm_id, self._anlagen)

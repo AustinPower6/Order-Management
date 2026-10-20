@@ -199,6 +199,21 @@ def kunde_adressblock(k) -> list[str]:
     return zeilen
 
 
+def firma_strasse(firma) -> str:
+    """Straßenzeile der Firma: Straße, Hausnummer und Zusatz zusammengesetzt.
+
+    Der Firmenstamm führt die Hausnummer in eigenen Spalten (`hausnr`,
+    `hausnrzusatz`, für die ZM getrennt erfasst). Wer nur `strasse` ausgibt,
+    verliert sie — deshalb bauen Briefkopf, Absenderzeile und E-Rechnung die
+    Zeile alle hier. Der Kundenstamm kennt die Trennung nicht (Hausnummer steht
+    in `strasse`, siehe `kunde_adressblock`).
+    """
+    f = firma or {}
+    return " ".join(x for x in [(f.get("strasse") or "").strip(),
+                                (f.get("hausnr") or "").strip(),
+                                (f.get("hausnrzusatz") or "").strip()] if x)
+
+
 def marke_slug(bezeichnung: str) -> str:
     """Ordner-/Dateinamen-Slug für Marken (z. B. 'Stiebel Eltron' → 'stiebel_eltron').
 

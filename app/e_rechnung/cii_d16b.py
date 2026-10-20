@@ -12,6 +12,7 @@ werden wiederverwendet — sie sind format-unabhaengig.
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
 
+from helpers import firma_strasse
 from . import ubl_2_1 as _u
 
 NS_RSM = "urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100"
@@ -166,7 +167,7 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
     _add_trade_party(
         agreement, "SellerTradeParty",
         name=firma.get("name", "") or "",
-        strasse=firma.get("strasse", "") or "",
+        strasse=firma_strasse(firma),
         plz=firma.get("plz", "") or "",
         ort=firma.get("ort", "") or "",
         land=firma.get("land", "DE") or "DE",

@@ -48,8 +48,8 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
         if spell_lang:
             spellcheck.load_lang(spell_lang)
             self._edit._spell_hl = spellcheck.SpellCheckHighlighter(self._edit.document())
-        # Snapshot VOR setPlainText: der Highlighter-Timer (400ms) feuert nach dem Laden
-        # erneut textChanged, ohne dass der Nutzer etwas geändert hat. Statt blind dirty zu
+        # Snapshot VOR setPlainText: textChanged feuert auch ohne Änderung durch den
+        # Nutzer (z. B. bei Formatänderungen der Rechtschreibprüfung). Statt blind dirty zu
         # setzen, wird der aktuelle Text mit dem Snapshot verglichen.
         self._snapshot = text or ""
         self._edit.setPlainText(self._snapshot)

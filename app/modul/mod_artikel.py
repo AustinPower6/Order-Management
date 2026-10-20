@@ -20,6 +20,7 @@ from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
 import ui_widgets
 from ui_widgets import zeige_fehler, zeige_warnung
+from db.db_core import MandantenSchutzError
 
 class ArtikelFenster(QWidget):
     HELP_ANCHOR = "artikel"
@@ -1432,6 +1433,13 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         if self.artikel_id:
             data["id"] = self.artikel_id
         data["_modul"] = Module.ARTIKEL
-        self.db.save_artikel(data)
+        try:
+            self.db.save_artikel(data)
+        except MandantenSchutzError:
+            firma = dict(self.db.get_firma() or {})
+            zeige_fehler(self, _("msg.fehler"),
+                         _("msg.mandantenschutz_artikel", nr=data["artikelnr"],
+                           firma=firma.get("firmen_nr", "")))
+            return
         self._lock_freigegeben = True
         self.accept()

@@ -5,6 +5,17 @@ from .db_schema import _SCHEMA_SQL
 import settings
 
 
+class MandantenSchutzError(RuntimeError):
+    """UPDATE traf keinen Satz: fremde firma_id oder Satz existiert nicht mehr."""
+
+    def __init__(self, table, rec_id, firma_id):
+        super().__init__(f"{table} id={rec_id}: kein Satz der aktiven Firma "
+                         f"(firma_id={firma_id}) gefunden (Mandanten-Schutz)")
+        self.table = table
+        self.rec_id = rec_id
+        self.firma_id = firma_id
+
+
 class DBCoreMixin:
     """Mixin: Init, Schema, Migration, generische Helper, Locking, Connection."""
 
@@ -47,8 +58,21 @@ class DBCoreMixin:
         if data.get('id'):
             rec_id = data['id']
             keys = [k for k in data if k != 'id']
-            sql = f"UPDATE {table} SET " + ",".join(f"{k}=?" for k in keys) + " WHERE id=?"
-            self.conn.execute(sql, [data[k] for k in keys] + [rec_id])
+            params = [data[k] for k in keys] + [rec_id]
+            where = " WHERE id=?"
+            # Mandanten-Isolation (kunden, artikel, kommunikation): nur Sätze der
+            # aktiven Firma treffen — wie _save_beleg/_update_firma.
+            cols = [c[1] for c in self.conn.execute(f"PRAGMA table_info({table})").fetchall()]
+            if "firma_id" in cols:
+                where += " AND firma_id=?"
+                params.append(self._firma_id())
+            sql = f"UPDATE {table} SET " + ",".join(f"{k}=?" for k in keys) + where
+            cur = self.conn.execute(sql, params)
+            if cur.rowcount == 0:
+                # Vor der Lock-Freigabe abbrechen: Der Dialog bleibt offen und
+                # behält seine Sperre.
+                self.conn.rollback()
+                raise MandantenSchutzError(table, rec_id, self._firma_id())
         else:
             data.pop('id', None)
             keys = list(data.keys())

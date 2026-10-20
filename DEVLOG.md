@@ -1,3 +1,37 @@
+## 2026-10-20 11:04 — Paket 1 aus dem Multi-Ableger: Mandantenschutz, Hausnummer, Rechtschreib-Schleife, Absturz beim Beenden
+
+**Anlass:** Abgleich mit dem Multi-Ableger (dort `00a381e`, `17a84c3`, `8814f72`,
+`b437937`, nur gelesen). Alle vier Fehler waren hier noch vorhanden.
+
+**Geändert:**
+- **A1 Mandantenschutz** `app/db/db_core.py::_save_record`: Das UPDATE läuft mit
+  `AND firma_id=?`, sobald die Tabelle die Spalte führt (kunden, artikel,
+  kommunikation). Trifft es keinen Satz, folgen rollback und die neue Ausnahme
+  `MandantenSchutzError`, und zwar vor der Lock-Freigabe. Kunden-, Artikel- und
+  Kommunikationsdialog zeigen dann eine Meldung mit Grund und Abhilfe (neue
+  Schlüssel `msg.mandantenschutz_kunde/_artikel/_kommunikation`), der Dialog
+  bleibt offen.
+- **A3 Hausnummer** neu `helpers.firma_strasse()` als einzige Stelle, die
+  Straße + `hausnr` + `hausnrzusatz` zusammensetzt. Verwendet von Briefkopf
+  (`druck_beleg._header_firma`), Absenderzeile (`druck_pdf_utils._overlay_lieferanschrift`)
+  und, über den Ableger hinaus, der Verkäuferanschrift der E-Rechnung
+  (`ubl_2_1`, `cii_d16b`). Die Kundenanschrift bleibt unverändert.
+- **B6 Rechtschreibprüfung** `app/spellcheck.py`: Den Nachfärb-Timer an
+  `contentsChanged` gibt es nicht mehr. Er bildete eine Rückkopplungsschleife,
+  weil `rehighlight` Formate setzt und Qt das wieder als `contentsChanged` meldet.
+  Drei Kommentare, die sich auf den Timer bezogen, sind angepasst.
+- **B9 Absturz beim Beenden** `app/main.py`: Die drei app-weiten Event-Filter
+  liegen jetzt in einem Tupel und werden nach `app.exec()` vor `sys.exit`
+  abgehängt.
+- `app/test_paket1_korrekturen.py` (neu): Regressionstests für alle vier Punkte.
+
+**Verifikation:** Der Test gegen den alten Stand schlug fehl (B6 gemessen:
+63 Blockprüfungen in 1,5 s Leerlauf), danach 19/19. `test_beleg_konvertierung`
+5/5, `test_firma_lazy` 8/8, `ruff` sauber, `audit_firma_id` ohne Fehler.
+Die Audit-Warnung db_core gab es schon vorher, sie ist nur verschoben. Den
+Absturz beim Beenden kann nur ein App-Lauf mit wiederholtem Starten und
+Beenden prüfen; das steht noch aus.
+
 ## 2026-10-20 10:41 — Absturz beim Mahnen einer kopierten Rechnung behoben
 
 **Anlass:** Abgleich mit dem Multi-Ableger (dort `f293c5e`, nur gelesen). Seit

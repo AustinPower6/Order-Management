@@ -9384,6 +9384,18 @@
     "ts": "2026-06-25 17:24",
     "h": "b1c673799cad"
   },
+  "msg.mandantenschutz_artikel": {
+    "de": "Artikel {nr} wurde nicht gespeichert: Der Datensatz gehört nicht zur aktiven Firma {firma} oder existiert nicht mehr.\n\nBitte das Fenster schließen und den Artikel neu öffnen.",
+    "en": "Item {nr} was not saved: the record does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the item."
+  },
+  "msg.mandantenschutz_kommunikation": {
+    "de": "Der Kommunikationseintrag wurde nicht gespeichert: Er gehört nicht zur aktiven Firma {firma} oder existiert nicht mehr.\n\nBitte das Fenster schließen und den Eintrag neu öffnen.",
+    "en": "The communication entry was not saved: it does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the entry."
+  },
+  "msg.mandantenschutz_kunde": {
+    "de": "Kunde {nr} wurde nicht gespeichert: Der Datensatz gehört nicht zur aktiven Firma {firma} oder existiert nicht mehr.\n\nBitte das Fenster schließen und den Kunden neu öffnen.",
+    "en": "Customer {nr} was not saved: the record does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the customer."
+  },
   "msg.maximale_mahnstufe": {
     "de": "Maximale Mahnstufe (4) bereits erreicht.",
     "en": "Maximum reminder level (4) already reached.",

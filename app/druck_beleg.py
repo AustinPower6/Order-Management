@@ -15,7 +15,7 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
                                 TableStyle, HRFlowable, KeepTogether)
 from reportlab.platypus import Image as RLImage
 from helpers import (fmt_datum, fmt_betrag, fmt_menge, berechne_positionen,
-                     kunde_adressblock)
+                     kunde_adressblock, firma_strasse)
 from database import heute
 from i18n import _
 from ui_widgets import zeige_warnung
@@ -71,7 +71,7 @@ def _header_firma(firma) -> list:
             logo_cell = ""
 
     adresse_teile = filter(None, [
-        firma.get("strasse",""),
+        firma_strasse(firma),
         firma.get("adresszusatz",""),
         (firma.get("plz","") + " " + firma.get("ort","")).strip()
     ])

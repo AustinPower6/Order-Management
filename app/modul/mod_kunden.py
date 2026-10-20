@@ -20,6 +20,7 @@ import bank
 import fallback_log
 import address_validation
 from db.db_adress import DbAttestationStore
+from db.db_core import MandantenSchutzError
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
@@ -1113,6 +1114,12 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         except ValueError as ex:
             zeige_fehler(self, _("msg.fehler"),
                          _("msg.kundennr_ausserhalb", details=str(ex)))
+            return
+        except MandantenSchutzError:
+            firma = dict(self.db.get_firma() or {})
+            zeige_fehler(self, _("msg.fehler"),
+                         _("msg.mandantenschutz_kunde", nr=data.get("kundennr", ""),
+                           firma=firma.get("firmen_nr", "")))
             return
         self._lock_freigegeben = True
         self.accept()

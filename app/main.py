@@ -1167,12 +1167,14 @@ def main():
     import ui_widgets
     # QLineEdit in QWidget-Formularen (z. B. Firmenstamm): Enter/Pfeil hoch/runter
     # navigiert Felder. In QDialog-Fenstern nicht aktiv (DialogSizeMixin übernimmt).
-    app.installEventFilter(ui_widgets.LineEditNavFilter(app))
     # Auswahlfelder: Pfeil links/rechts ändert die Auswahl, hoch/runter ist für den
     # Dialog-Durchlauf reserviert (app als Qt-Parent hält die Filter-Referenz).
-    app.installEventFilter(ui_widgets.ComboArrowNavFilter(app))
     # Tabellen: Pos1/Ende springen zur ersten/letzten Zeile (Bild auf/ab = Qt-Standard).
-    app.installEventFilter(ui_widgets.TableHomeEndNavFilter(app))
+    nav_filter = (ui_widgets.LineEditNavFilter(app),
+                  ui_widgets.ComboArrowNavFilter(app),
+                  ui_widgets.TableHomeEndNavFilter(app))
+    for flt in nav_filter:
+        app.installEventFilter(flt)
     ui_widgets.developer_email_fn = _make_developer_email_fn(db)
     # Theme + Sprache schon hier laden: Der Anmeldedialog läuft VOR dem
     # Hauptfenster (das sie sonst als Erstes lädt) und wäre sonst unübersetzt
@@ -1195,7 +1197,13 @@ def main():
         QMessageBox.information(
             win, _("msg.db_migration_titel"),
             _("msg.db_migration_text", log=migration_log))
-    sys.exit(app.exec())
+    rc = app.exec()
+    # Vor dem Abbau abhängen: Die Filter rufen Python auf, während Qt die Fenster
+    # abräumt — im Multi-Ableger ergab das in 4 von 10 Läufen eine
+    # Zugriffsverletzung (0xC0000005) nach dem Schließen, abgehängt 0 von 10.
+    for flt in nav_filter:
+        app.removeEventFilter(flt)
+    sys.exit(rc)
 
 
 if __name__ == "__main__":

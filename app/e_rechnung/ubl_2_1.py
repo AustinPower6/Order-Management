@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
 
+from helpers import firma_strasse
+
 
 NS_INVOICE = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
 NS_CREDIT = "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2"
@@ -397,7 +399,7 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
     _add_party(
         root, "AccountingSupplierParty",
         name=firma.get("name", "") or "",
-        strasse=firma.get("strasse", "") or "",
+        strasse=firma_strasse(firma),
         plz=firma.get("plz", "") or "",
         ort=firma.get("ort", "") or "",
         land=firma.get("land", "DE") or "DE",

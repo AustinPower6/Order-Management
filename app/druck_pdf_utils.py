@@ -6,7 +6,7 @@ Seitennummern, Zusammenführen) und die Ausgabe (Öffnen, Standarddrucker).
 """
 import os
 import subprocess
-from helpers import kunde_adressblock
+from helpers import firma_strasse, kunde_adressblock
 from i18n import _
 
 
@@ -63,7 +63,7 @@ def _overlay_lieferanschrift(pfad, firma, kunde):
 
     absender_teile = list(filter(None, [
         firma.get("name", ""),
-        firma.get("strasse", ""),
+        firma_strasse(firma),
         (firma.get("plz", "") + " " + firma.get("ort", "")).strip(),
     ]))
     absender_str = " · ".join(absender_teile)
