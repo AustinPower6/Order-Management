@@ -169,11 +169,7 @@ class KommunikationDialog(settings.DialogSizeMixin, QDialog):
         self._art_cb.currentIndexChanged.connect(self._refresh_dirty)
         # Art bestimmt, ob es Vorschau/Versand gibt und wie die Schaltfläche heißt
         self._art_cb.currentIndexChanged.connect(self._aktualisiere_zustand)
-        # DatumEdit ist ein QWidget ohne eigenes Signal — wie in beleg_edit.py
-        # über das innere QDateEdit bzw. die Aktiv-Checkbox koppeln.
-        self._wv._edit.dateChanged.connect(self._refresh_dirty)
-        if self._wv._check is not None:
-            self._wv._check.stateChanged.connect(self._refresh_dirty)
+        self._wv.geaendert.connect(self._refresh_dirty)
         self._betreff.textChanged.connect(self._refresh_dirty)
         self._inhalt.textChanged.connect(self._refresh_dirty)
 
@@ -397,6 +393,8 @@ class KommunikationDialog(settings.DialogSizeMixin, QDialog):
         Das Dokument entsteht immer aus dem gespeicherten Stand, und der
         Dateiname braucht die vergebene ID.
         """
+        if not self._wv.pruefe_eingabe(self, speichern=True):
+            return False
         data = {
             "art": self._art_cb.currentData() or "notiz",
             "wiedervorlage_am": parse_datum(self._wv.text()),

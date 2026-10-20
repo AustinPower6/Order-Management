@@ -594,6 +594,14 @@ def error_label_style():
     return f"color: {_palette()['error_fg']}; font-weight: bold;"
 
 
+def eingabe_fehler_style():
+    """Stylesheet für ein Eingabefeld mit unmöglichem Wert (z. B. 31.02. im
+    Datumsfeld): Hintergrund und Schrift der Fehler-Statusfarbe."""
+    p = _palette()
+    return (f"QLineEdit {{ background-color: {p['status_error_bg']}; "
+            f"color: {p['status_error']}; }}")
+
+
 def preview_frame_style():
     """Stylesheet für Bild-/Logo-Vorschau-Rahmen."""
     p = _palette()

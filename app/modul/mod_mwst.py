@@ -65,7 +65,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             self._satz.textChanged.connect(lambda: self._refresh_dirty())
             satz_form.addRow("Satz (%):", self._satz)
             self._datum = DatumEdit(self)
-            self._datum._edit.dateChanged.connect(lambda: self._refresh_dirty())
+            self._datum.geaendert.connect(lambda: self._refresh_dirty())
             satz_form.addRow("Gültig ab:", self._datum)
             lay.addLayout(satz_form)
         btn_bar_w = QWidget()
@@ -168,6 +168,8 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             except ValueError:
                 zeige_fehler(self, "Fehler", "Satz muss eine Zahl sein.")
                 return
+            if not self._datum.pruefe_eingabe(self, speichern=True):
+                return
             datum = parse_datum(self._datum.text())
             # Klasse anlegen
             self.db.save_mwst_klasse({"bezeichnung": bez,
@@ -223,7 +225,7 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         self._satz = QLineEdit("19.0")
         self._satz.textChanged.connect(lambda: self._mark_dirty())
         self._datum = DatumEdit(self)
-        self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
+        self._datum.geaendert.connect(lambda: self._mark_dirty())
         self._ss = QLineEdit()
         self._ss.textChanged.connect(lambda: self._mark_dirty())
         form.addRow("Satz (%):", self._satz)
@@ -291,6 +293,8 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
             satz = parse_betrag(self._satz.text())
         except ValueError:
             zeige_fehler(self, "Fehler", "Satz muss eine Zahl sein.")
+            return
+        if not self._datum.pruefe_eingabe(self, speichern=True):
             return
         datum = parse_datum(self._datum.text())
         ss_text = self._ss.text().strip()

@@ -90,7 +90,22 @@ Die Navigation ist **systemweit zentral** umgesetzt. Damit ein neuer Dialog sie 
 2. **QWidget-Formular** (Tab o. ä.) → nichts nötig; die globalen Filter (`LineEditNavFilter`, `ComboArrowNavFilter`, `TableHomeEndNavFilter`) greifen automatisch.
 3. **Eigenes `keyPressEvent`?** → nur die abweichenden Tasten (Escape, F-Tasten) selbst behandeln, für **alles andere immer** `super().keyPressEvent(event)` aufrufen. Niemals Enter/Pfeile selbst abfangen (Ausnahme bewusster `Enter → _ok()` in Auswahl-/Positionsdialogen).
 4. **Spinboxen** (`QSpinBox`/`QDoubleSpinBox`) → `setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)`, damit Pfeil hoch/runter navigiert (statt am Min/Max hängen zu bleiben). Werte werden getippt.
-5. **Datumsfelder** → immer `DatumEdit` (aus `mod_belege.py`) verwenden.
+5. **Datumsfelder** → immer `DatumEdit` (aus `mod_belege.py`) verwenden, **niemals `QDateEdit`**.
+   Seit 2026-10-20 ein **Eingabefeld mit Maske** (`TT.MM.JJJJ`): Das Datum wird in einem Zug
+   **getippt**, der Kalender hängt als kleiner Knopf `▾` daneben (`NoFocus`). Pfeiltasten
+   navigieren im Datumsfeld wie überall durch die Felder.
+   * **Kurzeingaben werden ergänzt** (`ergaenzen`, bei Enter und beim Verlassen): nur Tag →
+     Monat+Jahr vom Ersatz-Belegdatum bzw. heute, Tag+Monat → Jahr, ein-/zweistelliges Jahr → 20xx.
+   * **Unmögliche Eingaben werden gemeldet**, nie still verworfen: Das Feld färbt sich
+     (`theme.eingabe_fehler_style`), beim Verlassen kommt die Meldung mit Feldname, Eingabe und
+     Abhilfe. **Vor dem Speichern** `feld.pruefe_eingabe(self, speichern=True)` bzw.
+     `beleg_utils.daten_pruefen(self, *felder)` aufrufen — wer direkt auf „Speichern“ klickt, hat
+     das Feld nie verlassen, und `text()` liefert für Halbes/Unmögliches `''`. Mit `speichern=True`
+     ist auch ein **leeres Pflichtfeld** (nicht `optional`) ein Fehler.
+   * **Signale:** `geaendert` für den Dirty-Punkt (jede Änderung, auch das Leeren),
+     `dateChanged(QDate)` für fachliche Reaktionen (nur gültige Daten). **Niemals** an
+     `_edit`/`_check` von außen koppeln.
+   * Prüfung: `python app/test_datum_edit.py` (findet auch neue `QDateEdit(` und Interna-Kopplungen an der Quelle).
 6. **Reine Anzeigefelder** → `setReadOnly(True)` genügt; sie werden beim Durchlauf automatisch übersprungen.
 7. **Kleine Hilfs-Buttons** (z. B. „…"-Suchbuttons direkt neben einem Feld) → `setFocusPolicy(Qt.FocusPolicy.NoFocus)`, damit sie den Durchlauf nicht unterbrechen.
 8. **Combo-/Auswahlfelder rechts oben in Toolbars** (die optisch als „totes Feld" wirken könnten) → `setFocusPolicy(Qt.FocusPolicy.ClickFocus)`.
@@ -107,7 +122,7 @@ Die Navigation ist **systemweit zentral** umgesetzt. Damit ein neuer Dialog sie 
 - **Auto-Fokus beim Öffnen:** `DialogSizeMixin.showEvent` setzt via `QTimer.singleShot(0, self._dsm_focus_first)` den Fokus auf das erste echte Eingabefeld — Buttons und read-only-Felder werden dabei übersprungen. Gilt für alle Dialoge, die den Mixin erben.
 - **Kleine Hilfs-Buttons** (z. B. „…"-Suche-Buttons in `KontoFeld`/`KontoZelleEdit`): `setFocusPolicy(Qt.FocusPolicy.NoFocus)` setzen, damit sie den Tastatur-Durchlauf nicht unterbrechen. Per Maus bleiben sie erreichbar.
 
-**Eigenes `keyPressEvent` in einem Dialog?** Nur abweichende Tasten selbst behandeln, für den Rest **immer** `super().keyPressEvent(event)` aufrufen. Mehrzeilige Textfelder, Spin-/Datumsfelder und Tabellen verbrauchen die Pfeiltasten selbst — dort findet bewusst kein Feldwechsel statt. Dialoge mit gewolltem `Enter → _ok()` (Auswahl-/Positionsdialoge) dürfen die Enter-Bestätigung behalten.
+**Eigenes `keyPressEvent` in einem Dialog?** Nur abweichende Tasten selbst behandeln, für den Rest **immer** `super().keyPressEvent(event)` aufrufen. Mehrzeilige Textfelder, Spinfelder und Tabellen verbrauchen die Pfeiltasten selbst — dort findet bewusst kein Feldwechsel statt. Dialoge mit gewolltem `Enter → _ok()` (Auswahl-/Positionsdialoge) dürfen die Enter-Bestätigung behalten.
 
 ## ⚠️ STRENGE REGEL: QFormLayout-Abstände
 

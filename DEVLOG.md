@@ -1,3 +1,70 @@
+## 2026-10-20 18:26 — Datumsfelder werden getippt statt geklickt
+
+**Anlass:** Walter: „wir hatten die Eingabe des Datums stark vereinfacht“. Im
+Multi-Ableger (nur gelesen) wurde `DatumEdit` am 2026-08-11 vom `QDateEdit` zum
+Tippfeld umgebaut (`88c6726`, `f034d6b`, `a0bda69`, `7a23f82`, `72c5899`,
+`6b367b6`). Walters Entscheidung: komplett übernehmen, Klassenname bleibt.
+
+### `app/modul/beleg_utils.py::DatumEdit`
+* `QLineEdit` mit Maske `99.99.9999`, Platzhalter `TT.MM.JJJJ`, daneben ein
+  Kalenderknopf `▾` (`NoFocus`). Reihenfolge Häkchen, Feld, Knopf.
+* **Kurzeingaben** werden bei Enter und beim Verlassen ergänzt: „5“ → 05.<Monat>.<Jahr>
+  des Ersatz-Belegdatums bzw. heute, „5.7“ → Jahr dazu, „26“ → 2026.
+* **Unmögliche Daten** (31.02., 32.13.) färben das Feld (`theme.eingabe_fehler_style`
+  über `theme.stil`, zieht beim Hell/Dunkel-Wechsel mit) und werden gemeldet. Enter
+  wird dann geschluckt, der Fokus bleibt im Feld. Der Event-Filter ist nötig,
+  weil Qt bei einer Teileingabe mit Maske weder `editingFinished` noch
+  `returnPressed` sendet.
+* Signale: `geaendert` bei jeder Änderung (auch Leeren), `dateChanged` nur bei gültigem Datum.
+* **Hier zusätzlich zum Ableger:**
+  * `pruefe_eingabe(parent, speichern=True)` meldet auch ein leeres
+    **Pflichtfeld**; bisher konnte ein Pflichtdatum nicht leer sein, jetzt schon.
+  * Die Meldung nennt den **Feldnamen** (aus `QFormLayout` oder Label-Buddy),
+    die Eingabe und die Abhilfe (Regel 8).
+  * Feste horizontale Größe statt innerem `addStretch`: Sonst hätte das Feld im
+    Belegkopf die Nachbarn auseinandergedrückt.
+* Neuer Helfer `daten_pruefen(parent, *felder)`.
+
+### Aufrufer
+* Die Kopplungen an die Interna (`_edit.dateChanged`/`_check.stateChanged`) sind auf `geaendert` umgestellt: `beleg_edit`, `mod_kundeninfo_komm`, `mod_mwst` (2×) und `mod_firma_laender` (2×).
+* Prüfung vor dem Speichern in diesen Dialogen:
+  * Belegdialog (`_speichern`, Belegdatum ist Pflicht, Zusatzdaten optional; die Labels sind jetzt Buddy)
+  * Kommunikation (`_persistieren`)
+  * MwSt-Klasse neu und MwSt-Satz
+  * Basiszinssatz
+  * Länder-Dialog (`accept`)
+* `main.py`, Dialog „Belegdatum setzen“: `DatumEdit` statt `QDateEdit`. OK prüft
+  vor dem Schließen. Bei ungültiger Eingabe bleibt der Dialog offen und das
+  bisherige Belegdatum unverändert.
+* i18n: `btn.datum_entfernen_tt`, `btn.kalender_tt`, `msg.datum_feld`, `msg.datum_fehlt`, `msg.datum_ungueltig`.
+* Projekt-`CLAUDE.md`: Tastaturregel Punkt 5 beschreibt jetzt das Maskenfeld. Die Pfeiltasten-Sonderrolle der Datumsfelder ist gestrichen. Der Docstring in `ui_widgets.LineEditNavFilter` ist nachgezogen.
+
+### Verifikation
+* Der neue Test `app/test_datum_edit.py` stand gegen den alten Code bei **0/7**.
+  Danach **34/34**: Maske, Ergänzung (5 Fälle), unmögliches Datum, Enter,
+  Signale, Pflichtfeld, Feldname aus Formular und Buddy, keine Dehnung in der
+  Zeile, Länder- und Basiszins-Dialog, und an der Quelle weder `QDateEdit(` noch
+  Interna-Kopplungen.
+* Weitere Tests:
+  * `test_ui_regeln` 18/18
+  * `test_firma_lazy` 8/8
+  * Paket 1 19/19
+  * Paket 2 10/10
+  * Mahnung 12/12
+  * key_store 13/13
+  * Schlüssel-Commit 4/4
+  * Paket 4 8/8
+  * Konvertierung 5/5
+  * `ruff` grün
+  * `audit_firma_id` ohne Fehler
+* Bild (offscreen, hell/dunkel) vom Länder-Dialog angesehen: Die Zeile bleibt links zusammen, das unmögliche Datum ist rot, „31.12.2026“ passt (60 px Text, rund 83 px Platz).
+* Offen für Walter (Handtest):
+  * im Beleg „5“ + Enter tippen
+  * 31.02. tippen und direkt Speichern drücken
+  * Wiedervorlage leeren
+  * „Belegdatum setzen“ in der Seitenleiste
+  * Kalenderknopf benutzen
+
 ## 2026-10-20 18:11 — Gruppe C: Theme-Umschaltung, Hinweistexte, Firmenstamm, Dialoge, Fehlerprotokoll, Start.cmd
 
 **Anlass:** Letzter Teil der Übernahme aus dem Multi-Ableger (nur gelesen; dort

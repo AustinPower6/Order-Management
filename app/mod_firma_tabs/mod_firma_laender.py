@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLa
 from PyQt6.QtCore import Qt
 from modul.mod_belege import (_apply_saved_columns, _connect_save_columns,
                               _frage_ungespeicherte_anderungen, DatumEdit)
+from modul.beleg_utils import daten_pruefen
 from helpers import fmt_datum, parse_datum
 from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
@@ -471,14 +472,12 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
         self._beitritt = DatumEdit(self, optional=True)
         self._beitritt.setText((land or {}).get("eu_beitritt") or "")
         form.addRow(_("firma.land.lbl.eu_beitritt"), self._beitritt)
-        self._beitritt._edit.dateChanged.connect(self._mark_dirty)
-        self._beitritt._check.stateChanged.connect(self._mark_dirty)
+        self._beitritt.geaendert.connect(self._mark_dirty)
 
         self._austritt = DatumEdit(self, optional=True)
         self._austritt.setText((land or {}).get("eu_austritt") or "")
         form.addRow(_("firma.land.lbl.eu_austritt"), self._austritt)
-        self._austritt._edit.dateChanged.connect(self._mark_dirty)
-        self._austritt._check.stateChanged.connect(self._mark_dirty)
+        self._austritt.geaendert.connect(self._mark_dirty)
 
         lay.addLayout(form)
         lay.addStretch()
@@ -492,6 +491,11 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
 
     def keyPressEvent(self, event):
         _dialog_keypress(self, event)
+
+    def accept(self):
+        # Ein unmögliches Datum würde `value()` sonst still als leer liefern.
+        if daten_pruefen(self, self._beitritt, self._austritt):
+            super().accept()
 
     def value(self):
         return {

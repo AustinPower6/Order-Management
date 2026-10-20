@@ -24,7 +24,7 @@ from i18n import _
 from spellcheck import SpellCheckLineEdit
 
 from .beleg_utils import (MarkerTextEdit, _frage_ungespeicherte_anderungen,
-                          DatumEdit)
+                          DatumEdit, daten_pruefen)
 from .beleg_kette import build_chain_data, BelegketteDialog
 from .beleg_dialoge import PositionenEditor, KundeAuswahlDialog
 from .beleg_liste import _MODUL_FROM_TABLE
@@ -135,13 +135,15 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         zeile1.addWidget(QLabel(_("lbl.nummer")))
         self._nr_lbl = QLabel(); font = QFont(); font.setBold(True); self._nr_lbl.setFont(font)
         zeile1.addWidget(self._nr_lbl)
-        zeile1.addWidget(QLabel(_("lbl.datum")))
+        lbl_datum = QLabel(_("lbl.datum")); zeile1.addWidget(lbl_datum)
         self._datum = DatumEdit(self)
+        lbl_datum.setBuddy(self._datum)       # Feldname in der Datumsmeldung
         zeile1.addWidget(self._datum)
         self._extra_widgets = {}
         for key, lbl_key in self.EXTRA_FELDER:
-            zeile1.addWidget(QLabel(_(lbl_key)))
+            lbl_extra = QLabel(_(lbl_key)); zeile1.addWidget(lbl_extra)
             w = DatumEdit(self, optional=True); zeile1.addWidget(w)
+            lbl_extra.setBuddy(w)
             self._extra_widgets[key] = w
         zeile1.addStretch()
         b_kette = QPushButton(_("btn.belegkette")); b_kette.clicked.connect(self._show_belegkette)
@@ -236,9 +238,9 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         lay.addWidget(foot)
 
         # ── Dirty tracking ────────────────────────────────────────────────────
-        self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
+        self._datum.geaendert.connect(lambda: self._mark_dirty())
         for w in self._extra_widgets.values():
-            w._edit.dateChanged.connect(lambda: self._mark_dirty())
+            w.geaendert.connect(lambda: self._mark_dirty())
         self._betreff.textChanged.connect(lambda: self._refresh_text_dirty())
         self._text_oben.textChanged.connect(lambda: self._refresh_text_dirty())
         self._text_unten.textChanged.connect(lambda: self._refresh_text_dirty())
@@ -696,6 +698,10 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         ) == QMessageBox.StandardButton.Yes
 
     def _speichern(self):
+        # Wer direkt auf „Speichern“ klickt, hat das Datumsfeld evtl. nie
+        # verlassen — Kurzeingabe ergänzen, Unmögliches/Fehlendes melden.
+        if not daten_pruefen(self, self._datum, *self._extra_widgets.values()):
+            return
         is_new = self.beleg_id is None
         positionen = self.pos_editor.get_positionen()
         for _p in positionen:

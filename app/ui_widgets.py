@@ -246,7 +246,7 @@ class LineEditNavFilter(QObject):
 
     - QLineEdit (nicht read-only): Enter/Pfeil-runter → nächstes Feld,
       Pfeil-hoch → vorheriges Feld.
-    - QAbstractSpinBox (QSpinBox, QDoubleSpinBox, QDateEdit): nur Enter navigiert;
+    - QAbstractSpinBox (QSpinBox, QDoubleSpinBox): nur Enter navigiert;
       Pfeil-hoch/runter bleibt dem Widget (Wert ändern) überlassen.
     In QDialog-Fenstern wird nicht eingegriffen — dort greift DialogSizeMixin,
     und Dialoge wie PosDialog behalten ihr Enter → _ok()-Verhalten.

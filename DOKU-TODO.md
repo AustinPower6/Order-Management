@@ -23,6 +23,25 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-10-20) **Datumsfelder: tippen statt klicken.** Gilt für alle
+      Datumsfelder (Belegkopf, Kommunikation/Wiedervorlage, MwSt, Basiszinssatz,
+      Länder, „Belegdatum setzen“ in der Seitenleiste).
+      - Das Datum wird in einem Zug getippt, die Punkte stehen schon da
+        (`TT.MM.JJJJ`). Den Kalender öffnet der kleine Knopf ▾ daneben.
+      - Kurzform: Tippt man nur den Tag („5“), werden Monat und Jahr ergänzt, und
+        zwar vom gesetzten Belegdatum, sonst von heute. „5.7“ ergänzt das Jahr,
+        „26“ wird zu 2026. Die Ergänzung greift bei Enter und beim Verlassen.
+      - Ein Datum, das es nicht gibt (31.02.), färbt das Feld rot und wird
+        gemeldet, mit Feldname und Abhilfe. Gespeichert wird erst nach der
+        Korrektur. Ein leeres Pflichtdatum (etwa das Belegdatum) wird beim
+        Speichern ebenfalls gemeldet.
+      - Optionale Felder: Häkchen davor. Mit Haken wird ein Vorschlag eingetragen,
+        ohne Haken ist das Feld leer. Tippen setzt den Haken von selbst.
+      - Pfeil hoch/runter wechselt auch im Datumsfeld das Feld.
+  - Code: `app/modul/beleg_utils.py::DatumEdit`, `app/main.py::_open_date_picker`
+  - Doku: allgemein im Kapitel **Bedienung/Tastatur** beschreiben (nicht bei
+    einem einzelnen Feld), dazu den Dialog „Belegdatum setzen“ anpassen.
+
 - [ ] (2026-10-20) **Hell/Dunkel, Hinweistexte, Dialoge, Fehlernachverfolgung, Start.cmd.**
       - Beim Umschalten Hell/Dunkel ziehen jetzt alle eingefärbten Felder mit
         (Hinweise, Fehlertexte, gelbe Ersatzwert-Felder, Dirty-Punkte …).

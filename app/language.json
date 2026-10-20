@@ -973,6 +973,10 @@
     "ts": "2026-07-04 14:43",
     "h": "6fcd4c102ee7"
   },
+  "btn.datum_entfernen_tt": {
+    "de": "Mit Haken gilt ein Datum: Das Feld daneben wird mit einem Vorschlag gefüllt und zum Überschreiben markiert. Ohne Haken wird das Feld geleert — das Datum ist dann nicht gesetzt.",
+    "en": "Ticked, a date applies: the field next to it is filled with a suggestion and selected for overwriting. Unticked, the field is cleared — no date is set."
+  },
   "btn.e_rechnung_version": {
     "de": "E-Rechnung {v}",
     "en": "E-invoice {v}",
@@ -1014,6 +1018,10 @@
     "en": "Send to developer",
     "ts": "2026-06-25 17:24",
     "h": "c9ec3e71c40f"
+  },
+  "btn.kalender_tt": {
+    "de": "Datum aus dem Kalender wählen",
+    "en": "Pick a date from the calendar"
   },
   "btn.kopieren": {
     "de": "Kopieren",
@@ -9267,6 +9275,18 @@
     "en": "Loading data …",
     "ts": "2026-06-25 17:24",
     "h": "b5acd7b51d75"
+  },
+  "msg.datum_feld": {
+    "de": "Feld „{feld}“: ",
+    "en": "Field “{feld}”: "
+  },
+  "msg.datum_fehlt": {
+    "de": "{feld}Hier ist ein Datum nötig. Bitte im Format TT.MM.JJJJ eintragen (oder kurz nur den Tag, z. B. „5“) oder über den Kalenderknopf ▾ neben dem Feld wählen.",
+    "en": "{feld}A date is required here. Please enter it as DD.MM.YYYY (or just the day, e.g. “5”) or pick it with the calendar button ▾ next to the field."
+  },
+  "msg.datum_ungueltig": {
+    "de": "{feld}Das Datum „{eingabe}“ gibt es nicht. Bitte im Format TT.MM.JJJJ eintragen (oder kurz nur den Tag, z. B. „5“), über den Kalenderknopf ▾ neben dem Feld wählen oder die Eingabe löschen.",
+    "en": "{feld}The date “{eingabe}” does not exist. Please enter it as DD.MM.YYYY (or just the day, e.g. “5”), pick it with the calendar button ▾ next to the field, or delete the entry."
   },
   "msg.druckfehler": {
     "de": "Druckfehler",

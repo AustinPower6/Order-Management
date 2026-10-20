@@ -116,6 +116,8 @@ class BasiszinsDialog(settings.DialogSizeMixin, QDialog):
             self._satz.setText(f"{satz:.2f}".replace(".", ","))
 
     def _ok(self):
+        if not self._datum.pruefe_eingabe(self, speichern=True):
+            return
         datum = parse_datum(self._datum.text())
         if not datum:
             zeige_warnung(self, _("msg.fehler"), _("firma.bz.err_datum"))

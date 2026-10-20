@@ -3,17 +3,18 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from PyQt6.QtWidgets import (QApplication, QDateEdit, QDialog,
+from PyQt6.QtWidgets import (QApplication, QDialog,
                              QDialogButtonBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout,
                              QLabel, QMainWindow, QMenu, QMessageBox,
                              QPushButton, QStackedWidget, QTabWidget, QVBoxLayout, QWidget,
                              QWidgetAction)
-from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate, QTimer
+from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QTimer
 from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
 from datetime import date as _date
 
 from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum
+from helpers import parse_datum
 from theme import load_and_apply, apply
 import theme
 import settings
@@ -967,24 +968,27 @@ class MainWindow(QMainWindow):
 
         form = QFormLayout()
         form.setVerticalSpacing(6)
-        self._date_picker = QDateEdit(self)
-        self._date_picker.setCalendarPopup(True)
-        self._date_picker.setDisplayFormat("dd.MM.yyyy")
-        # Voreinstellung: immer das heutige Datum (nicht das zuletzt gesetzte Ersatzdatum)
-        self._date_picker.setDate(QDate.currentDate())
+        # Dasselbe getippte Datumsfeld wie überall. Voreinstellung: immer das
+        # heutige Datum (nicht das zuletzt gesetzte Ersatzdatum).
+        from modul.beleg_utils import DatumEdit
+        self._date_picker = DatumEdit(dlg)
+        self._date_picker.setText(_date.today().isoformat())
         form.addRow(_("lbl.belegdatum"), self._date_picker)
         lay.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(dlg.accept)
+        # Erst prüfen, dann schließen: Bei ungültiger oder fehlender Eingabe
+        # bleibt der Dialog offen (Fokus im Feld) und das bisherige
+        # Belegdatum unverändert.
+        btns.accepted.connect(
+            lambda: self._date_picker.pruefe_eingabe(dlg, speichern=True) and dlg.accept())
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
 
         accepted = dlg.exec()
         if accepted:
-            qt_d = self._date_picker.date()
-            _set_beleg_datum(f"{qt_d.year():04d}-{qt_d.month():02d}-{qt_d.day():02d}")
+            _set_beleg_datum(parse_datum(self._date_picker.text()))
             self._update_datum_label()
         dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
 
