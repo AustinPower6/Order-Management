@@ -4,7 +4,9 @@ from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, 
                              QVBoxLayout, QApplication)
 from PyQt6.QtCore import Qt, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
+import key_store
 import settings
+import ui_widgets
 from modul.mod_belege import _EscRejectFilter
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
@@ -116,6 +118,10 @@ class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
 
         try:
             self._new_firma_id = self.db.copy_firma(source_id, target_data)
+        except key_store.SchluesseldateiFehler as e:
+            # Die Firma ist kopiert, nur ihre Schlüsseldatei nicht.
+            self._new_firma_id = getattr(e, "neue_firma_id", None)
+            ui_widgets.melde_schluessel_fehler(self, e)
         except Exception as e:
             zeige_fehler(self, _("msg.fehler"),
                                  _("firma.kopieren.fehlgeschlagen", err=e))

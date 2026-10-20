@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QPushButton, QDialog, QDialogButtonBox, QCheckBox)
 from ui_widgets import SaveBar
 from db.db_adress import DbAttestationStore
+import key_store
 import lock_manager
 from lock_manager import Module, ist_admin
 from i18n import _
@@ -141,12 +142,19 @@ class AdressPruefungTab(QWidget):
             key = self._e_google_key.text().strip()
         else:
             key = self._key_real   # echten Key unverändert erhalten
-        self.db.save_firma({
-            "adress_provider": self._cmb_provider.currentData(),
-            "adress_nominatim_url": self._e_nominatim_url.text().strip(),
-            "adress_google_api_key": key,
-            "_modul": Module.FIRMA,
-        })
+        try:
+            self.db.save_firma({
+                "adress_provider": self._cmb_provider.currentData(),
+                "adress_nominatim_url": self._e_nominatim_url.text().strip(),
+                "adress_google_api_key": key,
+                "_modul": Module.FIRMA,
+            })
+        except key_store.SchluesseldateiFehler as e:
+            # Provider/URL sind gespeichert, nur der Key nicht — dirty bleiben.
+            self._last_aenderung = lock_manager.aenderungs_stand(
+                self.db, "firma", self.db._firma_id())
+            ui_widgets.melde_schluessel_fehler(self, e)
+            return
         self._last_aenderung = lock_manager.aenderungs_stand(
             self.db, "firma", self.db._firma_id())
         self._saved = self._aktueller_zustand()

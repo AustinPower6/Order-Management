@@ -43,7 +43,13 @@ class DBFirmaMixin:
         wird ein neues Passwort erzeugt und eine frische Datei angelegt
         (Reset-Weg: gelöschte Datei ⇒ neues Passwort ⇒ neu befüllen). Ohne
         nicht-leeren Wert wird keine Datei angelegt. Committet nicht selbst
-        (der Aufrufer committet die DB-Änderungen)."""
+        (der Aufrufer committet die DB-Änderungen).
+
+        **Geschrieben wird die Datei hier noch nicht** — der Auftrag wird nur
+        vorgemerkt und von `_secrets_schreiben()` **nach** dem Commit ausgeführt.
+        Bis 2026-10-20 trug die Datei das neue Passwort schon, während es erst in
+        der offenen Transaktion stand; scheiterte danach der Commit, blieb eine
+        Datei zurück, die die Datenbank nie mehr öffnen konnte."""
         row = self.conn.execute(
             "SELECT firmen_nr, api_keys_passwort FROM firma WHERE id=?",
             (firma_id,)).fetchone()
@@ -60,7 +66,26 @@ class DBFirmaMixin:
             passwort = key_store.neues_passwort()
             self.conn.execute("UPDATE firma SET api_keys_passwort=? WHERE id=?",
                               (passwort, firma_id))
-        key_store.speichere(firmen_nr, passwort, daten)
+        self._secrets_offen.append((firmen_nr, passwort, daten))
+
+    @property
+    def _secrets_offen(self) -> list:
+        """Vorgemerkte Schreibaufträge an die Schlüsseldateien (siehe
+        `_speichere_firma_secrets`)."""
+        if not hasattr(self, "_secrets_offen_liste"):
+            self._secrets_offen_liste = []
+        return self._secrets_offen_liste
+
+    def _secrets_schreiben(self):
+        """Führt die vorgemerkten Schreibaufträge aus — **nach** dem Commit.
+
+        Wirft `key_store.SchluesseldateiFehler` weiter (Datei unlesbar oder
+        gesperrt); die übrigen Felder sind zu diesem Zeitpunkt gespeichert, der
+        Aufrufer meldet es dem Anwender.
+        """
+        offen, self._secrets_offen_liste = self._secrets_offen, []
+        for firmen_nr, passwort, daten in offen:
+            key_store.speichere(firmen_nr, passwort, daten)
 
     def firmensprache(self) -> str:
         """Sprache der aktiven Firma (Reiter Adresse). Leerer String, wenn nicht gesetzt."""
@@ -85,6 +110,7 @@ class DBFirmaMixin:
         # Secrets nie in die DB schreiben — aus data poppen und in die
         # verschlüsselte Firmendatei umleiten. api_keys_passwort ist nie von
         # außen setzbar.
+        self._secrets_offen.clear()   # nichts aus einem abgebrochenen Lauf mitschleppen
         data.pop('api_keys_passwort', None)
         secret_in_data = {k: data.pop(k) for k in list(data) if k in key_store.SECRET_FELDER}
         keys = [k for k in data if k != 'id']
@@ -104,6 +130,7 @@ class DBFirmaMixin:
             self._speichere_firma_secrets(firma_id, {"firma": secret_in_data})
         self._apply_lock_release("firma", firma_id, modul)
         self.conn.commit()
+        self._secrets_schreiben()   # Datei erst nach dem Commit (siehe dort)
 
     def schluesseldatei_status(self, firma_id: int = None) -> str:
         """Zustand der verschlüsselten Schlüsseldatei (API-Keys) einer Firma —
@@ -166,8 +193,10 @@ class DBFirmaMixin:
                  int(d.get("reason_an") or 0), int(d.get("budget_aktiv") or 0),
                  int(d.get("budget") or 1000)))
         lokal = {str(slot): (d.get("api_key") or "").strip() for slot, d in slots.items()}
+        self._secrets_offen.clear()
         self._speichere_firma_secrets(firma_id, {"lokal": lokal})
         self.conn.commit()
+        self._secrets_schreiben()   # Datei erst nach dem Commit (siehe dort)
 
     def get_firma_drucktexte(self, firma_id: int, sprache: str) -> dict:
         """Drucktexte einer Firma für eine Sprache: {schluessel: wert}.
@@ -644,9 +673,14 @@ class DBFirmaMixin:
             self.conn.execute(
                 f"INSERT INTO firma ({','.join(f_cols)}) VALUES ({','.join('?'*len(f_cols))})",
                 all_vals)
+            self._secrets_offen.clear()
             if kopie_hat_secret:
-                key_store.speichere((target_data.get("firmen_nr") or "").strip(),
-                                    neu_pw, src_secrets)
+                # Vorgemerkt, geschrieben wird nach dem Commit (siehe
+                # `_speichere_firma_secrets`): Bricht die Kopie danach ab, bliebe
+                # sonst eine Datei zurück, deren Passwort mit der Firmenzeile
+                # zurückgerollt wurde.
+                self._secrets_offen.append(
+                    ((target_data.get("firmen_nr") or "").strip(), neu_pw, src_secrets))
 
             mwst_klassen_map = {}
             _copy_rows("mwst_klassen", "WHERE firma_id=?", mwst_klassen_map, new_firma_id)
@@ -861,7 +895,16 @@ class DBFirmaMixin:
             self.conn.commit()
             self._cleanup_old_backups()
         except Exception:
+            self._secrets_offen.clear()
             self._rollback_oder_restore(backup_path)
             raise
 
+        # Außerhalb des try: Die Kopie ist festgeschrieben — scheitert jetzt nur die
+        # Schlüsseldatei, darf das keine Rücksicherung auslösen. Der Aufrufer
+        # erfährt die neue Firma über die Ausnahme und meldet die fehlenden Schlüssel.
+        try:
+            self._secrets_schreiben()
+        except key_store.SchluesseldateiFehler as e:
+            e.neue_firma_id = new_firma_id
+            raise
         return new_firma_id

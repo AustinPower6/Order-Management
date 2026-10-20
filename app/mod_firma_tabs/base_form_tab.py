@@ -15,6 +15,7 @@ Optional ueberschreibbar:
     _validate(data)     Fehlermeldung (str) bei ungueltigen Daten, sonst None
 """
 from PyQt6.QtWidgets import QWidget
+import key_store
 import ui_widgets
 from ui_widgets import zeige_fehler
 import lock_manager
@@ -97,7 +98,15 @@ class SimpleFormTab(QWidget):
                 self._db, "firma", self._firma_id, self._last_aenderung, self):
             return
         data["_modul"] = Module.FIRMA
-        self._db.save_firma(data)
+        try:
+            self._db.save_firma(data)
+        except key_store.SchluesseldateiFehler as e:
+            # Die übrigen Felder sind gespeichert, nur die Schlüssel nicht —
+            # Dirty-Zustand behalten, damit ein erneutes Speichern sie nachholt.
+            self._last_aenderung = lock_manager.aenderungs_stand(
+                self._db, "firma", self._firma_id)
+            ui_widgets.melde_schluessel_fehler(self, e)
+            return
         self._last_aenderung = lock_manager.aenderungs_stand(
             self._db, "firma", self._firma_id)
         self._snapshot()

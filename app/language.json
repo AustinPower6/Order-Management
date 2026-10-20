@@ -9576,6 +9576,26 @@
     "ts": "2026-06-25 17:24",
     "h": "dcdfb645a25a"
   },
+  "msg.schluessel_grund.beschaedigt": {
+    "de": "Die Datei ist beschädigt ({detail}).",
+    "en": "The file is damaged ({detail})."
+  },
+  "msg.schluessel_grund.kein_passwort": {
+    "de": "In der Datenbank ist kein Verschlüsselungs-Passwort für diese Firma hinterlegt, die Datei ist aber verschlüsselt.",
+    "en": "No encryption password is stored in the database for this company, but the file is encrypted."
+  },
+  "msg.schluessel_grund.passwort_falsch": {
+    "de": "Das in der Datenbank hinterlegte Passwort öffnet die Datei nicht — sie wurde mit einem anderen Passwort geschrieben.",
+    "en": "The password stored in the database does not open the file — it was written with a different password."
+  },
+  "msg.schluessel_nicht_gespeichert_defekt": {
+    "de": "Die Schlüssel (API-Keys/Passwörter) der Firma {firma} wurden NICHT gespeichert, die übrigen Angaben schon.\n\nGrund: Die Schlüsseldatei ist nicht lesbar. {grund}\nDatei: {pfad}\n\nDamit die vorhandenen Schlüssel nicht still verloren gehen, wird in diese Datei nicht geschrieben. Abhilfe: Die Datei löschen und danach alle Schlüssel der Firma im Firmenstamm neu erfassen — die bisherigen sind damit verloren.",
+    "en": "The keys (API keys/passwords) of company {firma} were NOT saved; the other details were.\n\nReason: The key file cannot be read. {grund}\nFile: {pfad}\n\nSo that the existing keys are not silently lost, nothing is written to this file. Remedy: Delete the file and then re-enter all keys of the company in the company master data — the previous ones are lost."
+  },
+  "msg.schluessel_nicht_gespeichert_gesperrt": {
+    "de": "Die Schlüssel (API-Keys/Passwörter) der Firma {firma} wurden NICHT gespeichert, die übrigen Angaben schon.\n\nGrund: Ein anderes Programm hält die Schlüsseldatei geöffnet (z. B. eine zweite Programminstanz, ein Virenscanner oder die Windows-Suche). {grund}\nDatei: {pfad}\n\nAbhilfe: Kurz warten und erneut speichern. Die bisherige Datei ist unverändert.",
+    "en": "The keys (API keys/passwords) of company {firma} were NOT saved; the other details were.\n\nReason: Another program is holding the key file open (e.g. a second program instance, a virus scanner or Windows Search). {grund}\nFile: {pfad}\n\nRemedy: Wait a moment and save again. The previous file is unchanged."
+  },
   "msg.spellcheck_fehlt": {
     "de": "Das Wörterbuch für die Sprache \"{sprache}\" ist nicht installiert — Rechtschreibprüfung ist deaktiviert.\n\nInstallation:\n  python Install_Woerterbuecher.py {code}",
     "en": "The dictionary for language \"{sprache}\" is not installed — spell checking is disabled.\n\nTo install:\n  python Install_Woerterbuecher.py {code}",

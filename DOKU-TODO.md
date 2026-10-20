@@ -23,6 +23,17 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-10-20) **Schlüsseldatei (API-Keys): Meldung statt Absturz oder stillem Verlust.**
+      Hält ein anderes Programm die Schlüsseldatei offen, versucht das Programm es
+      rund zwei Sekunden lang erneut; bleibt sie gesperrt, erscheint eine Meldung
+      („kurz warten und erneut speichern"), die übrigen Angaben sind gespeichert.
+      Ist die Datei unlesbar, wird nicht mehr in sie geschrieben (früher gingen
+      dabei alle übrigen Schlüssel still verloren); die Meldung nennt den Grund
+      (kein Passwort / falsches Passwort / beschädigt), den Dateipfad und den Weg:
+      Datei löschen, Schlüssel neu erfassen.
+  - Code: `app/key_store.py`, `app/db/db_firma.py`, `app/ui_widgets.py::melde_schluessel_fehler`
+  - Doku: Kapitel **Firmenstamm → Steuerung** (Schlüsseldatei) bzw. API-Keys ergänzen.
+
 - [ ] (2026-10-20) **Mahnung stornieren: Rechnung fällt auf die Stufe davor zurück.**
       Eine stornierte (oder gelöschte) Mahnung zählt nicht mehr: Die nächste
       Mahnung der Rechnung bekommt wieder diese Stufe, Zinsen laufen ohne sie.

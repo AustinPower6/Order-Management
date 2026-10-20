@@ -817,3 +817,24 @@ def zeige_warnung(parent, titel, text):
     dlg = _MsgDialog(parent, titel, text, "warning")
     dlg.exec()
     dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
+
+
+def schluessel_fehler_text(e) -> str:
+    """Meldetext zu `key_store.SchluesseldateiFehler`: was nicht gespeichert
+    wurde, warum, welche Datei und was zu tun ist (gesperrt ≠ unlesbar)."""
+    import key_store
+    if isinstance(e, key_store.SchluesseldateiGesperrtError):
+        return _("msg.schluessel_nicht_gespeichert_gesperrt",
+                 firma=e.firmen_nr, pfad=e.pfad, grund=e.grund)
+    # Fallkennung → übersetzter Grund; der deutsche Klartext `e.grund` geht ins
+    # Protokoll. „beschaedigt" nennt zusätzlich die technische Ursache.
+    art = e.art if e.art in ("kein_passwort", "passwort_falsch") else "beschaedigt"
+    grund = _(f"msg.schluessel_grund.{art}", detail=e.detail or e.grund)
+    return _("msg.schluessel_nicht_gespeichert_defekt",
+             firma=e.firmen_nr, pfad=e.pfad, grund=grund)
+
+
+def melde_schluessel_fehler(parent, e):
+    """Zeigt, dass die Schlüssel (API-Keys/Passwörter) nicht gespeichert wurden —
+    für jeden Speicherweg, der Secrets schreibt."""
+    zeige_warnung(parent, _("msg.hinweis"), schluessel_fehler_text(e))

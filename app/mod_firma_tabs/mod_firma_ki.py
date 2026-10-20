@@ -15,8 +15,10 @@ from PyQt6.QtGui import QGuiApplication
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from lock_manager import Module, ist_admin
 from i18n import _
+import key_store
 import theme
 import ki_client
+import ui_widgets
 from .base_form_tab import SimpleFormTab
 from .mod_firma_ki_dialoge import (_hoehe_zeilen, _PromptFeld, PromptMarkdownDialog,
                                    ModellAuswahlDialog)
@@ -1080,7 +1082,11 @@ class KiAnbindungTab(SimpleFormTab):
         # Basisklasse, dann die 5 lokalen Server in die eigene Tabelle.
         super()._save()
         if self._db and self._firma_id is not None:
-            self._db.save_firma_ki_lokal(self._firma_id, self._lokal_slots)
+            try:
+                self._db.save_firma_ki_lokal(self._firma_id, self._lokal_slots)
+            except key_store.SchluesseldateiFehler as e:
+                ui_widgets.melde_schluessel_fehler(self, e)
+                self._save_bar.set_dirty(True)
 
     def _fill(self, f):
         for k, w in self._felder.items():

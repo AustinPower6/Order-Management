@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QFileDialog, QInputDialog, QLineEdit)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
+import key_store
 import lock_manager
 from lock_manager import Module
 from i18n import _
@@ -220,6 +221,19 @@ class SteuerungTab(QWidget):
             self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_fehlt"))
             self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
 
+    def _speichere_zert_passwort(self, passwort) -> bool:
+        """Zertifikat-Passwort in die Schlüsseldatei. False, wenn sie unlesbar oder
+        gesperrt ist — dann ist das gemeldet und der Status nachgeführt."""
+        try:
+            self.db.save_firma({"signatur_cert_passwort": passwort,
+                                "_modul": Module.FIRMA})
+            return True
+        except key_store.SchluesseldateiFehler as e:
+            ui_widgets.melde_schluessel_fehler(self, e)
+            self._update_zert_status(dict(self.db.get_firma()))
+            self._update_keydatei_status()
+            return False
+
     def _update_zert_status(self, fd):
         """Statuslabel zum Signatur-Zertifikat aktualisieren (vorhanden / gültig / Typ)."""
         import pdf_signatur
@@ -263,8 +277,8 @@ class SteuerungTab(QWidget):
             QMessageBox.warning(self, _("msg.fehler"),
                                 _("firma.steuerung.zertifikat_fehler", detail=str(ex)))
             return
-        self.db.save_firma({"signatur_cert_passwort": passwort,
-                            "_modul": Module.FIRMA})
+        if not self._speichere_zert_passwort(passwort):
+            return
         self._update_zert_status(dict(self.db.get_firma()))
         QMessageBox.information(self, _("msg.hinweis"),
                                 _("firma.steuerung.zertifikat_erzeugt"))
@@ -293,8 +307,8 @@ class SteuerungTab(QWidget):
             QMessageBox.warning(self, _("msg.fehler"),
                                 _("firma.steuerung.zertifikat_import_fehler", detail=str(ex)))
             return
-        self.db.save_firma({"signatur_cert_passwort": passwort,
-                            "_modul": Module.FIRMA})
+        if not self._speichere_zert_passwort(passwort):
+            return
         self._update_zert_status(dict(self.db.get_firma()))
         QMessageBox.information(self, _("msg.hinweis"),
                                 _("firma.steuerung.zertifikat_importiert"))

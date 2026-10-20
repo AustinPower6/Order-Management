@@ -100,12 +100,87 @@ def test_dateiinhalt_ohne_klartext_key():
         assert "SUPERGEHEIM-XYZ" not in roh      # Klartext-Key nie in der Datei
 
 
+def _tmp_reste(pfad):
+    ordner = os.path.dirname(pfad)
+    return [n for n in os.listdir(ordner) if n.endswith(".tmp")]
+
+
 def test_atomares_schreiben_keine_tmp_reste():
     with _sandbox():
         pw = key_store.neues_passwort()
         key_store.speichere("990", pw, {"firma": {"brevo_api_key": "x"}})
         assert os.path.isfile(key_store._pfad("990"))
-        assert not os.path.isfile(key_store._pfad("990") + ".tmp")
+        assert _tmp_reste(key_store._pfad("990")) == []
+
+
+def test_unlesbare_datei_wird_nicht_ueberschrieben():
+    """Vorher übernahm `speichere` den leeren Bestand aus `lade` und schrieb nur
+    den neuen Schlüssel — die übrigen waren still fort."""
+    with _sandbox():
+        pw = key_store.neues_passwort()
+        key_store.speichere("990", pw, {"firma": {"brevo_api_key": "a", "smtp_password": "b"}})
+        pfad = key_store._pfad("990")
+        vorher = open(pfad, "rb").read()
+        try:
+            key_store.speichere("990", "falsches-passwort", {"firma": {"brevo_api_key": "neu"}})
+            assert False, "SchluesseldateiDefektError erwartet"
+        except key_store.SchluesseldateiDefektError as e:
+            assert e.pfad == pfad and e.grund
+        assert open(pfad, "rb").read() == vorher, "Datei wurde verändert"
+        assert key_store.lade("990", pw)["firma"]["smtp_password"] == "b"
+
+
+def test_gesperrte_datei_kein_absturz():
+    """Hält ein anderes Programm die Datei offen, verweigert Windows `os.replace`.
+    Vorher schlug die PermissionError bis in den Qt-Slot durch (Programmende)."""
+    if os.name != "nt":
+        return
+    with _sandbox():
+        pw = key_store.neues_passwort()
+        key_store.speichere("990", pw, {"firma": {"brevo_api_key": "alt"}})
+        pfad = key_store._pfad("990")
+        vorher = open(pfad, "rb").read()
+        alt_pause = key_store._ERSETZEN_PAUSE_S
+        key_store._ERSETZEN_PAUSE_S = 0.01        # Test kurz halten
+        try:
+            with open(pfad, "rb"):                # Python öffnet ohne Share-Delete
+                try:
+                    key_store.speichere("990", pw, {"firma": {"brevo_api_key": "neu"}})
+                    assert False, "SchluesseldateiGesperrtError erwartet"
+                except key_store.SchluesseldateiGesperrtError as e:
+                    assert e.pfad == pfad
+        finally:
+            key_store._ERSETZEN_PAUSE_S = alt_pause
+        assert open(pfad, "rb").read() == vorher, "alte Datei verändert"
+        assert _tmp_reste(pfad) == [], "Zwischendatei liegengeblieben"
+
+
+def test_gesperrte_datei_wird_nach_freigabe_geschrieben():
+    """Kurze Sperre (Virenscanner): Die Wiederholung schreibt doch noch."""
+    if os.name != "nt":
+        return
+    import threading
+    with _sandbox():
+        pw = key_store.neues_passwort()
+        key_store.speichere("990", pw, {"firma": {"brevo_api_key": "alt"}})
+        pfad = key_store._pfad("990")
+        handle = open(pfad, "rb")
+        threading.Timer(0.3, handle.close).start()
+        key_store.speichere("990", pw, {"firma": {"brevo_api_key": "neu"}})
+        assert key_store.lade("990", pw)["firma"]["brevo_api_key"] == "neu"
+
+
+def test_grund_nennt_den_fall():
+    from cryptography.fernet import InvalidToken
+    assert "kein" in key_store._grund("", InvalidToken()).lower()
+    assert "anderen Passwort" in key_store._grund("pw", InvalidToken())
+    assert "beschädigt" in key_store._grund("pw", ValueError("x"))
+    with _sandbox():
+        pw = key_store.neues_passwort()
+        assert key_store.defekt_grund("990", pw) == ""          # fehlt
+        key_store.speichere("990", pw, {"firma": {"brevo_api_key": "x"}})
+        assert key_store.defekt_grund("990", pw) == ""          # lesbar
+        assert key_store.defekt_grund("990", "falsch") != ""
 
 
 def test_neues_passwort_verschieden():
@@ -129,9 +204,9 @@ def main():
         try:
             fn()
             print(f"OK    {name}")
-        except AssertionError as e:
+        except Exception as e:  # noqa: BLE001 — auch fehlende Funktionen als FAIL zählen
             fehlgeschlagen += 1
-            print(f"FAIL  {name}: {e}")
+            print(f"FAIL  {name}: {type(e).__name__}: {e}")
     print(f"\n{len(tests) - fehlgeschlagen}/{len(tests)} Tests bestanden")
     return 1 if fehlgeschlagen else 0
 

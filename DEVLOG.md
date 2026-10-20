@@ -1,3 +1,55 @@
+## 2026-10-20 11:57 — Schlüsseldatei: kein Absturz, kein Auseinanderlaufen, kein stilles Überschreiben (Paket 3 / A5)
+
+**Anlass:** Abgleich mit dem Multi-Ableger (dort `5c4590a`, `20526e8`, nur gelesen).
+Das Rettungswerkzeug aus den Sicherungen wurde bewusst nicht übernommen
+(Entscheidung Walter). Bestand nur gelesen: Die Datei von Firma 990 ist lesbar.
+`api_keys_001.json` gehört zu keiner Firma in der Datenbank, sie ist verwaist und
+blieb unberührt.
+
+**Gemessen vorher** (neue Tests gegen den alten Stand):
+- Gesperrte Datei, also ein offener Handle: `speichere` warf einen rohen
+  `PermissionError`. Weil es keinen `sys.excepthook` gibt, beendet das das
+  Programm. Auch der gleichzeitig geänderte Firmenname ging verloren.
+- Commit scheitert: Die Schlüsseldatei war trotzdem geschrieben, mit einem
+  Passwort, das die Datenbank nie gesehen hat.
+- Unlesbare Datei: `speichere` übernahm den leeren Bestand und schrieb nur den
+  neuen Schlüssel. Die übrigen waren still verloren.
+
+**Geändert:**
+- `app/key_store.py`:
+  - `SchluesseldateiFehler` mit den Unterklassen `…DefektError` und
+    `…GesperrtError`. Sie tragen `firmen_nr`, `pfad`, `grund` (deutsch, fürs
+    Protokoll), `art` (Fallkennung für die übersetzte Anzeige) und `detail`.
+  - `_oeffne` ist der gemeinsame Lesekern. `_art`/`_grund` nennen den konkreten
+    Fall: kein Passwort, Passwort passt nicht oder Datei beschädigt.
+    `defekt_grund` liefert den Grund.
+  - `speichere` schreibt nicht auf eine unlesbare Datei, benutzt eine
+    Zwischendatei je Prozess und wiederholt `os.replace` (`_ersetzen`, 20 × 0,1 s).
+    Bleibt die Datei gesperrt, wird die Zwischendatei entfernt und die alte
+    Datei bleibt unverändert.
+- `app/db/db_firma.py`: `_speichere_firma_secrets` merkt den Schreibauftrag nur
+  vor, `_secrets_schreiben()` führt ihn **nach** dem Commit aus. Das gilt für
+  `save_firma`, `save_firma_ki_lokal` und `copy_firma`. Bei `copy_firma` steht das
+  Schreiben außerhalb des `try`, damit ein Schlüsselfehler keine Rücksicherung
+  auslöst; die neue Firma wird über `e.neue_firma_id` gemeldet.
+- `app/ui_widgets.py`: `schluessel_fehler_text`/`melde_schluessel_fehler` geben
+  Grund, Datei und Abhilfe an. Gefangen wird in `base_form_tab._save` (der
+  Dirty-Zustand bleibt), in `mod_firma_ki._save` (lokale Slots), in
+  `mod_firma_adresspruefung`, in `mod_firma_steuerung` (beide Zertifikatswege
+  über `_speichere_zert_passwort`) und in `mod_firma_kopieren`.
+- `app/language.json`: neu `msg.schluessel_nicht_gespeichert_gesperrt`/`_defekt`
+  und `msg.schluessel_grund.*`.
+- Tests: `app/test_key_store.py` um fünf Fälle ergänzt (echte Sperre über einen
+  offenen Handle, Freigabe während der Wiederholung, kein Überschreiben,
+  Grundtexte). Der Test zählt jetzt jede Ausnahme als FAIL. Neu ist
+  `app/test_schluessel_commit.py` (echte `Database` auf einer Speicher-DB,
+  Commit-Fehler über eine Hülle).
+
+**Verifikation:** `test_key_store` 9/13 → 13/13, `test_schluessel_commit`
+1/4 → 4/4. Alle übrigen Tests der Sitzung grün, `ruff` sauber, `audit_firma_id`
+ohne Fehler. Die Meldungen wurden auf DE und EN gerendert, alle geänderten Reiter
+importiert. Die echten Schlüsseldateien sind unverändert.
+
 ## 2026-10-20 11:28 — Stornierte Mahnung: Rechnung fällt auf die Stufe davor zurück (Paket 3 / A4)
 
 **Anlass:** Abgleich mit dem Multi-Ableger (dort `2949ae6`, nur gelesen). Nach

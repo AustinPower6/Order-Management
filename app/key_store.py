@@ -21,13 +21,20 @@ dem Firmen-Passwort abgeleiteten Schlüssel; Salt zufällig je Datei.
 
 Fehlerfälle (Fallback-Tracking-Regel — nie still):
 - Datei fehlt   → leere Secrets (kein Fehler; regulärer Reset-Weg).
-- Entschlüsselung schlägt fehl (falsches Passwort/defekt) → leere Secrets **plus**
-  ``fallback_log.melde(...)``-Eintrag. **Niemals** automatisch löschen.
+- **Lesen** schlägt fehl → leere Secrets **plus** ``fallback_log.melde(...)``-Eintrag,
+  der den Grund benennt (Passwort leer / Passwort passt nicht / Datei beschädigt).
+  **Niemals** automatisch löschen.
+- **Schreiben** auf eine unlesbare Datei → ``SchluesseldateiDefektError``; es wird
+  **nichts** geschrieben (sonst wären die übrigen Schlüssel still fort).
+- **Schreiben** auf eine Datei, die ein anderes Programm offen hält →
+  ``SchluesseldateiGesperrtError`` nach mehreren Versuchen; die alte Datei bleibt
+  unverändert.
 """
 import base64
 import json
 import os
 import secrets as _secrets
+import time
 
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.hazmat.primitives import hashes
@@ -52,8 +59,41 @@ SECRET_FELDER = frozenset({
 })
 
 _MODUL = "Key-Store"
-_HINWEIS_DEFEKT = ("Schlüsseldatei nicht entschlüsselbar (falsches Passwort/defekt). "
-                   "Datei löschen = Reset; API-Keys danach im Firmenstamm neu erfassen.")
+_HINWEIS_RESET = "Datei löschen = Reset; API-Keys danach im Firmenstamm neu erfassen."
+
+
+class SchluesseldateiFehler(Exception):
+    """Die Schlüssel wurden nicht geschrieben — gemeinsamer Fang für die
+    Speicherwege (`ui_widgets.melde_schluessel_fehler` unterscheidet die Art)."""
+
+    def __init__(self, firmen_nr: str, pfad: str, grund: str, art: str = "",
+                 detail: str = ""):
+        self.firmen_nr = (firmen_nr or "").strip()
+        self.pfad = pfad
+        self.grund = grund      # deutscher Klartext (Protokoll) bzw. Systemmeldung
+        self.art = art          # Fallkennung für die übersetzte Anzeige, siehe `_art`
+        self.detail = detail    # technische Ursache (Ausnahmetyp + Text)
+        super().__init__(grund)
+
+
+class SchluesseldateiDefektError(SchluesseldateiFehler):
+    """Die Datei existiert, lässt sich mit dem hinterlegten Passwort aber nicht
+    öffnen — **beim Schreiben** ein Abbruchgrund. Bis 2026-10-20 überschrieb
+    `speichere` sie dann still: Der Bestand kam aus `lade`, das in diesem Fall
+    leer zurückgibt, und nur der neue Schlüssel blieb übrig."""
+
+
+class SchluesseldateiGesperrtError(SchluesseldateiFehler):
+    """Windows hat das Ersetzen der Datei auch nach mehreren Versuchen verweigert —
+    ein anderes Programm hielt sie offen (Virenscanner, Windows-Suche, zweite
+    Programminstanz). Bis 2026-10-20 beendete die `PermissionError` aus
+    `os.replace` das Programm, weil sie ungefangen bis in den Qt-Slot lief."""
+
+
+#: Versuche und Pause für `os.replace` — zusammen rund zwei Sekunden, genug für
+#: einen Virenscanner, der die eben geschriebene Datei prüft.
+_ERSETZEN_VERSUCHE = 20
+_ERSETZEN_PAUSE_S = 0.1
 
 _PBKDF2_ITER = 480_000
 
@@ -104,29 +144,60 @@ def loesche_datei(firmen_nr: str) -> None:
         pass
 
 
+_LESEFEHLER = (InvalidToken, KeyError, ValueError, json.JSONDecodeError)
+
+
+def _oeffne(pfad: str, passwort: str) -> dict:
+    """Liest und entschlüsselt die Hülle — oder wirft. Gemeinsamer Kern von
+    `lade`, `status` und der Schreibprüfung in `speichere`; die drei müssen
+    dasselbe Urteil fällen."""
+    with open(pfad, "r", encoding="utf-8") as f:
+        huelle = json.load(f)
+    salt = base64.b64decode(huelle["salt"])
+    token = huelle["token"].encode("utf-8")
+    return json.loads(_fernet(passwort, salt).decrypt(token).decode("utf-8"))
+
+
+def _art(passwort: str, ex: Exception) -> str:
+    """Welcher Fall vorliegt: ``kein_passwort`` | ``passwort_falsch`` | ``beschaedigt``
+    (Schlüsselteil der übersetzten Anzeige ``msg.schluessel_grund.<art>``)."""
+    if isinstance(ex, InvalidToken):
+        return "passwort_falsch" if (passwort or "").strip() else "kein_passwort"
+    return "beschaedigt"
+
+
+def _grund(passwort: str, ex: Exception) -> str:
+    """Welcher Fall vorliegt — im Klartext fürs Protokoll, nicht als Oder-Aussage
+    („falsches Passwort oder defekt" ließ beide Möglichkeiten offen)."""
+    art = _art(passwort, ex)
+    if art == "kein_passwort":
+        return ("In der Datenbank ist kein Verschlüsselungs-Passwort für diese "
+                "Firma hinterlegt, die Datei ist aber verschlüsselt.")
+    if art == "passwort_falsch":
+        return ("Das in der Datenbank hinterlegte Passwort öffnet die Datei nicht — "
+                "sie wurde mit einem anderen Passwort geschrieben.")
+    return f"Die Datei ist beschädigt ({type(ex).__name__}: {ex})."
+
+
 def lade(firmen_nr: str, passwort: str) -> dict:
     """Entschlüsselt die Schlüsseldatei einer Firma.
 
     Rückgabe: ``{"firma": {feld: wert, …}, "lokal": {"1": key, …}}``. Fehlt die
     Datei, sind beide Teile leer (kein Fehler). Ist die Datei defekt/das Passwort
-    falsch, ebenfalls leer — **plus** Fallback-Protokolleintrag.
+    falsch, ebenfalls leer — **plus** Fallback-Protokolleintrag mit dem Grund.
     """
     pfad = _pfad(firmen_nr)
     if not os.path.isfile(pfad):
         return {"firma": {}, "lokal": {}}
     try:
-        with open(pfad, "r", encoding="utf-8") as f:
-            huelle = json.load(f)
-        salt = base64.b64decode(huelle["salt"])
-        token = huelle["token"].encode("utf-8")
-        payload = json.loads(_fernet(passwort, salt).decrypt(token).decode("utf-8"))
+        payload = _oeffne(pfad, passwort)
         return {"firma": dict(payload.get("firma") or {}),
                 "lokal": {str(k): v for k, v in (payload.get("lokal") or {}).items()}}
-    except (InvalidToken, KeyError, ValueError, json.JSONDecodeError) as ex:
+    except _LESEFEHLER as ex:
         fallback_log.melde(
             modul=_MODUL, soll_wert="API-Keys der Firma",
             soll_quelle=f"api_keys_{(firmen_nr or '').strip()}.json",
-            benutzter_wert="(leer)", hinweis=f"{_HINWEIS_DEFEKT} [{type(ex).__name__}]",
+            benutzter_wert="(leer)", hinweis=f"{_grund(passwort, ex)} {_HINWEIS_RESET}",
             firma_nr=firmen_nr)
         return {"firma": {}, "lokal": {}}
 
@@ -138,14 +209,28 @@ def status(firmen_nr: str, passwort: str) -> str:
     if not os.path.isfile(pfad):
         return "fehlt"
     try:
-        with open(pfad, "r", encoding="utf-8") as f:
-            huelle = json.load(f)
-        salt = base64.b64decode(huelle["salt"])
-        token = huelle["token"].encode("utf-8")
-        _fernet(passwort, salt).decrypt(token)
+        _oeffne(pfad, passwort)
         return "ok"
-    except (InvalidToken, KeyError, ValueError, json.JSONDecodeError):
+    except _LESEFEHLER:
         return "defekt"
+
+
+def _lesbarkeit(firmen_nr: str, passwort: str) -> tuple[str, str, str]:
+    """`(art, grund, detail)` der unlesbaren Datei, sonst leer (lesbar oder fehlt)."""
+    pfad = _pfad(firmen_nr)
+    if not os.path.isfile(pfad):
+        return "", "", ""
+    try:
+        _oeffne(pfad, passwort)
+        return "", "", ""
+    except _LESEFEHLER as ex:
+        return _art(passwort, ex), _grund(passwort, ex), f"{type(ex).__name__}: {ex}"
+
+
+def defekt_grund(firmen_nr: str, passwort: str) -> str:
+    """Warum die Datei nicht lesbar ist — als fertiger Satz, oder `""`, wenn sie
+    lesbar ist bzw. fehlt. Ohne Seiteneffekt (kein Protokolleintrag)."""
+    return _lesbarkeit(firmen_nr, passwort)[1]
 
 
 def speichere(firmen_nr: str, passwort: str, daten: dict) -> None:
@@ -154,7 +239,14 @@ def speichere(firmen_nr: str, passwort: str, daten: dict) -> None:
 
     ``daten`` = ``{"firma": {feld: wert, …}, "lokal": {slot: key, …}}`` (beide Teile
     optional). Ein neuer Salt wird je Schreibvorgang erzeugt.
+
+    Wirft `SchluesseldateiDefektError`, wenn eine vorhandene Datei mit dem
+    Passwort nicht zu öffnen ist (dann wird **nichts** geschrieben), und
+    `SchluesseldateiGesperrtError`, wenn Windows das Ersetzen dauerhaft verweigert.
     """
+    art, grund, detail = _lesbarkeit(firmen_nr, passwort)
+    if grund:
+        raise SchluesseldateiDefektError(firmen_nr, _pfad(firmen_nr), grund, art, detail)
     bestand = lade(firmen_nr, passwort)
     firma = dict(bestand.get("firma") or {})
     firma.update(daten.get("firma") or {})
@@ -169,7 +261,32 @@ def speichere(firmen_nr: str, passwort: str, daten: dict) -> None:
 
     pfad = _pfad(firmen_nr)
     os.makedirs(os.path.dirname(pfad), exist_ok=True)
-    tmp = pfad + ".tmp"
+    # Zwischendatei je Prozess: Zwei Instanzen, die gleichzeitig speichern,
+    # schrieben sonst in dieselbe Zwischendatei.
+    tmp = f"{pfad}.{os.getpid()}.tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(huelle)
-    os.replace(tmp, pfad)
+    _ersetzen(tmp, pfad, firmen_nr)
+
+
+def _ersetzen(tmp: str, pfad: str, firmen_nr: str) -> None:
+    """`os.replace` mit Wiederholung. Unter Windows scheitert das Ersetzen, solange
+    ein anderes Programm das Ziel offen hält — meist nur Sekundenbruchteile.
+    Bleibt es gesperrt, wird die Zwischendatei entfernt und
+    `SchluesseldateiGesperrtError` geworfen; die alte Datei bleibt unverändert."""
+    letzter = None
+    for versuch in range(_ERSETZEN_VERSUCHE):
+        try:
+            os.replace(tmp, pfad)
+            return
+        except PermissionError as ex:
+            letzter = ex
+            if versuch + 1 < _ERSETZEN_VERSUCHE:
+                time.sleep(_ERSETZEN_PAUSE_S)
+    try:
+        os.remove(tmp)
+    except OSError:
+        pass                    # Rest bleibt liegen; die Meldung kommt trotzdem
+    # Grund = die Systemmeldung selbst (Windows liefert sie in der Systemsprache);
+    # die Erklärung dazu steht übersetzt in der Anzeige.
+    raise SchluesseldateiGesperrtError(firmen_nr, pfad, str(letzter), "gesperrt")
