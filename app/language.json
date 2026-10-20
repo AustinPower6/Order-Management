@@ -9300,6 +9300,10 @@
     "ts": "2026-07-15 10:46",
     "h": "c8820f747c51"
   },
+  "msg.artikelnr_vergeben": {
+    "de": "Die Artikelnummer {nr} ist bereits vergeben — möglicherweise an einen gelöschten Artikel. Gelöschte Artikel behalten ihre Nummer, damit alte Belege eindeutig bleiben.\n\nAbhilfe: Im Artikelstamm den Haken „Gelöscht anzeigen“ setzen und den Artikel wiederherstellen, oder eine andere Nummer wählen.",
+    "en": "Item number {nr} is already in use — possibly by a deleted item. Deleted items keep their number so that existing documents remain unambiguous.\n\nRemedy: Tick \"Show deleted\" in the item master data and restore the item, or choose a different number."
+  },
   "msg.hinweis": {
     "de": "Hinweis",
     "en": "Notice",
@@ -9359,6 +9363,10 @@
     "en": "The entered customer number is outside the permitted range.\n\n{details}\n\nAdjust area in company master data → Financial accounting connection.",
     "ts": "2026-06-27 17:13",
     "h": "21a253bdc5a8"
+  },
+  "msg.kundennr_vergeben": {
+    "de": "Die Kundennummer {nr} ist bereits vergeben — möglicherweise an einen gelöschten Kunden. Gelöschte Kunden behalten ihre Nummer, damit alte Belege eindeutig bleiben.\n\nAbhilfe: Im Kundenstamm den Haken „Gelöscht anzeigen“ setzen und den Kunden wiederherstellen, oder eine andere Nummer wählen.",
+    "en": "Customer number {nr} is already in use — possibly by a deleted customer. Deleted customers keep their number so that existing documents remain unambiguous.\n\nRemedy: Tick \"Show deleted\" in the customer master data and restore the customer, or choose a different number."
   },
   "msg.lock_admin_titel": {
     "de": "Nicht erlaubt",

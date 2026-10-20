@@ -16,6 +16,35 @@ class MandantenSchutzError(RuntimeError):
         self.firma_id = firma_id
 
 
+class DoppelterWertError(ValueError):
+    """Ein UNIQUE-Constraint wurde verletzt — den Wert gibt es in dieser Firma schon.
+
+    Typischer Fall: eine bereits vergebene Kunden- oder Artikelnummer, oft von
+    einem **gelöschten** Datensatz (gelöschte behalten ihre Nummer, damit alte
+    Belege eindeutig bleiben). Bis 2026-10-20 lief die rohe `IntegrityError` bis
+    in die Oberfläche und beendete das Programm.
+
+    Erbt von `ValueError`, weil die Stammdaten-Dialoge diesen Zweig führen.
+    `felder`/`werte`: die Spalten des Constraints ohne `firma_id` und ihre Werte.
+    """
+
+    def __init__(self, meldung, tabelle="", felder=(), werte=()):
+        super().__init__(meldung)
+        self.tabelle = tabelle
+        self.felder = tuple(felder)
+        self.werte = tuple(werte)
+
+
+def _unique_felder(fehler, data) -> list:
+    """Spalten aus „UNIQUE constraint failed: kunden.firma_id, kunden.kundennr"
+    (SQLite-Meldung, sprachunabhängig) — ohne `firma_id`."""
+    text = str(fehler)
+    teil = text.split(":", 1)[1] if ":" in text else ""
+    felder = [s.strip().split(".")[-1] for s in teil.split(",") if s.strip()]
+    return [f for f in felder if f and f != "firma_id"] or \
+        [f for f in ("kundennr", "artikelnr") if f in data]
+
+
 class DBCoreMixin:
     """Mixin: Init, Schema, Migration, generische Helper, Locking, Connection."""
 
@@ -67,7 +96,7 @@ class DBCoreMixin:
                 where += " AND firma_id=?"
                 params.append(self._firma_id())
             sql = f"UPDATE {table} SET " + ",".join(f"{k}=?" for k in keys) + where
-            cur = self.conn.execute(sql, params)
+            cur = self._execute_unique(table, data, sql, params)
             if cur.rowcount == 0:
                 # Vor der Lock-Freigabe abbrechen: Der Dialog bleibt offen und
                 # behält seine Sperre.
@@ -77,11 +106,27 @@ class DBCoreMixin:
             data.pop('id', None)
             keys = list(data.keys())
             sql = f"INSERT INTO {table} ({','.join(keys)}) VALUES ({','.join('?'*len(keys))})"
-            cur = self.conn.execute(sql, [data[k] for k in keys])
+            cur = self._execute_unique(table, data, sql, [data[k] for k in keys])
             rec_id = cur.lastrowid
         self._apply_lock_release(table, rec_id, modul)
         self.conn.commit()
         return rec_id
+
+    def _execute_unique(self, table, data, sql, params):
+        """Statement absetzen und eine UNIQUE-Verletzung in `DoppelterWertError`
+        übersetzen (vorher rollback, damit die Verbindung sauber weiterläuft).
+        Andere Integritätsfehler gehen unverändert weiter."""
+        try:
+            return self.conn.execute(sql, params)
+        except sqlite3.IntegrityError as e:
+            if "UNIQUE" not in str(e):
+                raise
+            self.conn.rollback()
+            felder = _unique_felder(e, data)
+            werte = [data.get(f) for f in felder]
+            wert = ", ".join(str(w) for w in werte if w not in (None, ""))
+            raise DoppelterWertError(f"{table}: Der Wert „{wert}“ ist bereits vergeben.",
+                                     tabelle=table, felder=felder, werte=werte) from e
 
     def _save_beleg(self, table, pos_table, fk_field, data, positionen, commit=True):
         """commit=False: Aufrufer bündelt mehrere Schritte in einer Transaktion

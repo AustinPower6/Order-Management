@@ -25,6 +25,18 @@ from ui_widgets import zeige_fehler, zeige_warnung
 APP_CONFIG_ABSENDER = "benutzer_mail_absender_firma_id"
 
 
+class _StufenCombo(QComboBox):
+    """Auswahlfeld für eine Rechtestufe in der Matrix.
+
+    Ignoriert das Mausrad: Die Matrix ist scrollbar — ein Dreher über einer Zelle
+    änderte sonst unbemerkt ein Recht, statt zu scrollen. Mit `ignore()` scrollt
+    die Tabelle; gesetzt wird die Stufe per Klick oder über die Tastatur.
+    """
+
+    def wheelEvent(self, event):
+        event.ignore()
+
+
 def sende_passwort_mail(parent, db, benutzer: dict, passwort: str, reset: bool):
     """Initial-/Reset-Passwort per E-Mail an den Benutzer schicken.
 
@@ -362,7 +374,7 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
         self._stufen_combos = {}
         for r, mk in enumerate(rechte.MODUL_KEYS):
             self._matrix.setItem(r, 0, QTableWidgetItem(rechte.modul_label(mk)))
-            cb = QComboBox()
+            cb = _StufenCombo()
             cb.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
             for st in rechte.STUFEN:
                 cb.addItem(rechte.stufe_label(st), st)

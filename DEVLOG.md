@@ -1,3 +1,50 @@
+## 2026-10-20 17:51 — Paket 4: Doppelte Nummer, Einstellungen atomar, Mausrad in der Rechte-Matrix
+
+**Anlass:** Abgleich mit dem Multi-Ableger (dort `5771c69`, `ad621f1`, `db9f517`,
+nur gelesen). **B8** (`a0bda69`/`7a23f82`, Datumsfeld) entfällt: `DatumEdit` ist
+hier ein `QDateEdit`, das kein unmögliches Datum annimmt. **B12** (`d672bfb`,
+Dirty-Punkt im MwSt-Klassen-Dialog) war schon gelöst (Snapshot-Vergleich), und
+seine Ursache, der Nachfärb-Timer, ist seit Paket 1 entfernt. Nur der Kommentar
+dazu wurde berichtigt.
+
+**Gemessen vorher** (`test_paket4.py` 2/8):
+- B7: Kunde oder Artikel mit vergebener Nummer, auch der eines gelöschten
+  Kunden, ergab einen rohen `sqlite3.IntegrityError`. Ohne excepthook beendet das
+  das Programm.
+- B10: Ein zweiter Prozess, der während 400 Speichervorgängen las, sah in 4.000
+  Zugriffen **329-mal** eine leere oder halbe Datei. Folge: `_load` liefert `{}`,
+  und das nächste `_save` hätte nur eine Änderung zurückgeschrieben.
+- B11: `_StufenCombo` fehlte, das Mausrad änderte ein Recht.
+
+**Geändert:**
+- `app/db/db_core.py`: `DoppelterWertError(ValueError)` mit `tabelle`, `felder`
+  und `werte`; die Felder kommen aus der SQLite-Meldung, ohne `firma_id`.
+  `_execute_unique` macht das rollback und übersetzt UNIQUE-Verletzungen im
+  UPDATE- und INSERT-Zweig von `_save_record`. `mod_kunden` fängt die Ausnahme
+  vor `ValueError`, sonst käme die falsche Meldung „außerhalb des Bereichs“, und
+  `mod_artikel` fängt sie neu. Neue Texte `msg.kundennr_vergeben` und
+  `msg.artikelnr_vergeben` nennen den Grund (gelöschter Datensatz) und den Weg.
+- `app/settings.py`:
+  - `_schreibe_json` schreibt in eine Zwischendatei je Prozess, ersetzt dann per
+    `os.replace` und wiederholt bei Sperre. Alle sechs Schreibstellen laufen
+    darüber.
+  - `_lies_json` wiederholt das Lesen bei einem Zugriffsfehler (Windows sperrt
+    während `os.replace`, auch das wäre sonst still `{}` geworden) und dreimal bei
+    JSON-Fehlern. Danach wird die Datei als `<datei>.defekt` aufbewahrt und in
+    ERROR.DB gemeldet (`_defekt_aufbewahren`).
+  - Der schnelle Cache-Weg ist unverändert.
+- `app/dlg_benutzerverwaltung.py`: `_StufenCombo` ignoriert das Mausrad, die
+  Matrix scrollt stattdessen.
+- `app/modul/mod_mwst.py`: Kommentar berichtigt.
+- `app/test_paket4.py` (neu): B7 auf der echten `Database` mit Speicher-DB, B10
+  mit zwei echten Prozessen in einem temporären Ordner, B11 mit einem
+  `QWheelEvent`.
+
+**Verifikation:** 2/8 → 8/8, zweimal gelaufen. Alle übrigen Tests (11 Dateien)
+grün, `ruff` sauber, `audit_firma_id` ohne Fehler. Die echten `settings_*.json`
+sind unverändert, keine `.defekt`-Datei ist entstanden. Die Meldungen wurden auf
+DE und EN gerendert.
+
 ## 2026-10-20 11:57 — Schlüsseldatei: kein Absturz, kein Auseinanderlaufen, kein stilles Überschreiben (Paket 3 / A5)
 
 **Anlass:** Abgleich mit dem Multi-Ableger (dort `5c4590a`, `20526e8`, nur gelesen).

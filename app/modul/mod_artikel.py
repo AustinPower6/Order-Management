@@ -20,7 +20,7 @@ from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
 import ui_widgets
 from ui_widgets import zeige_fehler, zeige_warnung
-from db.db_core import MandantenSchutzError
+from db.db_core import DoppelterWertError, MandantenSchutzError
 
 class ArtikelFenster(QWidget):
     HELP_ANCHOR = "artikel"
@@ -1435,6 +1435,10 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         data["_modul"] = Module.ARTIKEL
         try:
             self.db.save_artikel(data)
+        except DoppelterWertError:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("msg.artikelnr_vergeben", nr=data["artikelnr"]))
+            return
         except MandantenSchutzError:
             firma = dict(self.db.get_firma() or {})
             zeige_fehler(self, _("msg.fehler"),

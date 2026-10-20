@@ -114,10 +114,10 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         """Punkt nur bei echter Abweichung vom geladenen Stand zeigen.
 
         Bekannte Fehlerklasse dieses Projekts (vgl. Artikel-Dialog, E-Mail-Tab,
-        `KommunikationDialog`): Der `SpellCheckHighlighter` des Hinweis-Feldes
-        ruft kurz nach dem Öffnen `rehighlight()` auf → `textChanged` **ohne**
-        Textänderung. Ein blindes `_mark_dirty()` setzte den Punkt daraufhin am
-        unbenutzten Dialog.
+        `KommunikationDialog`): `textChanged` feuert auch **ohne** Textänderung,
+        etwa wenn der `SpellCheckHighlighter` des Hinweis-Feldes Formate setzt
+        (bis 2026-10-20 zusätzlich über seinen Nachfärb-Timer). Ein blindes
+        `_mark_dirty()` setzte den Punkt daraufhin am unbenutzten Dialog.
         """
         self._dirty = getattr(self, "_saved", None) is not None \
             and self._zustand() != self._saved

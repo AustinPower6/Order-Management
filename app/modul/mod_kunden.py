@@ -20,7 +20,7 @@ import bank
 import fallback_log
 import address_validation
 from db.db_adress import DbAttestationStore
-from db.db_core import MandantenSchutzError
+from db.db_core import DoppelterWertError, MandantenSchutzError
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
@@ -1128,6 +1128,11 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         data["_modul"] = Module.KUNDEN
         try:
             self.db.save_kunde(data)
+        except DoppelterWertError:
+            # Vor ValueError fangen — sonst hieße es fälschlich „außerhalb des Bereichs".
+            zeige_fehler(self, _("msg.fehler"),
+                         _("msg.kundennr_vergeben", nr=data.get("kundennr", "")))
+            return
         except ValueError as ex:
             zeige_fehler(self, _("msg.fehler"),
                          _("msg.kundennr_ausserhalb", details=str(ex)))

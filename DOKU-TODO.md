@@ -23,6 +23,15 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-10-20) **Vergebene Kunden-/Artikelnummer: Meldung statt Programmende.**
+      Ist die Nummer schon vergeben – oft an einen gelöschten Datensatz –, nennt
+      die Meldung das und den Weg (Haken „Gelöscht anzeigen" → wiederherstellen,
+      oder andere Nummer). Gelöschte Kunden/Artikel behalten ihre Nummer, damit
+      alte Belege eindeutig bleiben.
+  - Code: `app/db/db_core.py` (`DoppelterWertError`), `app/modul/mod_kunden.py`,
+    `app/modul/mod_artikel.py`
+  - Doku: Kapitel **Kundenstamm** und **Artikelstamm** (Nummernvergabe/Löschen) ergänzen.
+
 - [ ] (2026-10-20) **Schlüsseldatei (API-Keys): Meldung statt Absturz oder stillem Verlust.**
       Hält ein anderes Programm die Schlüsseldatei offen, versucht das Programm es
       rund zwei Sekunden lang erneut; bleibt sie gesperrt, erscheint eine Meldung

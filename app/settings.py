@@ -2,6 +2,8 @@
 import copy
 import os
 import json
+import shutil
+import time
 
 _APP_DIR = os.path.dirname(os.path.abspath(__file__))
 _GLOBAL_PATH = os.path.join(_APP_DIR, "settings.json")
@@ -35,23 +37,100 @@ def _lies_json(path: str):
     Gibt das **gemerkte Original** zurück (oder ``None``, wenn die Datei fehlt
     oder unlesbar ist). Wer das Ergebnis verändern will, muss es kopieren.
     """
+    json_fehler = 0
+    for _versuch in range(_LESE_VERSUCHE):
+        try:
+            st = os.stat(path)
+            stempel = (st.st_mtime_ns, st.st_size)
+            gemerkt = _CACHE.get(path)
+            if gemerkt is not None and gemerkt[0] == stempel:
+                return gemerkt[1]
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            _CACHE.pop(path, None)
+            return None
+        except json.JSONDecodeError:
+            # Evtl. schreibt gerade eine ältere Programmversion (leeren + schreiben)
+            # — kurz warten und neu lesen, bevor die Datei als defekt gilt.
+            json_fehler += 1
+            if json_fehler >= _JSON_VERSUCHE:
+                _CACHE.pop(path, None)
+                _defekt_aufbewahren(path)
+                return None
+            time.sleep(_LESE_PAUSE_S)
+            continue
+        except OSError:
+            # Windows verweigert das Öffnen, solange `os.replace` die Datei gerade
+            # austauscht. Still `None` hieße: `_load` liefert {}, und das nächste
+            # `_save` schriebe nur eine Änderung zurück — also neu versuchen.
+            time.sleep(_LESE_PAUSE_S)
+            continue
+        # Stempel von **vor** dem Lesen: Wurde die Datei inzwischen ersetzt, liest
+        # die nächste Abfrage eben neu — umgekehrt stünde alter Inhalt unter neuem
+        # Stempel.
+        _CACHE[path] = (stempel, data)
+        return data
+    _CACHE.pop(path, None)
+    return None
+
+
+_LESE_VERSUCHE = 40          # × _LESE_PAUSE_S ≈ 2 s für einen gesperrten Zugriff
+_JSON_VERSUCHE = 3
+_LESE_PAUSE_S = 0.05
+_ERSETZEN_VERSUCHE = 20
+_ERSETZEN_PAUSE_S = 0.05
+
+
+def _defekt_aufbewahren(path: str):
+    """Unlesbare Einstellungsdatei als ``<datei>.defekt`` sichern und melden.
+
+    Ohne das machte das Lesen daraus still ``{}``, und das nächste Speichern
+    überschrieb die Datei mit nur einer Änderung — alle übrigen Einstellungen
+    (Fenster, Spalten, aktive Firma) waren still fort. Eine schon vorhandene
+    ``.defekt``-Datei wird nicht überschrieben (die erste ist die aufschlussreiche).
+    """
+    ziel = path + ".defekt"
     try:
-        st = os.stat(path)
-        stempel = (st.st_mtime_ns, st.st_size)
+        if not os.path.exists(ziel):
+            shutil.copy2(path, ziel)
     except OSError:
-        _CACHE.pop(path, None)
-        return None
-    gemerkt = _CACHE.get(path)
-    if gemerkt is not None and gemerkt[0] == stempel:
-        return gemerkt[1]
+        ziel = "(Sicherung nicht möglich)"
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except (OSError, json.JSONDecodeError):
-        _CACHE.pop(path, None)
-        return None
-    _CACHE[path] = (stempel, data)
-    return data
+        import fallback_log          # spät: fallback_log darf settings nicht brauchen
+        fallback_log.melde(
+            modul="Einstellungen", soll_wert="Einstellungen",
+            soll_quelle=os.path.basename(path), benutzter_wert="Standardwerte",
+            hinweis=(f"Die Einstellungsdatei {path} ist nicht lesbar (kein gültiges "
+                     f"JSON). Es gelten Standardwerte; die alte Datei liegt als {ziel}."))
+    except Exception:                                         # noqa: BLE001
+        pass                         # Melden darf das Lesen nicht verhindern
+
+
+def _schreibe_json(path: str, data: dict):
+    """Atomar schreiben: Zwischendatei je Prozess, dann ``os.replace``.
+
+    Bis 2026-10-20 leerte ``open(path, "w")`` die Datei vor dem Schreiben. Ein
+    zweites Programmfenster, das in diesem Moment las, bekam ``{}`` und schrieb
+    nur seine eine Änderung zurück (gemessen: 329 leere Lesevorgänge in 4.000).
+    Windows verweigert ``os.replace``, solange ein Leser die Datei offen hat —
+    daher die Wiederholung.
+    """
+    tmp = f"{path}.{os.getpid()}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    for versuch in range(_ERSETZEN_VERSUCHE):
+        try:
+            os.replace(tmp, path)
+            return
+        except PermissionError:
+            if versuch + 1 == _ERSETZEN_VERSUCHE:
+                try:
+                    os.remove(tmp)
+                except OSError:
+                    pass
+                raise
+            time.sleep(_ERSETZEN_PAUSE_S)
 
 
 def _merke_geschrieben(path: str, data: dict):
@@ -77,8 +156,7 @@ def _load_global() -> dict:
 
 def _save_global(data: dict):
     """Globale settings.json schreiben."""
-    with open(_GLOBAL_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    _schreibe_json(_GLOBAL_PATH, data)
     _merke_geschrieben(_GLOBAL_PATH, data)
 
 
@@ -136,16 +214,14 @@ def _migrate_single_to_per_user():
     user_path = _user_path(username)
     if not os.path.exists(user_path):
         user_data = {k: v for k, v in data.items() if k not in _GLOBAL_KEYS}
-        with open(user_path, "w", encoding="utf-8") as f:
-            json.dump(user_data, f, indent=2, ensure_ascii=False)
+        _schreibe_json(user_path, user_data)
 
     # Globale Datei auf bekannte globale Felder reduzieren
     global_data = {"multiuser": mu} if mu else {}
     for key in _GLOBAL_KEYS - {"multiuser"}:
         if key in data:
             global_data[key] = data[key]
-    with open(_GLOBAL_PATH, "w", encoding="utf-8") as f:
-        json.dump(global_data, f, indent=2, ensure_ascii=False)
+    _schreibe_json(_GLOBAL_PATH, global_data)
 
 
 # ── Migration: Admin-/Test-Settings → globale Datei ──────────────────
@@ -179,8 +255,7 @@ def _migrate_admin_to_global():
 
     if changed_user:
         _save_global(global_data)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(user_data, f, indent=2, ensure_ascii=False)
+        _schreibe_json(path, user_data)
 
 
 # ── Neuer Benutzer: Einstellungen vom ersten Admin erben ──────────────
@@ -207,8 +282,7 @@ def _ensure_user_settings():
                 break
             except Exception:
                 pass
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(template, f, indent=2, ensure_ascii=False)
+    _schreibe_json(path, template)
 
 
 # ── User-Settings lesen/schreiben ─────────────────────────────────────
@@ -290,8 +364,7 @@ def _save(data: dict):
     _migrate_single_to_per_user()
     _migrate_admin_to_global()
     path = _user_path(get_current_username())
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    _schreibe_json(path, data)
     _merke_geschrieben(path, data)
 
 
