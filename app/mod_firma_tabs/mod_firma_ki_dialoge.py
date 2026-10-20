@@ -64,7 +64,7 @@ class PromptMarkdownDialog(settings.DialogSizeMixin, QDialog):
         self.setMinimumSize(760, 440)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
 
         lay = QVBoxLayout(self)

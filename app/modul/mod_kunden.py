@@ -106,7 +106,7 @@ class KundenFenster(QWidget):
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, "kunden", stufe):
                 b.setEnabled(False)
-                b.setStyleSheet(f"color: {theme.color('status_muted')};")
+                theme.stil(b, lambda: f"color: {theme.color('status_muted')};")
                 b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("kunden")))
         # Kundeninformationssystem: hängt am eigenen Recht "kundeninfo"
         b = QPushButton(_("btn.kundeninfo"))
@@ -114,7 +114,7 @@ class KundenFenster(QWidget):
         btn_bar.addWidget(b)
         if not rechte.darf(self.db, "kundeninfo", rechte.LESEN):
             b.setEnabled(False)
-            b.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(b, lambda: f"color: {theme.color('status_muted')};")
             b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("kundeninfo")))
         self._geloescht_cb = QCheckBox(_("btn.geloescht_anzeigen"))
         self._geloescht_cb.stateChanged.connect(self._refresh)
@@ -580,7 +580,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     s = dict(s)
                     w.addItem(s["bezeichnung"])
                     self._sprach_ki[s["bezeichnung"]] = bool(s.get("ki_unterstuetzt"))
-                w.activated.connect(lambda _i=0, cb=w: cb.setStyleSheet(""))
+                w.activated.connect(lambda _i=0, cb=w: theme.stil_frei(cb))
             else:
                 w = QLineEdit()
             if key == "sprache":
@@ -611,7 +611,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 # Firmenstamm → Parameter → Adressprüfung). Nur auf Knopfdruck.
                 self._adresse_hint = QLabel("")
                 self._adresse_hint.setWordWrap(True)
-                self._adresse_hint.setStyleSheet(theme.hint_label_style())
+                theme.hinweis(self._adresse_hint)
                 pruefen = QPushButton(_("adresse.pruefen_btn"))
                 pruefen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
                 pruefen.clicked.connect(self._adresse_pruefen)
@@ -631,7 +631,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 # Felder, der Button überschreibt.
                 self._bank_hint = QLabel("")
                 self._bank_hint.setWordWrap(True)
-                self._bank_hint.setStyleSheet(theme.hint_label_style())
+                theme.hinweis(self._bank_hint)
                 ermitteln = QPushButton(_("bank.ermitteln_btn"))
                 ermitteln.setFocusPolicy(Qt.FocusPolicy.NoFocus)
                 hbox = QHBoxLayout()
@@ -756,7 +756,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self._zk_cb.addItem(_("zk.eintrag", bezeichnung=zk['bezeichnung'], tage=zk['tage']), zk['id'])
         form_r.addRow(_("lbl.zahlungskondition"), self._zk_cb)
         self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
-        self._zk_cb.activated.connect(lambda: self._zk_cb.setStyleSheet(""))
+        self._zk_cb.activated.connect(lambda: theme.stil_frei(self._zk_cb))
 
         self._mk_cb = QComboBox()
         self._mk_cb.insertItem(0, _("zk.keine"), None)
@@ -764,7 +764,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
         form_r.addRow(_("lbl.mahnkondition"), self._mk_cb)
         self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
-        self._mk_cb.activated.connect(lambda: self._mk_cb.setStyleSheet(""))
+        self._mk_cb.activated.connect(lambda: theme.stil_frei(self._mk_cb))
 
         # Pflichtfeld-Verknüpfungen & Validator
         for key in self._E_RECHNUNG_PFLICHTFELDER:
@@ -807,7 +807,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         btn_bar_lay = QHBoxLayout(btn_bar_w)
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         btn_bar_lay.addStretch()
         btn_bar_lay.addWidget(self._dirty_dot)
@@ -841,9 +841,9 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 continue
             leer = not w.text().strip()
             if aktiv and leer:
-                w.setStyleSheet(f"border: 1px solid {theme.color('error_fg')};")
+                theme.stil(w, lambda: f"border: 1px solid {theme.color('error_fg')};")
             else:
-                w.setStyleSheet("")
+                theme.stil_frei(w)
             if key == "leitweg_id" and hasattr(self, "_leitweg_fallback_hint"):
                 if aktiv and leer:
                     nr_w = self._felder.get("kundennr")
@@ -940,11 +940,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         for key in _VERSAND_INDEX_FELDER:
             self._update_versand_hint(key)
         # Cursor auf Anfang: langer Text wird von links angezeigt, nicht von rechts abgeschnitten
-        for w in self._felder.values():
-            if isinstance(w, QLineEdit):
-                w.setCursorPosition(0)
-            elif isinstance(w, QComboBox) and w.isEditable():
-                w.lineEdit().setCursorPosition(0)
+        ui_widgets.textanfang_zeigen(self)
         self._dirty = False
         self._dirty_dot.hide()
 
@@ -965,10 +961,10 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         unterstuetzt = self._sprach_ki.get(name, True)
         if unterstuetzt:
             self._sprach_hint.setText("✓")
-            self._sprach_hint.setStyleSheet(f"color: {theme.color('glyph_on')}; font-weight: bold;")
+            theme.stil(self._sprach_hint, lambda: f"color: {theme.color('glyph_on')}; font-weight: bold;")
         else:
             self._sprach_hint.setText("−")
-            self._sprach_hint.setStyleSheet(f"color: {theme.color('glyph_off')}; font-weight: bold;")
+            theme.stil(self._sprach_hint, lambda: f"color: {theme.color('glyph_off')}; font-weight: bold;")
         self._kopie_btn.setVisible(unterstuetzt)
         self._update_kopie_btn_style()
 
@@ -1027,7 +1023,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             QGuiApplication.restoreOverrideCursor()
         Verdict = address_validation.ValidationVerdict
         if ergebnis.verdict is Verdict.ACCEPT:
-            self._adresse_hint.setStyleSheet(theme.hint_label_style())
+            theme.hinweis(self._adresse_hint)
             self._adresse_hint.setText(_("adresse.bestaetigt", provider=ergebnis.provider))
         elif ergebnis.verdict is Verdict.CONFIRM and ergebnis.normalized is not None:
             self._adresse_vorschlag(ergebnis)
@@ -1035,7 +1031,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             grund_key = ("adresse.abgelehnt." + ergebnis.reason
                          if ergebnis.reason in ("incomplete", "no_match", "unreachable")
                          else "adresse.abgelehnt")
-            self._adresse_hint.setStyleSheet(theme.error_text_style())
+            theme.stil(self._adresse_hint, theme.error_text_style)
             self._adresse_hint.setText(_(grund_key))
 
     def _adresse_vorschlag(self, ergebnis):
@@ -1055,7 +1051,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self, _("adresse.titel"),
             _("adresse.uebernehmen_frage", alt=alt, neu=neu))
         if antwort != QMessageBox.StandardButton.Yes:
-            self._adresse_hint.setStyleSheet(theme.hint_label_style())
+            theme.hinweis(self._adresse_hint)
             self._adresse_hint.setText(_("adresse.nicht_uebernommen"))
             return
         if n.address_lines:
@@ -1068,14 +1064,14 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self._felder["ort"].setText(n.locality)
         if n.region_code:
             self._select_land_combo(n.region_code)
-        self._adresse_hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._adresse_hint)
         self._adresse_hint.setText(_("adresse.uebernommen", provider=ergebnis.provider))
 
     def _kunde_fallback(self, k, widget, feld, detail=""):
         """Markiert eine Erfassungs-Combo gelb (Fallback: zugeordnetes Stammdatum fehlt
         oder wurde gelöscht → Standard/„(keine)"/leer wird gezeigt) und protokolliert
         den Fall in der ERROR.DB. Schlägt nie hart fehl."""
-        widget.setStyleSheet(theme.fallback_style())
+        theme.stil(widget, theme.fallback_style)
         try:
             nr = k.get("kundennr") or ""
             f = self.db.get_firma()

@@ -369,7 +369,7 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
         errors = self._verify_chain()
         if errors:
             err_lbl = QLabel(f"Belegkette: {len(errors)} Inkonsistenz{'' if len(errors) == 1 else 'en'} gefunden!")
-            err_lbl.setStyleSheet(theme.error_label_style() + " padding: 4px;")
+            theme.stil(err_lbl, lambda: theme.error_label_style() + " padding: 4px;")
             lay.addWidget(err_lbl)
 
         # Tabelle
@@ -464,7 +464,7 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
             for err in errors:
                 details.append(f"  • {err['msg']}")
             detail_lbl = QLabel("\n".join(details))
-            detail_lbl.setStyleSheet(f"color: {theme.color('error_fg')}; padding: 2px 4px;")
+            theme.stil(detail_lbl, lambda: f"color: {theme.color('error_fg')}; padding: 2px 4px;")
             detail_lbl.setWordWrap(True)
             lay.addWidget(detail_lbl)
 

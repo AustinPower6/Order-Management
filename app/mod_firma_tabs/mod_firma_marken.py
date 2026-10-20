@@ -67,7 +67,7 @@ class MarkenVerwaltung(QWidget):
         self._logo_vorschau = QLabel()
         self._logo_vorschau.setFixedSize(180, 180)          # quadratisch
         self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._logo_vorschau.setStyleSheet(theme.preview_frame_style())
+        theme.stil(self._logo_vorschau, theme.preview_frame_style)
         logo_panel.addWidget(self._logo_vorschau)
         btn_logo = QPushButton(_("btn.auswahl_logo"))
         btn_logo.clicked.connect(self._logo_auswaehlen)
@@ -255,7 +255,7 @@ class _MarkeDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         title_key = "firma.marke.dlg_bearbeiten" if m_id else "firma.marke.dlg_neu"
         self.setWindowTitle(_(title_key))

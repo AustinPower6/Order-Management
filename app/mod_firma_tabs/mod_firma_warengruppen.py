@@ -435,7 +435,7 @@ class _WarengruppenDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         title_key = "firma.wgr.dlg_bearbeiten" if wg_id else "firma.wgr.dlg_neu"
         self.setWindowTitle(_(title_key))
@@ -505,7 +505,7 @@ class _HierarchieDialog(settings.DialogSizeMixin, QDialog):
         self._rec_id = rec_id_or_parent_id if bezeichnung else None
         self._parent_id = rec_id_or_parent_id if not bezeichnung else parent_id
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         self.setWindowTitle(title)
         lay = QVBoxLayout(self)
@@ -516,7 +516,7 @@ class _HierarchieDialog(settings.DialogSizeMixin, QDialog):
         form.addRow(_("firma.wgr.lbl.bezeichnung"), self._bez)
         if parent_bez:
             lbl_parent = QLabel(parent_bez)
-            lbl_parent.setStyleSheet(f"color: {theme.color('hint_small_fg')};")
+            theme.stil(lbl_parent, lambda: f"color: {theme.color('hint_small_fg')};")
             form.addRow(_("firma.wgr.lbl.eltern"), lbl_parent)
         lay.addLayout(form)
         lay.addStretch()

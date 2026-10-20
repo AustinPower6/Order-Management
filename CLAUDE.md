@@ -214,6 +214,28 @@ Im `QTabWidget` hängt bis dahin nur eine leere Hülle
 - **Prüfung:** `python app/test_firma_lazy.py` (öffnet jeden Reiter über die
   Reiterleiste, prüft Inhalt, Firma und Firmenwechsel; Sandbox mit DB-Kopie).
 
+## ⚠️ STRENGE REGEL: Theme-Farben nur über `theme.stil` / `theme.hinweis`
+
+`theme.apply()` tauscht beim Hell/Dunkel-Wechsel nur das **App**-Stylesheet. Ein
+Widget mit eigenem Stylesheet ignoriert das und bliebe auf den alten Farben
+stehen. Deshalb nie `w.setStyleSheet(theme.…)` direkt:
+
+- **Theme-Farbe setzen:** `theme.stil(w, theme.error_label_style)` — die
+  **Funktion** übergeben, nicht ihr Ergebnis. Zusammengesetzt per Lambda:
+  `theme.stil(w, lambda: theme.small_hint_style() + " padding: 4px;")`.
+  **Das Lambda darf das Widget/`self` nicht einschließen**; benötigte Werte als
+  Default-Argument binden (`lambda an=an: …theme.glyph_color(an)…`).
+- **Farbe wieder abnehmen:** `theme.stil_frei(w)` statt `w.setStyleSheet("")` —
+  sonst holt der nächste Wechsel die alte Färbung zurück. Ein Widget, das über
+  `stil` läuft, **nie** zusätzlich roh setzen (sonst überschreibt der Wechsel es).
+- **Hinweistexte:** `theme.hinweis(label)` — Stil **und** Höhe (globale Regel 9).
+  `hint_label_style()` nie direkt auf ein Label setzen.
+- **Ausnahmen:** `main.py` und `main_sidebar.py` färben sich beim Umschalten
+  selbst neu (`_apply_sidebar_theme`, `_build_hamburger_menu`, `setTheme`).
+
+**Prüfung:** `python app/test_ui_regeln.py` (findet Verstöße an der Quelle,
+misst Theme-Wechsel, Hinweishöhe, Dialoggeometrie, Textanfang).
+
 ## ⚠️ STRENGE REGEL: Neue UI-Strings über i18n
 
 Jeder neue **benutzersichtbare String** in der UI (Button-Label, Menüeintrag, QLabel-Text, MessageBox-Titel/-Text, Tooltip, Spaltenheader, Tab-Titel, Form-Beschriftung, Fenstertitel) **muss** über `_("schluessel")` aus `i18n.py` geladen werden:

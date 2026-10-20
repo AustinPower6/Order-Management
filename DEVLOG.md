@@ -1,3 +1,78 @@
+## 2026-10-20 18:11 — Gruppe C: Theme-Umschaltung, Hinweistexte, Firmenstamm, Dialoge, Fehlerprotokoll, Start.cmd
+
+**Anlass:** Letzter Teil der Übernahme aus dem Multi-Ableger (nur gelesen; dort
+`873b066`, `5177928`/`d2a1be8`/`556d153`, `9f2c9ab`, `f808e24`, `3e343d4`,
+`65e8208` und vier Start.cmd-Commits). **C5** (Standby-Balken, `74edbb0`) entfällt,
+denn betroffen war der selbst gemalte Teilergriff des Ablegers, hier gibt es nur
+Standard-`QSplitter`.
+
+**Gemessen vorher** (`test_ui_regeln.py` 2/13 gegen den alten Stand):
+- 106 Widget-Stylesheets in 44 Dateien und 17 `setStyleSheet("")` blieben beim
+  Hell/Dunkel-Wechsel auf den alten Farben.
+- 38 Hinweistexte liefen ohne Höhenwache.
+- Ein Dialog sprang nach dem Minimieren auf den Stand vom letzten Schließen.
+- Der Cursor stand in langen Feldern am Ende.
+- Der Parameter-Reiter lud alle 7 Unterreiter.
+- ERROR.DB-Fehler sahen aus wie „keine Einträge“.
+- `Start.cmd` konnte kein zweites Mal starten (`ERROR.txt` war gesperrt) und
+  schrieb in das gesperrte `auftragsabwicklung.log`.
+
+**Geändert:**
+- **C2/C1 `app/theme.py`:**
+  - `stil()` merkt die erzeugende Funktion mit schwachem Verweis, ein Eintrag je
+    Widget. Dazu `stil_frei()` und `neu_faerben()`, das am Ende von `apply()` läuft.
+  - `hinweis()` = Stil plus `_HinweisHoehe`: Fessel lösen, `heightForWidth`
+    messen, `setFixedHeight` setzen, mit Wiedereintrittssperre. Die Wache rechnet
+    auch nach einem Textwechsel neu, erkannt beim Zeichnen und nachgelagert, weil
+    viele Stellen den Text erst nach `hinweis()` setzen.
+  - `hint_label_style()` bekommt einen Außenabstand von einem Drittel Zeile
+    (`hinweis_luft`).
+- **Umstellung:** 122 Stellen per Skript (Trockenlauf mit Bericht, jede Lambda-
+  Stelle auf freie Variablen geprüft), dazu von Hand:
+  - die Dreiwert-Knöpfe im Artikelstamm (Zustand `an` gebunden statt Farbe)
+  - Farbfelder im Layout-Reiter (`_farbfeld_style` mit gebundener Farbe)
+  - Fehlerhinweis Postausgang, Warnung Firma löschen, Note Sprachdialog
+  - Drucktexte: Rot und Gelb laufen jetzt über `stil`. Vorher hätte
+    `stil_frei` zusammen mit rohem Rot die Markierung beim Wechsel gelöscht.
+  - `main.py` und `main_sidebar.py` bleiben begründet ausgenommen.
+- **C3** `mod_firma_parameter.py`: `_geladen` und `_lade_reiter`; `_refresh`
+  lädt nur den sichtbaren Unterreiter, die anderen beim ersten Anklicken.
+- **C4** `settings.DialogSizeMixin`: Die Geometrie wird nur beim ersten
+  Anzeigen wiederhergestellt und als Qt-Geometrie gespeichert
+  (`dialog_geometrie`); der alte Eintrag x/y/w/h bleibt als Rückfall lesbar.
+- **C6** `ui_widgets.textanfang_zeigen`: läuft beim ersten Anzeigen jedes
+  Dialogs (nicht bei jedem Show, damit ein Cursor mitten im Text nach dem
+  Wiederherstellen nicht springt) und in `SimpleFormTab.load`. Die Schleifen in
+  Kunden- und Artikeldialog sind ersetzt.
+- **C7** `fallback_log`: `ProtokollFehler`; `liste(streng=True)` nur im Fenster,
+  `set_erledigt` meldet. `_conn` schließt die Verbindung, wenn die Einrichtung
+  scheitert (vorher blieb eine unlesbare ERROR.DB gesperrt). Das Fenster nennt
+  Einträge, Datei, Ursache und Abhilfe.
+- **C8 `Start.cmd`:** Konsole auf UTF-8 (`chcp 65001`, echte Umlaute), relative
+  Pfade, Fehlerdatei je Start, `-X faulthandler`, Code dezimal und hexadezimal,
+  „von außen beendet“ (`0x40010004`, `0xC000013A`), ISO-Zeitstempel, eigenes
+  `app\daten\startfehler.log`.
+- `.gitignore`: Fehlerdateien je Start, Zwischendateien `*.json.*.tmp` und
+  `*.json.defekt`.
+- `CLAUDE.md`: neue STRENGE REGEL „Theme-Farben nur über theme.stil /
+  theme.hinweis“.
+- `app/test_ui_regeln.py` (neu, 18 Prüfungen).
+
+**Verifikation:** `test_ui_regeln` 2/13 → 18/18, alle übrigen 10 Testdateien
+grün, `ruff` sauber, `audit_firma_id` ohne Fehler. Sichtprüfung offscreen am
+Reiter Steuerung, hell und nach dem Umschalten dunkel: Der Hinweiskasten
+umschließt seinen Text, und die Hinweise werden neu eingefärbt (Höhen gemessen:
+einzeilig 25 px, zweizeilig 49 px). `Start.cmd` im Scratchpad geprobt: Absturz
+(Code, Text mit Umlauten, Protokoll), sauberes Ende (Fenster schließt, keine
+Reste), Strg+C-Code (cmd fragt dabei selbst „Batchvorgang abbrechen“, wie bei
+einem echten Strg+C).
+
+**Panne beim Testen, behoben:** Der Gegenlauf gegen den alten Code schrieb über
+die damals nicht abgeklemmte `save_dialog_size` einen Eintrag
+`dialog_sizes._Dlg` in `settings_walter.json`. Genau dieser Eintrag wurde wieder
+entfernt. `test_ui_regeln` klemmt jetzt `_save`, `_save_global` und
+`save_dialog_size` ab; danach ist die Datei nachweislich unverändert.
+
 ## 2026-10-20 17:51 — Paket 4: Doppelte Nummer, Einstellungen atomar, Mausrad in der Rechte-Matrix
 
 **Anlass:** Abgleich mit dem Multi-Ableger (dort `5771c69`, `ad621f1`, `db9f517`,

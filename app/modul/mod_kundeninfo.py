@@ -132,7 +132,7 @@ class KundeninfoFenster(QWidget):
         def _kopf_lbl():
             w = QLabel("")
             w.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            w.setStyleSheet(theme.small_hint_style())
+            theme.stil(w, theme.small_hint_style)
             return w
 
         for i, (kat, lbl_key) in enumerate([("monat", "kundeninfo.umsatz.monat"),
@@ -173,7 +173,7 @@ class KundeninfoFenster(QWidget):
         self._beleg_typ_cb.currentIndexChanged.connect(self._load_belege)
         typ_bar.addWidget(self._beleg_typ_cb)
         hint = QLabel(_("kundeninfo.hint.belegkette"))
-        hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint)
         typ_bar.addWidget(hint)
         typ_bar.addStretch()
         belege_lay.addLayout(typ_bar)

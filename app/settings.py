@@ -520,13 +520,27 @@ def entwickler_modus() -> bool:
 
 # ── Dialog-Größen ──────────────────────────────────────────────────────
 
-def save_dialog_size(key, x, y, width, height):
+def save_dialog_geometrie(key, geometry_bytes):
+    """Lage und Größe eines Dialogs als Qt-Geometrie (`saveGeometry`).
+
+    **Nicht mehr als x/y/Breite/Höhe:** Bei Monitoren mit unterschiedlicher
+    Skalierung sind die logischen Koordinaten nicht durchgehend — im Ableger
+    wanderte ein Fenster dadurch bei jedem Öffnen um 2 px. Die Qt-Geometrie
+    führt Bildschirm und Skalierung mit, wie beim Hauptfenster."""
     data = _load()
-    data.setdefault("dialog_sizes", {})[key] = [x, y, width, height]
+    data.setdefault("dialog_geometrie", {})[key] = list(geometry_bytes)
     _save(data)
 
 
+def load_dialog_geometrie(key):
+    """Gegenstück zu `save_dialog_geometrie` — sonst None."""
+    geom = _load().get("dialog_geometrie", {}).get(key)
+    return bytearray(geom) if geom else None
+
+
 def load_dialog_size(key):
+    """Alter Stand (x, y, Breite, Höhe) — nur noch als Rückfall gelesen, bis der
+    Dialog einmal mit `save_dialog_geometrie` gespeichert wurde."""
     data = _load()
     stored = data.get("dialog_sizes", {}).get(key)
     if not stored:
@@ -569,15 +583,28 @@ class DialogSizeMixin:
                 )
             except Exception:
                 pass
-        geom = load_dialog_size(type(self).__name__)
-        if geom:
-            x, y, w, h = geom
+            # **Nur beim ersten Anzeigen.** Ein offenes Fenster bekommt
+            # `showEvent` erneut — nach dem Minimieren und beim Nach-vorn-Holen.
+            # Bis 2026-10-20 sprang es dort auf den Stand vom letzten Schließen.
+            self._dsm_restore_geometry()
+            # Lange Texte von vorn zeigen (rechts abschneiden, nicht links).
+            from ui_widgets import textanfang_zeigen
+            textanfang_zeigen(self)
+        from PyQt6.QtCore import QTimer as _QTimer
+        _QTimer.singleShot(0, self._dsm_focus_first)
+
+    def _dsm_restore_geometry(self):
+        key = type(self).__name__
+        geom = load_dialog_geometrie(key)
+        if geom is not None and self.restoreGeometry(geom):
+            return
+        alt = load_dialog_size(key)
+        if alt:
+            x, y, w, h = alt
             self.resize(w, h)
             if x is not None and y is not None:
                 self.move(x, y)
                 self._dsm_clamp_to_screen()
-        from PyQt6.QtCore import QTimer as _QTimer
-        _QTimer.singleShot(0, self._dsm_focus_first)
 
     def _dsm_focus_first(self):
         """Setzt beim Öffnen des Dialogs den Fokus auf das erste Eingabefeld.
@@ -604,8 +631,7 @@ class DialogSizeMixin:
             self.move(new_x, new_y)
 
     def _dsm_save_geometry(self):
-        save_dialog_size(type(self).__name__,
-                         self.x(), self.y(), self.width(), self.height())
+        save_dialog_geometrie(type(self).__name__, self.saveGeometry().data())
 
     def closeEvent(self, event):
         self._dsm_save_geometry()

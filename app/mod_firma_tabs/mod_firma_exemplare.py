@@ -26,7 +26,7 @@ class ExemplareTab(SimpleFormTab):
             form.addRow(_(f"firma.lbl.{typ}"), sb)
             self._felder[typ] = sb
         hinweis = QLabel(_("firma.exemplare.hinweis"))
-        hinweis.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hinweis)
         form.addRow("", hinweis)
         main_lay.addWidget(form_widget)
         main_lay.addStretch()

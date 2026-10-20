@@ -87,7 +87,7 @@ class SteuerungTab(QWidget):
         self._btn_zert_import = QPushButton(_("firma.steuerung.zertifikat_importieren"))
         self._btn_zert_import.clicked.connect(self._importiere_zertifikat)
         self._lbl_zert_status = QLabel()
-        self._lbl_zert_status.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._lbl_zert_status)
         sig_row.addWidget(self._btn_zert)
         sig_row.addWidget(self._btn_zert_import)
         sig_row.addWidget(self._lbl_zert_status, 1)
@@ -96,7 +96,7 @@ class SteuerungTab(QWidget):
         # Status der verschlüsselten Schlüsseldatei (API-Keys). Kein Passwort/Wert
         # sichtbar — nur der Zustand (vorhanden/fehlt/defekt).
         self._lbl_keydatei_status = QLabel()
-        self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._lbl_keydatei_status)
         form.addRow(_("firma.steuerung.keydatei"), self._lbl_keydatei_status)
 
         self._disclaimer = QTextEdit()
@@ -108,7 +108,7 @@ class SteuerungTab(QWidget):
         lay.addWidget(form_widget)
 
         hint = QLabel(_("firma.steuerung.ki_disclaimer_hint"))
-        hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint)
         hint.setWordWrap(True)
         lay.addWidget(hint)
 
@@ -213,13 +213,13 @@ class SteuerungTab(QWidget):
         st = self.db.schluesseldatei_status()
         if st == "ok":
             self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_vorhanden"))
-            self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
+            theme.hinweis(self._lbl_keydatei_status)
         elif st == "defekt":
             self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_defekt"))
-            self._lbl_keydatei_status.setStyleSheet(theme.error_text_style())
+            theme.stil(self._lbl_keydatei_status, theme.error_text_style)
         else:
             self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_fehlt"))
-            self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
+            theme.hinweis(self._lbl_keydatei_status)
 
     def _speichere_zert_passwort(self, passwort) -> bool:
         """Zertifikat-Passwort in die Schlüsseldatei. False, wenn sie unlesbar oder

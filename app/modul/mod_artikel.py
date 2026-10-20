@@ -107,7 +107,7 @@ class ArtikelFenster(QWidget):
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, "artikel", stufe):
                 b.setEnabled(False)
-                b.setStyleSheet(f"color: {theme.color('status_muted')};")
+                theme.stil(b, lambda: f"color: {theme.color('status_muted')};")
                 b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("artikel")))
         self._nur_aktiv = QCheckBox(_("artikel.nur_aktive"))
         self._nur_aktiv.stateChanged.connect(self._refresh)
@@ -553,20 +553,23 @@ class UebersetzungCheck(QPushButton):
 
     def _update(self):
         if self._state == UEBERSETZUNG_AN:
-            glyph, color, tip = "+", theme.glyph_color(True), _("artikel.ueb.tip_an")
+            glyph, an, tip = "+", True, _("artikel.ueb.tip_an")
         elif self._state == UEBERSETZUNG_AUS:
-            glyph, color, tip = "−", theme.glyph_color(False), _("artikel.ueb.tip_aus")
+            glyph, an, tip = "−", False, _("artikel.ueb.tip_aus")
         else:
             glyph = "✓"
             if self._firma_aktiv:
-                color, tip = theme.glyph_color(True), _("artikel.ueb.tip_firma_an")
+                an, tip = True, _("artikel.ueb.tip_firma_an")
             else:
-                color, tip = theme.glyph_color(False), _("artikel.ueb.tip_firma_aus")
+                an, tip = False, _("artikel.ueb.tip_firma_aus")
         self.setText(glyph)
         self.setToolTip(tip)
-        self.setStyleSheet(
-            f"QPushButton {{ color: {color}; font-weight: bold; font-size: 22px; "
-            f"border: 1px solid {theme.color('border')}; border-radius: 4px; }}")
+        # Den Zustand binden, nicht die Farbe: So kommt nach einem Theme-Wechsel
+        # auch die Glyphenfarbe aus der neuen Palette (`theme.stil`).
+        theme.stil(self, lambda an=an: (
+            f"QPushButton {{ color: {theme.glyph_color(an)}; font-weight: bold; "
+            f"font-size: 22px; border: 1px solid {theme.color('border')}; "
+            "border-radius: 4px; }"))
 
 
 # Dreiwertiger Druck-Schalter je Artikeltext
@@ -612,20 +615,23 @@ class DruckCheck(QPushButton):
 
     def _update(self):
         if self._state == DRUCK_IMMER:
-            glyph, color, tip = "+", theme.glyph_color(True), _("artikel.druck.tip_immer")
+            glyph, an, tip = "+", True, _("artikel.druck.tip_immer")
         elif self._state == DRUCK_NIE:
-            glyph, color, tip = "−", theme.glyph_color(False), _("artikel.druck.tip_nie")
+            glyph, an, tip = "−", False, _("artikel.druck.tip_nie")
         else:
             glyph = "✓"
             if self._firma_aktiv:
-                color, tip = theme.glyph_color(True), _("artikel.druck.tip_firma_an")
+                an, tip = True, _("artikel.druck.tip_firma_an")
             else:
-                color, tip = theme.glyph_color(False), _("artikel.druck.tip_firma_aus")
+                an, tip = False, _("artikel.druck.tip_firma_aus")
         self.setText(glyph)
         self.setToolTip(tip)
-        self.setStyleSheet(
-            f"QPushButton {{ color: {color}; font-weight: bold; font-size: 22px; "
-            f"border: 1px solid {theme.color('border')}; border-radius: 4px; }}")
+        # Den Zustand binden, nicht die Farbe: So kommt nach einem Theme-Wechsel
+        # auch die Glyphenfarbe aus der neuen Palette (`theme.stil`).
+        theme.stil(self, lambda an=an: (
+            f"QPushButton {{ color: {theme.glyph_color(an)}; font-weight: bold; "
+            f"font-size: 22px; border: 1px solid {theme.color('border')}; "
+            "border-radius: 4px; }"))
 
 
 class KiKorrekturDialog(settings.DialogSizeMixin, QDialog):
@@ -762,7 +768,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._logo_vorschau.setFixedHeight(120)
         self._logo_vorschau.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._logo_vorschau.setStyleSheet(theme.preview_frame_style())
+        theme.stil(self._logo_vorschau, theme.preview_frame_style)
         # Interner Pfad-Halter für Artikelbild (nicht im Layout sichtbar)
         self._bild_pfad = QLineEdit()
         self._aktiv          = QCheckBox(_("artikel.aktiv")); self._aktiv.setChecked(True)
@@ -838,7 +844,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._bild_vorschau.setFixedHeight(120)
         self._bild_vorschau.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._bild_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._bild_vorschau.setStyleSheet(theme.preview_frame_style())
+        theme.stil(self._bild_vorschau, theme.preview_frame_style)
         self._bild_pfad.textChanged.connect(lambda: self._update_bild_vorschau())
         # Logo (links) und Artikelbild (rechts) gleichmäßig nebeneinander oben rechts
         kombinierte_vorschau = QWidget()
@@ -913,8 +919,8 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._einh.currentTextChanged.connect(lambda: self._refresh_dirty())
         self._mwst.currentIndexChanged.connect(lambda: self._refresh_dirty())
         # Fallback-Gelb wieder entfernen, sobald der Benutzer selbst eine Auswahl trifft.
-        self._einh.activated.connect(lambda: self._einh.setStyleSheet(""))
-        self._mwst.activated.connect(lambda: self._mwst.setStyleSheet(""))
+        self._einh.activated.connect(lambda: theme.stil_frei(self._einh))
+        self._mwst.activated.connect(lambda: theme.stil_frei(self._mwst))
         self._warengruppe.currentIndexChanged.connect(self._on_warengruppe_changed)
         self._artikelgruppe.currentTextChanged.connect(self._on_artikelgruppe_changed)
         self._untergruppe.currentTextChanged.connect(self._on_untergruppe_changed)
@@ -952,7 +958,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         btn_bar_lay = QHBoxLayout(btn_bar_w)
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         btn_bar_lay.addStretch()
         btn_bar_lay.addWidget(self._dirty_dot)
@@ -1222,7 +1228,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         """Markiert eine Erfassungs-Combo gelb (Fallback: zugeordnetes Stammdatum fehlt
         oder wurde gelöscht → erster Eintrag wird gezeigt) und protokolliert den Fall
         in der ERROR.DB. Schlägt nie hart fehl."""
-        combo.setStyleSheet(theme.fallback_style())
+        theme.stil(combo, theme.fallback_style)
         try:
             nr = a.get("artikelnr") or ""
             f = self.db.get_firma()
@@ -1340,9 +1346,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._nr.setText(self.db.next_artikelnr())
         self._update_bild_vorschau()
         # Cursor auf Anfang: langer Text wird von links angezeigt, nicht von rechts abgeschnitten
-        for f in [self._nr, self._bez, self._preis, self._ean,
-                  self._herstellernr, self._lieferzeit, self._gewicht_kg, self._uvp]:
-            f.setCursorPosition(0)
+        ui_widgets.textanfang_zeigen(self)
         self._clear_dirty()
 
     def _zustand(self):

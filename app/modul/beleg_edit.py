@@ -251,7 +251,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._extra_action_buttons(btn_bar)
         btn_bar.addStretch()
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         btn_bar.addWidget(self._dirty_dot)
         b_save = QPushButton(_("btn.speichern")); b_save.clicked.connect(self._speichern)
@@ -497,7 +497,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                 btn.setText(marker)
                 btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
                 btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-                btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
+                theme.stil(btn, lambda: theme.hint_label_style() + " border: none; padding: 1px 6px;")
                 desc = get_marker_beschreibung(marker)
                 btn.setToolTip(f"{marker} – {desc}")
                 btn.clicked.connect(lambda checked=False, m=marker: self._insert_marker(m))
@@ -518,17 +518,17 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
 
     def _zk_changed(self):
         self._zahlungskondition_id = self._zk_cb.itemData(self._zk_cb.currentIndex())
-        self._zk_cb.setStyleSheet("")   # bewusste Auswahl → kein Fallback mehr
+        theme.stil_frei(self._zk_cb)   # bewusste Auswahl → kein Fallback mehr
 
     def _mk_changed(self):
         self._mark_dirty()
-        self._mk_cb.setStyleSheet("")   # bewusste Auswahl → kein Fallback mehr
+        theme.stil_frei(self._mk_cb)   # bewusste Auswahl → kein Fallback mehr
 
     def _markiere_kondition_fallback(self, combo, kunde, feld):
         """Kondition-Combo gelb markieren und protokollieren: der gewählte Kunde hat
         keine/ungültige Kondition → es wird „(keine)" vorbelegt (Stammdaten-Mangel).
         Schlägt nie hart fehl."""
-        combo.setStyleSheet(theme.fallback_style())
+        theme.stil(combo, theme.fallback_style)
         try:
             nr = (dict(kunde).get("kundennr") if kunde else "") or ""
             f = self.db.get_firma()
@@ -548,7 +548,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             k = dict(self.db.get_kunde(self.kunden_id))
             zk_id = k.get("zahlungskondition_id")
             if self._select_zk_by_id(zk_id):
-                self._zk_cb.setStyleSheet("")   # gültige Kondition → kein Fallback
+                theme.stil_frei(self._zk_cb)   # gültige Kondition → kein Fallback
                 return
             # Kunde gesetzt, aber keine/ungültige Zahlungskondition → Fallback „(keine)"
             self._zk_cb.setCurrentIndex(0)
@@ -557,7 +557,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             return
         self._zk_cb.setCurrentIndex(0)
         self._zahlungskondition_id = None
-        self._zk_cb.setStyleSheet("")
+        theme.stil_frei(self._zk_cb)
 
     def _select_mk_by_id(self, mk_id):
         for i in range(self._mk_cb.count()):
@@ -571,14 +571,14 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         if self.kunden_id:
             k = dict(self.db.get_kunde(self.kunden_id))
             if self._select_mk_by_id(k.get("mahnkondition_id")):
-                self._mk_cb.setStyleSheet("")   # gültige Kondition → kein Fallback
+                theme.stil_frei(self._mk_cb)   # gültige Kondition → kein Fallback
                 return
             # Kunde gesetzt, aber keine/ungültige Mahnkondition → Fallback „(keine)"
             self._mk_cb.setCurrentIndex(0)
             self._markiere_kondition_fallback(self._mk_cb, k, "Mahnkondition")
             return
         self._mk_cb.setCurrentIndex(0)
-        self._mk_cb.setStyleSheet("")
+        theme.stil_frei(self._mk_cb)
 
     # ── Innergemeinschaftliche Lieferung (igL) ────────────────────────────────
     def _igl_klasse(self):

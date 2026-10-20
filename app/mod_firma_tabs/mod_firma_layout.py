@@ -16,6 +16,13 @@ import ui_widgets
 
 _SCHRIFTGRADE = [6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48]
 
+
+def _farbfeld_style(farbe: str) -> str:
+    """Farbfeld/Farbknopf: die gewählte (theme-unabhängige) Farbe, der Rahmen aus
+    dem Theme — über `theme.stil` mit gebundener Farbe gesetzt."""
+    return (f"background-color: {farbe}; border: 1px solid "
+            f"{theme.color('preview_border')}; border-radius: 2px;")
+
 # ── Default-Druckfarben für Layout-Blöcke (Papier, theme-unabhängig) ──
 # Spiegeln druck.DUNKELBLAU (#0070A0) und druck.BLAU (#00B8FF).
 LAYOUT_DEFAULT_TEXT   = "#000000"  # Standard-Textfarbe
@@ -94,7 +101,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         lay.setSpacing(6)
 
         self._lbl_aktuell = QLabel(_("dlg.aktuelle_schrift", family=self._original_family or "—"))
-        self._lbl_aktuell.setStyleSheet(f"color: {theme.color('hint_small_fg')}; font-style: italic;")
+        theme.stil(self._lbl_aktuell, lambda: f"color: {theme.color('hint_small_fg')}; font-style: italic;")
         lay.addWidget(self._lbl_aktuell)
 
         lists_lay = QHBoxLayout()
@@ -208,9 +215,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
             self._update_vorschau()
 
     def _update_color_btn(self):
-        self._color_btn.setStyleSheet(
-            f"background-color: {self._current_color.name()}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
-        )
+        theme.stil(self._color_btn, lambda farbe=self._current_color.name(): _farbfeld_style(farbe))
 
     def _pick_bg_color(self):
         c = QColorDialog.getColor(self._current_bg_color, self)
@@ -220,9 +225,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
             self._update_vorschau()
 
     def _update_bg_btn(self):
-        self._bg_btn.setStyleSheet(
-            f"background-color: {self._current_bg_color.name()}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
-        )
+        theme.stil(self._bg_btn, lambda farbe=self._current_bg_color.name(): _farbfeld_style(farbe))
 
     def _fill_font_list(self, families):
         self._font_list.blockSignals(True)
@@ -319,9 +322,9 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         self._vorschau.setFont(font)
         fg = self._current_color.name()
         bg = self._current_bg_color.name() if self._has_bg else "transparent"
-        self._vorschau.setStyleSheet(
-            f"color: {fg}; background-color: {bg}; border: 1px solid {theme.color('preview_border')};"
-        )
+        theme.stil(self._vorschau, lambda fg=fg, bg=bg: (
+            f"color: {fg}; background-color: {bg}; "
+            f"border: 1px solid {theme.color('preview_border')};"))
         self._vorschau.setText(family or "…")
 
     def _ok(self):
@@ -403,7 +406,7 @@ class _EditableBlock(QFrame):
         else:
             self._bg_swatch = None
         self._lbl_schrift = QLabel("")
-        self._lbl_schrift.setStyleSheet(theme.small_hint_style())
+        theme.stil(self._lbl_schrift, theme.small_hint_style)
         row.addWidget(self._lbl_schrift)
 
         self._btn_reset = QPushButton(_("btn.auf_standard"))
@@ -489,10 +492,8 @@ class _EditableBlock(QFrame):
 
     def _update_mahn_color_btn(self):
         if self._mahn_color_btn:
-            self._mahn_color_btn.setStyleSheet(
-                f"background-color: {self._mahn_current_color.name()};"
-                f" border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
-            )
+            theme.stil(self._mahn_color_btn,
+                       lambda farbe=self._mahn_current_color.name(): _farbfeld_style(farbe))
 
     def get_mahnung_color(self) -> str:
         return self._mahn_current_color.name() if self._mahn_current_color else ""
@@ -523,13 +524,9 @@ class _EditableBlock(QFrame):
         self._lbl_schrift.setText(
             _("lbl.layout.schrift_info", family=self._cur_fam, size=self._cur_sz)
         )
-        self._color_swatch.setStyleSheet(
-            f"background-color: {self._cur_col}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
-        )
+        theme.stil(self._color_swatch, lambda farbe=self._cur_col: _farbfeld_style(farbe))
         if self._bg_swatch:
-            self._bg_swatch.setStyleSheet(
-                f"background-color: {self._cur_bg}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
-            )
+            theme.stil(self._bg_swatch, lambda farbe=self._cur_bg: _farbfeld_style(farbe))
         self._refresh_preview()
 
     def _refresh_preview(self):

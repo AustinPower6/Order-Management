@@ -55,7 +55,7 @@ class LoginDialog(settings.DialogSizeMixin, QDialog):
 
         self._hinweis = QLabel("")
         self._hinweis.setWordWrap(True)
-        self._hinweis.setStyleSheet(f"color: {theme.color('error_fg')};")
+        theme.stil(self._hinweis, lambda: f"color: {theme.color('error_fg')};")
         self._hinweis.hide()
         lay.addWidget(self._hinweis)
 
@@ -176,7 +176,7 @@ class PasswortAendernDialog(settings.DialogSizeMixin, QDialog):
 
         hint = QLabel(_("login.pw_regel", min=passwort_util.MIN_LAENGE))
         hint.setWordWrap(True)
-        hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint)
         lay.addWidget(hint)
 
         lay.addStretch()

@@ -121,5 +121,6 @@ class SimpleFormTab(QWidget):
         self._last_aenderung = int(f.get("aenderungs_anzahl") or 0)
         self._fill(f)
         self._snapshot()
+        ui_widgets.textanfang_zeigen(self)   # lange Texte von vorn zeigen
         self._connect_dirty()
         self._save_bar.reset_dirty()

@@ -220,39 +220,39 @@ class BelegListeFenster(QWidget):
                     exportiert = True
         if not self._darf(rechte.LOESCHEN):
             self._b_loeschen.setEnabled(False)
-            self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_loeschen, lambda: f"color: {theme.color('status_muted')};")
             self._b_loeschen.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(self.RECHTE_KEY)))
         elif exportiert:
             self._b_loeschen.setEnabled(False)
-            self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_loeschen, lambda: f"color: {theme.color('status_muted')};")
             self._b_loeschen.setToolTip(_("tooltip.exportiert_nicht_loeschen"))
         elif festgeschrieben:
             self._b_loeschen.setEnabled(False)
-            self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_loeschen, lambda: f"color: {theme.color('status_muted')};")
             self._b_loeschen.setToolTip(_("tooltip.festgeschrieben_nicht_loeschen"))
         else:
             self._b_loeschen.setEnabled(True)
-            self._b_loeschen.setStyleSheet("")
+            theme.stil_frei(self._b_loeschen)
             self._b_loeschen.setToolTip("")
 
     def _update_original_button(self):
         id_ = self._sel_id()
         if not id_:
             self._b_original.setEnabled(False)
-            self._b_original.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_original, lambda: f"color: {theme.color('status_muted')};")
             return
         table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         if not table:
             self._b_original.setEnabled(False)
-            self._b_original.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_original, lambda: f"color: {theme.color('status_muted')};")
             return
         b = getattr(self.db, self.DB_GET_ONE)(id_)
         if b and dict(b).get("pdf_pfad", "").strip():
             self._b_original.setEnabled(True)
-            self._b_original.setStyleSheet("")
+            theme.stil_frei(self._b_original)
         else:
             self._b_original.setEnabled(False)
-            self._b_original.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_original, lambda: f"color: {theme.color('status_muted')};")
 
     def _show_original(self):
         id_ = self._sel_id()
@@ -300,7 +300,7 @@ class BelegListeFenster(QWidget):
                 # Ohne Änderungsrecht kein neuer Beleg (Löschen regelt
                 # _update_loeschen_button abhängig von der Auswahl).
                 btn.setEnabled(False)
-                btn.setStyleSheet(f"color: {theme.color('status_muted')};")
+                theme.stil(btn, lambda: f"color: {theme.color('status_muted')};")
                 btn.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(self.RECHTE_KEY)))
         self._b_druck = QPushButton(_("btn.drucken"))
         self._b_druck.clicked.connect(self._drucken)

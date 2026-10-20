@@ -37,22 +37,22 @@ def resolve_iban_in_felder(iban_edit, bic_edit, bank_edit, hint_label, *, uebers
         return
     if not bank.validiere_iban(roh):
         hint_label.setText(_("bank.iban_ungueltig"))
-        hint_label.setStyleSheet(theme.error_text_style())
+        theme.stil(hint_label, theme.error_text_style)
         _melde(_("bank.iban_ungueltig"))
         return
     try:
         bd = bank.resolve_bankdaten(roh)
     except bank.LandNichtUnterstuetzt:
         hint_label.setText(_("bank.land_nicht_unterstuetzt"))
-        hint_label.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint_label)
         _melde(_("bank.land_nicht_unterstuetzt"))
         return
     except bank.UngueltigeIBAN:
         hint_label.setText(_("bank.iban_ungueltig"))
-        hint_label.setStyleSheet(theme.error_text_style())
+        theme.stil(hint_label, theme.error_text_style)
         _melde(_("bank.iban_ungueltig"))
         return
-    hint_label.setStyleSheet(theme.hint_label_style())
+    theme.hinweis(hint_label)
     if not bd:
         hint_label.setText(_("bank.keine_bank"))   # gültig, aber keine Registry-Zuordnung
         _melde(_("bank.keine_bank"))
@@ -62,6 +62,28 @@ def resolve_iban_in_felder(iban_edit, bic_edit, bank_edit, hint_label, *, uebers
     if bd.bank_name and (ueberschreiben or not (bank_edit.text() or "").strip()):
         bank_edit.setText(bd.bank_name)
     hint_label.setText(_("bank.aufgeloest", bank=bd.bank_name or "—", bic=bd.bic or "—"))
+
+
+def textanfang_zeigen(root) -> None:
+    """Alle Textfelder unter `root` an den **Anfang** rollen.
+
+    Nach `setText()` steht der Cursor hinter dem Text; ist er länger als das
+    Feld, zeigt Qt sein Ende — der Anfang läuft links hinaus. Gelesen wird aber
+    von vorn (eine Bezeichnung erkennt man an ihren ersten Wörtern). Deshalb:
+    Cursor auf 0, abgeschnitten wird rechts.
+
+    Erfasst `QLineEdit`, das interne Feld editierbarer `QComboBox` und `QTextEdit`.
+    Zentral aufgerufen in `settings.DialogSizeMixin.showEvent` (erstes Anzeigen)
+    und `SimpleFormTab.load` — einzeln ist nichts zu tun.
+    """
+    from PyQt6.QtGui import QTextCursor
+    for w in root.findChildren(QLineEdit):
+        w.setCursorPosition(0)
+    for w in root.findChildren(QComboBox):
+        if w.isEditable() and w.lineEdit() is not None:
+            w.lineEdit().setCursorPosition(0)
+    for w in root.findChildren(QTextEdit):
+        w.moveCursor(QTextCursor.MoveOperation.Start)
 
 
 def focus_skip_non_input(forward: bool) -> None:
@@ -373,7 +395,7 @@ class LadeOverlay:
         )
         lbl.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lbl.setStyleSheet(theme.overlay_style())
+        theme.stil(lbl, theme.overlay_style)
         # Erst show(), damit Qt das Stylesheet polished und adjustSize() korrekt rechnet
         lbl.show()
         lbl.adjustSize()
@@ -693,7 +715,7 @@ class SaveBar(QWidget):
         lay.addStretch()
 
         self._dot = QLabel("●")
-        self._dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dot, theme.dirty_dot_style)
         self._dot.hide()
         lay.addWidget(self._dot)
 

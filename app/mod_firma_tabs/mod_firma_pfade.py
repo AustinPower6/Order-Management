@@ -105,7 +105,7 @@ class PfadeTab(SimpleFormTab):
 
         def _info(key, field_name=None, field=None):
             lbl = QLabel(_sep(_(key)))
-            lbl.setStyleSheet(theme.hint_label_style())
+            theme.hinweis(lbl)
             lbl.setWordWrap(True)
             lbl.setFixedHeight(52)
             if field_name and field is not None:

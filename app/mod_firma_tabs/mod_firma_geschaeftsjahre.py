@@ -82,7 +82,7 @@ class GeschaeftjahresTab(QWidget):
 
         # Hinweis
         info = QLabel(_("firma.gj.hinweis_zaehler"))
-        info.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(info)
         form.addRow("", info)
 
         form.addRow("", QLabel("—"))

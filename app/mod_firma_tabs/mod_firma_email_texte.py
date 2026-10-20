@@ -43,7 +43,7 @@ class EmailtexteTab(SimpleFormTab):
             btn.setText(marker)
             btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
             btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-            btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
+            theme.stil(btn, lambda: theme.hint_label_style() + " border: none; padding: 1px 6px;")
             btn.setToolTip(f"{marker} – {get_marker_beschreibung(marker)}")
             btn.clicked.connect(lambda checked=False, m=marker: self._insert_marker(m))
             lay.addWidget(btn)

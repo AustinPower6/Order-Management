@@ -36,7 +36,7 @@ class MwStTab(QWidget):
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
             if not rechte.darf(self.db, "mwst", stufe):
                 b.setEnabled(False)
-                b.setStyleSheet(f"color: {theme.color('status_muted')};")
+                theme.stil(b, lambda: f"color: {theme.color('status_muted')};")
                 b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("mwst")))
         btn_bar.addStretch()
         lay.addLayout(btn_bar)

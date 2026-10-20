@@ -19,6 +19,11 @@ from ui_widgets import zeige_warnung
 _COLS_KEY = "fallback_protokoll"
 
 
+def _ursachen_text(ursachen):
+    """Unterschiedliche Ursachen je eine Zeile, gleiche nur einmal."""
+    return "\n".join(dict.fromkeys(u for u in ursachen if u)) or "?"
+
+
 class FallbackProtokollFenster(QWidget):
     HELP_ANCHOR = "fallback-protokoll"
 
@@ -66,8 +71,17 @@ class FallbackProtokollFenster(QWidget):
         _connect_save_columns(self.table, _COLS_KEY)
 
     def _refresh(self):
-        rows = fallback_log.liste(self._firma_nr(),
-                                  inkl_erledigt=self._chk_erledigte.isChecked())
+        try:
+            rows = fallback_log.liste(self._firma_nr(), streng=True,
+                                      inkl_erledigt=self._chk_erledigte.isChecked())
+        except fallback_log.ProtokollFehler as e:
+            # Eine still leere Liste sähe aus wie „keine Fehler" — der
+            # schlechteste Fall für ein Fenster, das Fehler zeigen soll.
+            self.table.setRowCount(0)
+            zeige_warnung(self, _("msg.hinweis"), _(
+                "fallback.msg.lesefehler", datei=e.datei,
+                ursache=_ursachen_text([e.ursache])))
+            return
         self.table.setRowCount(0)
         for r in rows:
             i = self.table.rowCount()
@@ -88,14 +102,30 @@ class FallbackProtokollFenster(QWidget):
         for row in rows:
             it = self.table.item(row, 0)
             if it is not None and it.data(Qt.ItemDataRole.UserRole) is not None:
-                ids.append(it.data(Qt.ItemDataRole.UserRole))
+                ids.append((it.data(Qt.ItemDataRole.UserRole), it.text()))
         return ids
 
     def _set_erledigt(self, an: bool):
-        ids = self._selected_ids()
-        if not ids:
+        ausgewaehlt = self._selected_ids()
+        if not ausgewaehlt:
             zeige_warnung(self, _("msg.hinweis"), _("fallback.msg.keine_auswahl"))
             return
-        for eid in ids:
-            fallback_log.set_erledigt(eid, an)
-        self._refresh()
+        # Alle versuchen, gesammelt melden — nicht beim ersten Fehler abbrechen.
+        fehlgeschlagen, ursachen = [], []
+        for eid, modul in ausgewaehlt:
+            try:
+                fallback_log.set_erledigt(eid, an)
+            except fallback_log.ProtokollFehler as e:
+                fehlgeschlagen.append(modul)
+                ursachen.append(e.ursache)
+        # Neu laden nur, wenn sich etwas geändert hat: Ist die Datei gesperrt,
+        # scheitert auch das Lesen — eine zweite Meldung zur selben Ursache.
+        if len(fehlgeschlagen) < len(ausgewaehlt):
+            self._refresh()
+        if fehlgeschlagen:
+            kopf = _("fallback.msg.nicht_erledigt") if an else _("fallback.msg.nicht_geoeffnet")
+            zeige_warnung(self, _("msg.hinweis"), _(
+                "fallback.msg.schreibfehler", kopf=kopf, anzahl=len(fehlgeschlagen),
+                gesamt=len(ausgewaehlt),
+                module=", ".join(dict.fromkeys(m or "?" for m in fehlgeschlagen)),
+                datei=fallback_log.ERROR_DB_PATH, ursache=_ursachen_text(ursachen)))

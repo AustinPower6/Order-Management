@@ -132,7 +132,7 @@ class EinheitenVerwaltung(QWidget):
 
         # Kopfzeile: zuletzt verwendetes Modell (Übersetzung/Rückübersetzung).
         self._modell_lbl = QLabel("")
-        self._modell_lbl.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._modell_lbl)
         lay.addWidget(self._modell_lbl)
 
         btn_bar = QHBoxLayout()
@@ -656,7 +656,7 @@ class _EinheitDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         title_key = "firma.einheit.dlg_bearbeiten" if e_id else "firma.einheit.dlg_neu"
         self.setWindowTitle(_(title_key))

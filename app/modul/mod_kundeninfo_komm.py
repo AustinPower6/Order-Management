@@ -209,7 +209,7 @@ class KommunikationDialog(settings.DialogSizeMixin, QDialog):
         btn_bar.addWidget(self._btn_kopie)
         btn_bar.addStretch()
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.setVisible(False)
         btn_bar.addWidget(self._dirty_dot)
         self._btn_vorschau = QPushButton(_("komm.btn.vorschau"))

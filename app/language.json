@@ -3314,6 +3314,22 @@
     "ts": "2026-06-25 17:24",
     "h": "f017c4ba976b"
   },
+  "fallback.msg.lesefehler": {
+    "de": "Die Fehlernachverfolgung konnte nicht gelesen werden. Die Liste bleibt deshalb leer, auch wenn Meldungen vorliegen.\n\nDatei: {datei}\nUrsache: {ursache}\n\nAbhilfe: Prüfen Sie, ob die Datei schreibgeschützt ist oder von einem anderen Programm offen gehalten wird — etwa vom Virenscanner oder von einem zweiten Programmfenster —, und versuchen Sie es dann erneut.\n\nIst die Datei beschädigt (Ursache „file is not a database“ oder „database disk image is malformed“), benennen Sie sie bei geschlossenem Programm um. Das Programm legt beim nächsten Fall eine neue an; die bisherigen Meldungen stehen dann nur noch in der umbenannten Datei.",
+    "en": "The error tracking could not be read. The list therefore stays empty, even if there are entries.\n\nFile: {datei}\nCause: {ursache}\n\nRemedy: check whether the file is read-only or held open by another program — such as the virus scanner or a second program window — and then try again.\n\nIf the file is damaged (cause \"file is not a database\" or \"database disk image is malformed\"), rename it while the program is closed. The program creates a new one on the next occurrence; the previous entries then remain only in the renamed file."
+  },
+  "fallback.msg.nicht_erledigt": {
+    "de": "Die Meldung konnte nicht als erledigt markiert werden.",
+    "en": "The entry could not be marked as done."
+  },
+  "fallback.msg.nicht_geoeffnet": {
+    "de": "Die Meldung konnte nicht wieder geöffnet werden.",
+    "en": "The entry could not be reopened."
+  },
+  "fallback.msg.schreibfehler": {
+    "de": "{kopf}\n\nBetroffen: {anzahl} von {gesamt} Einträgen ({module})\nDatei: {datei}\nUrsache: {ursache}\n\nAbhilfe: Prüfen Sie, ob die Datei schreibgeschützt ist oder von einem anderen Programm offen gehalten wird — etwa vom Virenscanner oder von einem zweiten Programmfenster —, und versuchen Sie es dann erneut.",
+    "en": "{kopf}\n\nAffected: {anzahl} of {gesamt} entries ({module})\nFile: {datei}\nCause: {ursache}\n\nRemedy: check whether the file is read-only or held open by another program — such as the virus scanner or a second program window — and then try again."
+  },
   "field.artikel.beschreibung": {
     "de": "Beschreibung:",
     "en": "Long description:",

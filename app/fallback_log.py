@@ -44,8 +44,14 @@ def _conn():
     """Öffnet (und initialisiert) die ERROR.DB. Aufrufer schließt selbst."""
     os.makedirs(os.path.dirname(ERROR_DB_PATH), exist_ok=True)
     c = sqlite3.connect(ERROR_DB_PATH)
-    c.row_factory = sqlite3.Row
-    c.executescript(_SCHEMA)
+    try:
+        c.row_factory = sqlite3.Row
+        c.executescript(_SCHEMA)
+    except Exception:
+        # Sonst bliebe die Verbindung offen und hielte die (unlesbare) Datei
+        # gesperrt — der Anwender könnte sie nicht einmal umbenennen.
+        c.close()
+        raise
     return c
 
 
@@ -80,9 +86,28 @@ def melde(modul, soll_wert, soll_quelle, benutzter_wert, hinweis, firma_nr=""):
             c.close()
 
 
-def liste(firma_nr, inkl_erledigt=False):
+class ProtokollFehler(Exception):
+    """Die ERROR.DB ließ sich nicht lesen oder beschreiben.
+
+    Nur für die Wege, auf denen der Anwender selbst handelt (Fenster der
+    Fehlernachverfolgung): Dort muss er den Grund erfahren, statt einer leeren
+    Liste („keine Fehler") oder eines wirkungslosen Knopfs. `ursache` ist der
+    Originaltext von SQLite — die ERROR.DB enthält keine Personendaten.
+    """
+
+    def __init__(self, ursache):
+        super().__init__(ursache)
+        self.ursache = str(ursache)
+        self.datei = ERROR_DB_PATH
+
+
+def liste(firma_nr, inkl_erledigt=False, *, streng=False):
     """Protokoll-Einträge einer Firmennummer (neueste zuerst). Ohne `inkl_erledigt`
-    nur die offenen. Liefert eine Liste von dicts; bei Fehler eine leere Liste."""
+    nur die offenen. Liefert eine Liste von dicts.
+
+    Bei einem Lesefehler: mit `streng` → `ProtokollFehler`, sonst eine leere
+    Liste (Warnung auf stderr). Still bleibt die Seitenleiste, die nur fragt, ob
+    es Offenes gibt; das Fenster liest streng und nennt den Grund."""
     c = None
     try:
         c = _conn()
@@ -92,6 +117,8 @@ def liste(firma_nr, inkl_erledigt=False):
         sql += " ORDER BY zuletzt_am DESC, id DESC"
         return [dict(r) for r in c.execute(sql, ((firma_nr or "").strip(),)).fetchall()]
     except Exception as ex:                                   # noqa: BLE001
+        if streng:
+            raise ProtokollFehler(ex) from ex
         print(f"WARNUNG: Fallback-Protokoll (liste) fehlgeschlagen: {ex}", file=sys.stderr)
         return []
     finally:
@@ -100,7 +127,9 @@ def liste(firma_nr, inkl_erledigt=False):
 
 
 def set_erledigt(eintrag_id, an=True):
-    """Markiert einen Eintrag als erledigt (an=True) bzw. wieder offen (an=False)."""
+    """Markiert einen Eintrag als erledigt (an=True) bzw. wieder offen (an=False).
+    Ist die ERROR.DB nicht beschreibbar → `ProtokollFehler` (bis 2026-10-20 still:
+    „Als erledigt markieren" verpuffte ohne Grund)."""
     c = None
     try:
         c = _conn()
@@ -108,7 +137,7 @@ def set_erledigt(eintrag_id, an=True):
                   (1 if an else 0, int(eintrag_id)))
         c.commit()
     except Exception as ex:                                   # noqa: BLE001
-        print(f"WARNUNG: Fallback-Protokoll (set_erledigt) fehlgeschlagen: {ex}", file=sys.stderr)
+        raise ProtokollFehler(ex) from ex
     finally:
         if c is not None:
             c.close()

@@ -297,7 +297,7 @@ class KontoFeld(QWidget):
         self._such_btn.clicked.connect(self._open_suche)
         import theme
         self._bez_lbl = QLabel("")
-        self._bez_lbl.setStyleSheet(f"color: {theme.color('status_muted')}; font-style: italic;")
+        theme.stil(self._bez_lbl, lambda: f"color: {theme.color('status_muted')}; font-style: italic;")
         lay.addWidget(self._edit)
         lay.addWidget(self._such_btn)
         lay.addWidget(self._bez_lbl)

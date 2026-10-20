@@ -124,7 +124,7 @@ class BenutzerVerwaltungDialog(settings.DialogSizeMixin, QDialog):
 
         hint = QLabel(_("benutzer.absender_hinweis"))
         hint.setWordWrap(True)
-        hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint)
         lay.addWidget(hint)
 
         self._geloescht_cb = QCheckBox(_("benutzer.geloeschte_anzeigen"))
@@ -392,7 +392,7 @@ class BenutzerEditDialog(settings.DialogSizeMixin, QDialog):
         btn_bar.setContentsMargins(0, 4, 0, 0)
         btn_bar.addStretch()
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         btn_bar.addWidget(self._dirty_dot)
         b_save = QPushButton(_("btn.speichern"))

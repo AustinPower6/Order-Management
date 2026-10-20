@@ -1169,7 +1169,7 @@ class UebersetzungTextDialog:
                 self.resize(640, 320)
 
                 self._dirty_dot = QLabel("●")
-                self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+                theme.stil(self._dirty_dot, theme.dirty_dot_style)
                 self._dirty_dot.hide()
 
                 lay = QVBoxLayout(self)

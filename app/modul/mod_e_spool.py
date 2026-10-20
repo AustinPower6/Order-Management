@@ -384,7 +384,7 @@ class ESpoolFenster(QWidget):
 
         if "error_msg" in ergebnis:
             lbl = QLabel(_("dlg.validierung_verbindungsfehler"))
-            lbl.setStyleSheet(theme.error_label_style())
+            theme.stil(lbl, theme.error_label_style)
             v.addWidget(lbl)
             detail = QTextEdit()
             detail.setReadOnly(True)
@@ -401,11 +401,11 @@ class ESpoolFenster(QWidget):
 
             if ergebnis.get("ok"):
                 lbl_ok = QLabel(_("dlg.validierung_ok"))
-                lbl_ok.setStyleSheet(f"color: {theme.color('glyph_on')}; font-size: 14px;")
+                theme.stil(lbl_ok, lambda: f"color: {theme.color('glyph_on')}; font-size: 14px;")
                 v.addWidget(lbl_ok)
             else:
                 lbl_fehl = QLabel(_("dlg.validierung_nicht_ok"))
-                lbl_fehl.setStyleSheet(f"color: {theme.color('error_fg')}; font-size: 14px;")
+                theme.stil(lbl_fehl, lambda: f"color: {theme.color('error_fg')}; font-size: 14px;")
                 v.addWidget(lbl_fehl)
 
             meldungen = ergebnis.get("meldungen") or []

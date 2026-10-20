@@ -53,7 +53,7 @@ class AdresseTab(SimpleFormTab):
         form.addRow(_("firma.parameter.iban"), iban_row)
         form.addRow(_("firma.parameter.bic"), bic_e)
         self._bank_hint = QLabel("")
-        self._bank_hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._bank_hint)
         form.addRow("", self._bank_hint)
         iban_e.editingFinished.connect(
             lambda: ui_widgets.resolve_iban_in_felder(

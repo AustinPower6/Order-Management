@@ -102,7 +102,7 @@ class ZahlungskonditionenTab(QWidget):
         lay.addWidget(self.table)
 
         hinweis = QLabel(_("firma.zk.hinweis_tage"))
-        hinweis.setStyleSheet(theme.small_hint_style())
+        theme.stil(hinweis, theme.small_hint_style)
         lay.addWidget(hinweis)
 
         if _locks_col_visible():

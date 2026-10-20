@@ -16,6 +16,9 @@ class ParameterTab(QWidget):
     def __init__(self, db):
         super().__init__()
         self.db = db
+        # Indizes der bereits geladenen Unter-Reiter (verzögertes Laden, siehe
+        # `_refresh`) — dasselbe Muster wie im Firmenstamm selbst.
+        self._geladen: set[int] = set()
         self._build()
 
     def _build(self):
@@ -50,6 +53,12 @@ class ParameterTab(QWidget):
         self._subtabs.addTab(self._wrap(self._laender), _("firma.tab.laender"))
 
         lay.addWidget(self._subtabs)
+        # In der Reihenfolge der Reiter oben.
+        self._reiter_refresh = (
+            self._steuerung.refresh, self._adresspruefung.refresh,
+            self._warengruppen._refresh, self._einheiten.refresh,
+            self._marken.refresh, self._sprachen.refresh, self._laender.refresh)
+        self._subtabs.currentChanged.connect(self._lade_reiter)
 
     def _wrap(self, w):
         """Tab-Inhalt mit etwas Rand, damit Tabelle/Buttons nicht am Reiter kleben."""
@@ -60,10 +69,20 @@ class ParameterTab(QWidget):
         return outer
 
     def _refresh(self):
-        self._steuerung.refresh()
-        self._adresspruefung.refresh()
-        self._warengruppen._refresh()
-        self._einheiten.refresh()
-        self._marken.refresh()
-        self._sprachen.refresh()
-        self._laender.refresh()
+        """Firma gewechselt (oder Firmenstamm neu geladen).
+
+        Alle Unter-Reiter gelten wieder als ungeladen; sofort geladen wird nur der
+        **sichtbare**, die übrigen beim Anklicken (`_lade_reiter`). Bis 2026-10-20
+        lud dieser Aufruf alle sieben — für Reiter, die die meisten Anwender nie
+        aufschlagen. Ein nicht sichtbarer Reiter kann nichts Veraltetes zeigen:
+        Wird er sichtbar, ist er frisch geladen.
+        """
+        self._geladen.clear()
+        self._lade_reiter(self._subtabs.currentIndex())
+
+    def _lade_reiter(self, idx: int):
+        """Einen Unter-Reiter laden, sofern noch nicht geschehen."""
+        if idx < 0 or idx in self._geladen or idx >= len(self._reiter_refresh):
+            return
+        self._geladen.add(idx)
+        self._reiter_refresh[idx]()

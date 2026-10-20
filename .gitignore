@@ -25,6 +25,12 @@ app/backups/
 
 # Fehler-Logs lokal
 ERROR.txt
+# Fehlerausgabe je Start (Start.cmd, im Fehlerfall ins startfehler.log übernommen)
+app/daten/fehler_*.txt
+# Zwischendateien beim atomaren Schreiben und aufbewahrte unlesbare Einstellungen
+app/*.json.*.tmp
+app/daten/*.json.*.tmp
+app/*.json.defekt
 
 # Lokale Einstellungen (Fenster-Geometrie, Theme)
 app/settings.json

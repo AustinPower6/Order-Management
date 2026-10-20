@@ -581,7 +581,7 @@ class FirmaFenster(QWidget):
         form.addRow(_("firma.gj.jahr"), jahr_spin)
 
         hinweis = QLabel(_("firma.gj.naechste_nummer", n=letzte_nr + 1))
-        hinweis.setStyleSheet(theme.small_hint_style())
+        theme.stil(hinweis, theme.small_hint_style)
         form.addRow("", hinweis)
 
         lay.addLayout(form)
@@ -669,7 +669,7 @@ class FirmaFenster(QWidget):
             sprache_name = i18n.label(i18n.current())
             hint = QLabel(_("firma.std.info_neu_laden", sprache=sprache_name))
             hint.setWordWrap(True)
-            hint.setStyleSheet(theme.small_hint_style() + " padding: 4px;")
+            theme.stil(hint, lambda: theme.small_hint_style() + " padding: 4px;")
             lay.addWidget(hint)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |

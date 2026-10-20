@@ -23,11 +23,11 @@ class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
 
         # Warnung
         warning = QLabel(_("firma.loeschen.warnung"))
-        warning.setStyleSheet(
+        theme.stil(warning, lambda: (
             f"color: {theme.color('error_fg')}; font-weight: bold; padding: 8px; "
             f"background: {theme.color('hover_danger_bg')}; "
             f"border: 1px solid {theme.color('error_fg')}; "
-            "border-radius: 4px;")
+            "border-radius: 4px;"))
         warning.setWordWrap(True)
         lay.addWidget(warning)
 

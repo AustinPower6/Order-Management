@@ -73,7 +73,7 @@ class AnbindungFibuTab(QWidget):
         form.addRow(_("field.datev_mandanten_nr"), self._mandant_edit)
 
         hint = QLabel(_("dlg.buchungsexport.datev_hinweis"))
-        hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint)
         form.addRow("", hint)
 
         # ── Geschäftsjahr ──────────────────────────────────────────────────────

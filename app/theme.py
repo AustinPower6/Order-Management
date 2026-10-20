@@ -438,10 +438,14 @@ def _build_stylesheet(palette: dict) -> str:
 
 
 def apply(app, dark):
-    """Apply dark or light theme to the application."""
+    """Apply dark or light theme to the application.
+
+    Danach färbt `neu_faerben()` alle Widgets mit eigenem Stylesheet nach — die
+    ignorieren das App-Stylesheet (siehe `stil`)."""
     palette = DARK_PALETTE if dark else LIGHT_PALETTE
     app.setStyleSheet(_build_stylesheet(palette))
     settings.set_theme_dark(dark)
+    neu_faerben()
 
 
 def load_and_apply(app):
@@ -451,13 +455,46 @@ def load_and_apply(app):
     return dark
 
 
+#: Schriftgröße der Hinweistexte in Pixeln. Steht hier **einmal**, weil sowohl
+#: das Stylesheet als auch die Luft darüber und darunter davon abhängen.
+HINWEIS_SCHRIFT_PX = 11
+
+_hinweis_luft = None
+
+
+def hinweis_luft() -> int:
+    """Ein **Drittel** Zeilenhöhe der Hinweisschrift — der Abstand ober- und
+    unterhalb (Vorgabe des Anwenders 2026-10-10, globale Regel 9).
+
+    **Gerechnet, nicht geraten:** Eine feste Pixelzahl stimmte bei anderer
+    Schriftgröße oder Bildschirmauflösung nicht mehr. Einmal ermittelt und
+    gemerkt — die Schrift wechselt zur Laufzeit nicht.
+    """
+    global _hinweis_luft
+    if _hinweis_luft is None:
+        from PyQt6.QtGui import QFont, QFontMetrics
+        f = QFont()
+        f.setPixelSize(HINWEIS_SCHRIFT_PX)
+        _hinweis_luft = round(QFontMetrics(f).height() / 3)
+    return _hinweis_luft
+
+
 def hint_label_style():
-    """Liefert ein theme-aware StyleSheet für Hinweis-Labels."""
+    """Liefert ein theme-aware StyleSheet für Hinweis-Labels.
+
+    **Nicht direkt setzen**, sondern über `theme.hinweis(label)` — nur dort
+    bekommt das Label auch die richtige Höhe und folgt dem Theme-Wechsel.
+
+    Der **Außenabstand** (`margin`) hält die farbige Fläche vom Nachbarn fern,
+    ohne sie selbst zu vergrößern: Der Kasten umschließt den Text, die Luft
+    liegt draußen. Ein Innenabstand täte das Gegenteil.
+    """
     palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
     bg = palette["hint_bg"]
     fg = palette["hint_fg"]
     return (f"QLabel {{ background-color: {bg}; color: {fg}; "
-            f"font-size: 11px; padding: 2px 6px; border-radius: 3px; }}")
+            f"font-size: {HINWEIS_SCHRIFT_PX}px; padding: 2px 6px; "
+            f"margin: {hinweis_luft()}px 0; border-radius: 3px; }}")
 
 
 def error_text_style():
@@ -641,3 +678,180 @@ def sidebar_button_style(active, dark, alert=False):
         background: {hover_bg};
         color: {hover_txt};
     }}"""
+
+
+# ── Theme-abhängige Widget-Stylesheets: stil / stil_frei / hinweis ─────
+#
+# **Das Problem:** `apply()` tauscht das **App-Stylesheet**. Ein Widget, dem ein
+# eigenes Stylesheet zugewiesen wurde, ignoriert das — seines ist spezifischer
+# und bleibt auf den Farben stehen, mit denen es gesetzt wurde. Im Bestand
+# betraf das am 2026-10-20 106 Stellen in 44 Dateien (übernommen aus dem
+# Multi-Ableger, dort gemeldet: „schaltet nicht von Dunkel auf Hell um").
+#
+# Der Ausweg ist nicht, beim Umschalten die Fenster zu durchsuchen — welche
+# Funktion ein Stylesheet erzeugt hat, steht nirgends im Widget. Stattdessen
+# merkt sich `stil()` **die erzeugende Funktion** und ruft sie beim nächsten
+# Wechsel erneut; die Farben kommen dann aus der neuen Palette, weil die
+# Stilfunktionen `settings.get_theme_dark()` bei jedem Aufruf lesen.
+#
+# **Schwache Verweise**, damit ein geschlossenes Fenster nicht hier hängen
+# bleibt. Ein Widget, dessen C++-Teil schon fort ist, meldet Qt mit
+# `RuntimeError` — es fällt dann ebenfalls heraus.
+import weakref                                                  # noqa: E402
+
+from PyQt6.QtCore import QEvent, QObject                        # noqa: E402
+
+_GEMERKT = []
+
+
+def _setze(widget, funktion) -> bool:
+    """Stylesheet setzen. `False`, wenn das Widget nicht mehr lebt."""
+    try:
+        widget.setStyleSheet(funktion())
+        return True
+    except RuntimeError:
+        return False
+
+
+def stil(widget, funktion):
+    """Ein theme-abhängiges Stylesheet setzen — und beim Wechsel nachziehen.
+
+    Statt ``w.setStyleSheet(theme.error_label_style())`` heißt es
+    ``theme.stil(w, theme.error_label_style)``: **die Funktion**, nicht ihr
+    Ergebnis. Nur so lässt sie sich beim Theme-Wechsel erneut aufrufen.
+    Hinweistexte gehen über `hinweis` (Stil **und** Höhe).
+
+    Für zusammengesetzte Angaben ein Lambda::
+
+        theme.stil(btn, lambda: theme.small_hint_style() + " border: none;")
+        theme.stil(lbl, lambda farbe=farbe: f"color: {theme.color(farbe)};")
+
+    **Das Lambda darf das Widget nicht einschließen** (auch nicht über
+    ``self``) — sonst hielte die Merkliste es am Leben. Werte, die es braucht,
+    als Default-Argument binden.
+
+    Liefert das Widget zurück. **Je Widget bleibt nur der letzte Eintrag**:
+    Viele Stellen färben dasselbe Widget bei jedem Auffrischen neu ein; ohne
+    Ersetzung wüchse die Liste mit jedem Listenaufbau.
+    """
+    _setze(widget, funktion)
+    _GEMERKT[:] = [(r, f) for r, f in _GEMERKT
+                   if (w := r()) is not None and w is not widget]
+    _GEMERKT.append((weakref.ref(widget), funktion))
+    return widget
+
+
+def _leer() -> str:
+    return ""
+
+
+def stil_frei(widget):
+    """Ein theme-abhängiges Stylesheet wieder abnehmen — statt
+    ``setStyleSheet("")``. Ein rohes ``setStyleSheet("")`` leerte die Anzeige,
+    ließe aber den Eintrag stehen, und `neu_faerben()` holte die alte Färbung
+    beim nächsten Wechsel zurück."""
+    return stil(widget, _leer)
+
+
+def neu_faerben() -> int:
+    """Alle gemerkten Widgets neu einfärben (aus `apply`). Liefert ihre Zahl."""
+    lebend = [(r, f) for r, f in _GEMERKT
+              if (w := r()) is not None and _setze(w, f)]
+    _GEMERKT[:] = lebend
+    return len(lebend)
+
+
+class _HinweisHoehe(QObject):
+    """Hält ein Hinweis-Label auf genau der Höhe, die sein Text braucht
+    (globale Regel 9).
+
+    `QLabel` mit Wortumbruch schätzt seinen `sizeHint` für eine *angenommene*
+    Breite, nicht für die tatsächliche — das Layout nimmt die Schätzung, und der
+    Text steht in einer viel zu großen farbigen Fläche (im Ableger gemessen:
+    124 px statt 34 px). Die SizePolicy hilft nicht, der Fehler steckt im
+    `sizeHint` selbst. Deshalb: bei jeder Breitenänderung **Fessel lösen,
+    messen, setzen**.
+    """
+
+    #: Breite, für die die Höhe zuletzt gerechnet wurde.
+    _breite = -1
+    #: Text, für den die Höhe zuletzt gerechnet wurde.
+    _text = None
+    #: Wiedereintrittssperre — **unverzichtbar**: `setFixedHeight` löst selbst
+    #: ein Resize aus; ohne Sperre stürzt das Programm ohne Meldung ab.
+    _laeuft = False
+
+    def eventFilter(self, obj, ereignis):
+        typ = ereignis.type()
+        if typ in (QEvent.Type.Resize, QEvent.Type.Show, QEvent.Type.FontChange):
+            self.nachziehen(obj)
+        elif typ == QEvent.Type.Paint and obj.text() != self._text:
+            # Textwechsel: `QLabel` hat kein Signal dafür, und viele Stellen
+            # setzen den Text erst **nach** `hinweis()`. Beim Zeichnen fällt es
+            # auf; neu gerechnet wird nachgelagert — eine Höhenänderung mitten
+            # im Zeichnen brächte Qt durcheinander.
+            from PyQt6.QtCore import QTimer
+            QTimer.singleShot(0, lambda: self._nachziehen_falls_lebt(obj))
+        return False
+
+    def _nachziehen_falls_lebt(self, lbl):
+        try:
+            self.nachziehen(lbl, zwingen=True)
+        except RuntimeError:
+            pass                    # Label inzwischen geschlossen
+
+    def nachziehen(self, lbl, zwingen: bool = False):
+        """Höhe auf den Bedarf des Textes bei der aktuellen Breite setzen.
+        `zwingen`, wenn sich der **Text** geändert hat (Breite gleich, Bedarf nicht)."""
+        if self._laeuft:
+            return
+        breite = lbl.width()
+        if breite <= 0 or (breite == self._breite and not zwingen):
+            return
+        self._text = lbl.text()
+        from PyQt6.QtWidgets import QWIDGETSIZE_MAX
+        self._laeuft = True
+        try:
+            # **Zuerst die eigene Fessel lösen.** `setFixedHeight` setzt Mindest-
+            # *und* Höchstmaß, und `heightForWidth` liefert nie weniger als das
+            # Mindestmaß — ohne diese zwei Zeilen bekäme die Wache ihren eigenen
+            # letzten Wert zurück, und der Text könnte nur wachsen, nie schrumpfen.
+            lbl.setMinimumHeight(0)
+            lbl.setMaximumHeight(QWIDGETSIZE_MAX)
+            if lbl.wordWrap() and lbl.hasHeightForWidth():
+                noetig = lbl.heightForWidth(breite)
+            else:
+                noetig = lbl.sizeHint().height()
+            if noetig <= 0:
+                return
+            # Ohne Zuschlag: `heightForWidth` enthält Außenabstand und
+            # Polsterung des Stylesheets bereits.
+            lbl.setFixedHeight(noetig)
+            self._breite = breite
+        finally:
+            self._laeuft = False
+
+
+def hinweis(widget):
+    """Ein Hinweistext: Stil **und** Höhe in einem Handgriff (globale Regel 9).
+
+    Jeder Hinweistext geht durch diese eine Funktion — `test_ui_regeln.py`
+    findet an der Quelle, wer `hint_label_style()` direkt setzt. Liefert das
+    Widget zurück (``form.addRow("", theme.hinweis(QLabel(…)))``). Ein Widget,
+    das kein `QLabel` ist, wird nur gefärbt.
+
+    Auch beim zweiten Aufruf wird neu gerechnet: Stellen, die den **Text**
+    austauschen, rufen `hinweis` danach erneut.
+    """
+    from PyQt6.QtWidgets import QLabel
+    stil(widget, hint_label_style)
+    if not isinstance(widget, QLabel):
+        return widget
+    wache = getattr(widget, "_hinweis_hoehe", None)
+    if wache is None:
+        # Elternschaft an das Label: Der Filter stirbt mit ihm.
+        wache = _HinweisHoehe(widget)
+        widget._hinweis_hoehe = wache
+        widget.installEventFilter(wache)
+    wache.nachziehen(widget, zwingen=True)
+    return widget

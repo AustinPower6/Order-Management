@@ -131,7 +131,7 @@ class StandardtexteTab(SimpleFormTab):
             # Fokus entziehen, sonst wüsste _insert_marker kein Ziel.
             btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-            btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
+            theme.stil(btn, lambda: theme.hint_label_style() + " border: none; padding: 1px 6px;")
             btn.setToolTip(f"{marker} – {get_marker_beschreibung(marker)}")
             btn.clicked.connect(lambda checked=False, m=marker: self._insert_marker(m))
             lay.addWidget(btn)
@@ -179,7 +179,7 @@ class StandardtexteTab(SimpleFormTab):
             layout.addWidget(box)
 
         hinweis = QLabel(_("firma.std.hinweis"))
-        hinweis.setStyleSheet(theme.small_hint_style())
+        theme.stil(hinweis, theme.small_hint_style)
         layout.addWidget(hinweis)
 
         # Marker-Klick fügt in das zuletzt fokussierte Textfeld ein (siehe

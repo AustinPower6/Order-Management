@@ -22,7 +22,7 @@ class BasiszinssatzTab(SimpleTableTab):
     def _build_header(self, lay):
         hinweis = QLabel(_("firma.bz.hinweis"))
         hinweis.setWordWrap(True)
-        hinweis.setStyleSheet(theme.small_hint_style() + " padding: 4px;")
+        theme.stil(hinweis, lambda: theme.small_hint_style() + " padding: 4px;")
         lay.addWidget(hinweis)
 
     def _build_table(self, lay):

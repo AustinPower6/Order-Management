@@ -77,7 +77,7 @@ class AdressPruefungTab(QWidget):
         lay.addWidget(form_widget)
 
         hint = QLabel(_("firma.adresspruefung.hint"))
-        hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hint)
         hint.setWordWrap(True)
         lay.addWidget(hint)
 
@@ -171,13 +171,13 @@ class AdressPruefungTab(QWidget):
             self._lbl_attest.setText(_("firma.adresspruefung.attest_status_ok",
                                        user=attest.confirmed_by,
                                        datum=attest.confirmed_at.replace("T", " ")[:16]))
-            self._lbl_attest.setStyleSheet(theme.hint_label_style())
+            theme.hinweis(self._lbl_attest)
         else:
             self._lbl_attest.setText(_("firma.adresspruefung.attest_status_fehlt"))
             if self._cmb_provider.currentData() == "google":
-                self._lbl_attest.setStyleSheet(theme.error_text_style())
+                theme.stil(self._lbl_attest, theme.error_text_style)
             else:
-                self._lbl_attest.setStyleSheet(theme.hint_label_style())
+                theme.hinweis(self._lbl_attest)
 
     def _erfasse_attestierung(self):
         """Öffnet den Attestierungs-Dialog und hängt bei OK einen neuen Eintrag an
@@ -220,7 +220,7 @@ class AttestierungDialog(settings.DialogSizeMixin, QDialog):
 
         erfasser = QLabel(_("firma.adresspruefung.attest_erfasser",
                             user=settings.get_current_username()))
-        erfasser.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(erfasser)
         lay.addWidget(erfasser)
 
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |

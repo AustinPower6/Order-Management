@@ -328,7 +328,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # nicht; rot bei Ablehnung > 6).
         hinweis_zeile = QHBoxLayout()
         self._anzahl_label = QLabel("")
-        self._anzahl_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
+        theme.stil(self._anzahl_label, lambda: f"color: {theme.color('hint_fg')};")
         self._anzahl_label.setToolTip(_("dlg.sprachdatei.anzahl_tt"))
         hinweis_zeile.addWidget(self._anzahl_label)
         self._beherrschung_label = QLabel("")
@@ -443,7 +443,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         _connect_save_columns(self._table, _COLS_KEY)
 
         self._fortschritt = QLabel("")
-        self._fortschritt.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._fortschritt)
         lay.addWidget(self._fortschritt)
 
         # Button-Reihenfolge signalisiert die typische Bearbeitungsabfolge:
@@ -576,7 +576,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         Ablehnung (> Schwelle / unklar / Fehler), sonst dezent."""
         if res.get("fehler"):
             self._beherrschung_label.setText(_("dlg.sprachdatei.beherrschung_fehler"))
-            self._beherrschung_label.setStyleSheet(f"color: {theme.color('error_fg')};")
+            theme.stil(self._beherrschung_label, lambda: f"color: {theme.color('error_fg')};")
             self._beherrschung_label.setToolTip(res["fehler"])
             return
         def _teil(eintrag):
@@ -585,8 +585,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if res.get("llm2"):
             noten = f"{noten} / {_teil(res['llm2'])}"
         self._beherrschung_label.setText(_("dlg.sprachdatei.beherrschung", wert=noten))
-        farbe = theme.color("rating_sehr_gut") if res.get("ok") else theme.color("error_fg")
-        self._beherrschung_label.setStyleSheet(f"color: {farbe};")
+        rolle = "rating_sehr_gut" if res.get("ok") else "error_fg"
+        theme.stil(self._beherrschung_label,
+                   lambda rolle=rolle: f"color: {theme.color(rolle)};")
         # Tooltip mit den Roh-Antworten je Modell.
         teile = []
         for eintrag in (res.get("llm1"), res.get("llm2")):

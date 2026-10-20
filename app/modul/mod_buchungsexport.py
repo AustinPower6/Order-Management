@@ -533,7 +533,7 @@ class _NeuerExportDialog(settings.DialogSizeMixin, QDialog):
         lay.addLayout(form)
 
         self._hinweis = QLabel()
-        self._hinweis.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._hinweis)
         self._hinweis.setWordWrap(True)
         lay.addWidget(self._hinweis)
         self._jahr_cb.currentIndexChanged.connect(self._update_hinweis)

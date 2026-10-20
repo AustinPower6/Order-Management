@@ -22,7 +22,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self._lock_freigegeben = False
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         self.neu = not klasse_id
         self.setWindowTitle("Klasse umbenennen" if klasse_id else "Neue MwSt-Klasse")
@@ -212,7 +212,7 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         self._lock_freigegeben = False
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        theme.stil(self._dirty_dot, theme.dirty_dot_style)
         self._dirty_dot.hide()
         self.setWindowTitle("Satz bearbeiten" if satz_id else "Neuer Satz")
         # Nur Breite fest; feste Höhe würde die Felder stauchen (Text abgeschnitten).

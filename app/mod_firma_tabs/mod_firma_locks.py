@@ -28,7 +28,7 @@ class LocksTab(QWidget):
 
         info = QLabel(_("firma.locks.info"))
         info.setWordWrap(True)
-        info.setStyleSheet(f"color: {theme.color('hint_small_fg')}; padding: 6px;")
+        theme.stil(info, lambda: f"color: {theme.color('hint_small_fg')}; padding: 6px;")
         lay.addWidget(info)
 
         btn_bar = QHBoxLayout()
@@ -40,7 +40,7 @@ class LocksTab(QWidget):
         btn_bar.addWidget(self._b_release)
         btn_bar.addStretch()
         self._admin_lbl = QLabel("")
-        self._admin_lbl.setStyleSheet(theme.error_label_style())
+        theme.stil(self._admin_lbl, theme.error_label_style)
         btn_bar.addWidget(self._admin_lbl)
         lay.addLayout(btn_bar)
 

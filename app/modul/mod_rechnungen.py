@@ -67,11 +67,11 @@ class RechnungenFenster(BelegListeFenster):
                     enable = True
         if enable:
             self._b_storno.setEnabled(True)
-            self._b_storno.setStyleSheet("")
+            theme.stil_frei(self._b_storno)
             self._b_storno.setToolTip("")
         else:
             self._b_storno.setEnabled(False)
-            self._b_storno.setStyleSheet(f"color: {theme.color('status_muted')};")
+            theme.stil(self._b_storno, lambda: f"color: {theme.color('status_muted')};")
             self._b_storno.setToolTip(tooltip)
 
     def _on_selection_changed(self):

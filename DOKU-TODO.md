@@ -23,6 +23,22 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-10-20) **Hell/Dunkel, Hinweistexte, Dialoge, Fehlernachverfolgung, Start.cmd.**
+      - Beim Umschalten Hell/Dunkel ziehen jetzt alle eingefärbten Felder mit
+        (Hinweise, Fehlertexte, gelbe Ersatzwert-Felder, Dirty-Punkte …).
+      - Hinweistexte sind so hoch wie ihr Text, mit einem Drittel Zeile Abstand.
+      - Dialoge bleiben nach dem Minimieren dort, wo man sie hingezogen hat.
+      - Lange Texte stehen in allen Dialogen und Firmenstamm-Reitern von vorn.
+      - Fehlernachverfolgung: Ist die ERROR.DB nicht les- oder beschreibbar,
+        nennt das Fenster Datei, Ursache und Abhilfe (statt leerer Liste).
+      - Start.cmd: zwei Programmstarts nebeneinander möglich; bei einem Fehler
+        Code (auch hexadezimal), Ursache und „von außen beendet" (Herunterfahren,
+        Strg+C); Protokoll in `app\daten\startfehler.log` mit Datum und Uhrzeit.
+  - Code: `app/theme.py`, `app/settings.py` (DialogSizeMixin), `app/ui_widgets.py`,
+    `app/fallback_log.py`, `app/modul/mod_fallback_protokoll.py`, `Start.cmd`
+  - Doku: Kapitel **Bedienung/Darstellung** (Hell/Dunkel), **Fehlernachverfolgung**
+    und **Installation/Start** (Start.cmd, startfehler.log) ergänzen.
+
 - [ ] (2026-10-20) **Vergebene Kunden-/Artikelnummer: Meldung statt Programmende.**
       Ist die Nummer schon vergeben – oft an einen gelöschten Datensatz –, nennt
       die Meldung das und den Weg (Haken „Gelöscht anzeigen" → wiederherstellen,

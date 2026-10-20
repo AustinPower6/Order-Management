@@ -47,7 +47,7 @@ class ArchivWarnungFenster(QWidget):
     def _build(self):
         lay = QVBoxLayout(self)
         hinweis = QLabel(_("archiv.warn.hinweis"))
-        hinweis.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(hinweis)
         hinweis.setWordWrap(True)
         lay.addWidget(hinweis)
 

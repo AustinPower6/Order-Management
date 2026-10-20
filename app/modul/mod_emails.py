@@ -71,10 +71,10 @@ class EmailsFenster(EmailProviderMixin, QWidget):
         filter_bar.addWidget(self._status_cb)
 
         self._fehler_lbl = QLabel(_("email.fehler_vorhanden"))
-        self._fehler_lbl.setStyleSheet(
+        theme.stil(self._fehler_lbl, lambda: (
             f"QLabel {{ background-color: {theme.color('status_error')}; "
             f"color: {theme.color('fg_on_accent')}; "
-            "padding: 2px 8px; font-weight: bold; border-radius: 3px; }")
+            "padding: 2px 8px; font-weight: bold; border-radius: 3px; }"))
         self._fehler_lbl.setVisible(False)
         filter_bar.addWidget(self._fehler_lbl)
 

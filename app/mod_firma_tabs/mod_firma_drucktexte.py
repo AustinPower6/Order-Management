@@ -196,14 +196,14 @@ class DrucktexteTab(SimpleFormTab):
 
         # Kopfzeile: zuletzt verwendetes Modell (Übersetzung/Rückübersetzung).
         self._modell_lbl = QLabel("")
-        self._modell_lbl.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(self._modell_lbl)
         main_lay.addWidget(self._modell_lbl)
 
         # Hinweis: Standard-Drucktexte sind read-only (zentral über den Sprach-Generator);
         # hier werden nur die Konditions-Bezeichnungen je Sprache gepflegt.
         _hint = QLabel(_("firma.druck.standard_zentral_hinweis"))
         _hint.setWordWrap(True)
-        _hint.setStyleSheet(theme.hint_label_style())
+        theme.hinweis(_hint)
         main_lay.addWidget(_hint)
 
         # Den Scrollbereich stellt der Firmenstamm zentral bereit
@@ -606,14 +606,13 @@ class DrucktexteTab(SimpleFormTab):
         übersetzt) sowie den Zähler im Filter-Label aktualisieren."""
         self._unstimmig_keys = set()
         self._pruef_keys = set()
-        rot = theme.error_text_style()
         for key, rf in self._rueck_felder.items():
             unstimmig = self._ist_unstimmig(key)
             if unstimmig:
                 self._unstimmig_keys.add(key)
-                rf.setStyleSheet(rot)
+                theme.stil(rf, theme.error_text_style)
             else:
-                rf.setStyleSheet("")
+                theme.stil_frei(rf)
             if unstimmig or self._ohne_uebersetzung(key):
                 self._pruef_keys.add(key)
         self._chk_filter.setText(
@@ -626,14 +625,13 @@ class DrucktexteTab(SimpleFormTab):
         (`_ohne_uebersetzung`) — genau diese Felder lösen beim Druck einen Fallback aus
         (die Firmensprache wird ersatzweise gedruckt). In der Firmensprache-Ansicht
         liefert `_ohne_uebersetzung` False → alle Markierungen werden zurückgesetzt."""
-        gelb = theme.fallback_style()
         tt = _("firma.druck.fallback_feld_tt")
         for key, e in self._felder.items():
             if self._ohne_uebersetzung(key):
-                e.setStyleSheet(gelb)
+                theme.stil(e, theme.fallback_style)
                 e.setToolTip(tt)
             else:
-                e.setStyleSheet("")
+                theme.stil_frei(e)
                 e.setToolTip("")
 
     def _apply_filter(self):
