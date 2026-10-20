@@ -1,3 +1,27 @@
+## 2026-10-20 10:41 — Absturz beim Mahnen einer kopierten Rechnung behoben
+
+**Anlass:** Abgleich mit dem Multi-Ableger (dort `f293c5e`, nur gelesen). Seit
+DB v80 trägt eine Korrekturrechnung („Stornorechnung → Bearbeiten“)
+`rechnungen.kopie_von_rechnung_id`. `db_belege.rechnung_zu_mahnung` übernimmt
+den Rechnungssatz und entfernt die in `mahnungen` fehlenden Spalten über eine
+von Hand gepflegte Liste — die neue Spalte stand nicht darin. Mahnen einer
+kopierten Rechnung endete mit `table mahnungen has no column named
+kopie_von_rechnung_id`. Noch kein Echtfall (0 kopierte Rechnungen).
+
+**Geändert:**
+- `app/db/db_belege.py::rechnung_zu_mahnung`: `kopie_von_rechnung_id` in die
+  Ausschlussliste.
+- `app/test_beleg_konvertierung.py` (neu): vergleicht für alle fünf Wandlungen
+  die Spalten aus `_SCHEMA_SQL` (DB im Speicher) mit dem Quelltext der Funktion —
+  eine künftige Spalte fällt im Test auf statt beim Anwender. Bewusst keine stille
+  Filterung in `_save_beleg` (lauter Absturz statt stillem Datenverlust).
+
+**Verifikation:** Test gegen den alten Stand: meldet genau
+`['kopie_von_rechnung_id']`, Exit 1; danach 5/5. Realfall auf DB-Kopie, Firma 990:
+RE2026-0007 als Kopie markiert → alter Stand `OperationalError`, neuer Stand
+Mahnung MA2026-0030 Stufe 1. `ruff` sauber, `audit_firma_id` ohne Fehler.
+**Offen:** „Stornierte Mahnungen zählen weiter mit“ (Ableger `2949ae6`) — eigener Plan.
+
 ## 2026-10-20 10:27 — Firmenstamm öffnet schneller (8,5 s → 1,1 s)
 
 **Anlass:** Auf einem Laptop war der Firmenstamm sehr träge. Gemessen am

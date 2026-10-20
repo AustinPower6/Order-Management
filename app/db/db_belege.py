@@ -880,6 +880,11 @@ class DBBelegeMixin:
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
                    'firma_name', 'vorname', 'nachname', 'erstellungsdatum',
                    'festgeschrieben', 'storno_von_rechnung_id', 'storniert_durch_id',
+                   # kopie_von_rechnung_id gibt es nur in `rechnungen` (v80): Stammt
+                   # die Rechnung aus einer Kopie, brach der INSERT der Mahnung sonst
+                   # mit „no column named …" ab. `test_beleg_konvertierung.py` prüft
+                   # seither, dass jede Wandlung alle quell-eigenen Spalten abdeckt.
+                   'kopie_von_rechnung_id',
                    'pdf_pfad', 'buchungsexport_id', 'kopf_snapshot', 'kunde_snapshot'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
