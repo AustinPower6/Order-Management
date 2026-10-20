@@ -4,6 +4,45 @@ from . import db_utils
 from helpers import berechne_positionen
 
 
+#: **Gültig** ist eine Mahnung, die weder gelöscht noch storniert noch selbst
+#: eine Stornomahnung ist. Nur sie bestimmt die Mahnstufe einer Rechnung: Wird
+#: eine Mahnung gelöscht oder storniert, fällt die Rechnung auf die Stufe davor
+#: zurück. Bis 2026-10-20 zählten stornierte Mahnungen und ihre Stornos — gleiche
+#: Stufe, Status „offen" — weiter mit. Die Belegkette zeigt bewusst alle: Sie ist
+#: die Historie (`get_all_mahnungen_fuer_rechnung`).
+GUELTIGE_MAHNUNG_SQL = ("COALESCE({p}geloescht,0)=0 AND {p}storniert_durch_id IS NULL "
+                        "AND {p}storno_von_mahnung_id IS NULL")
+
+
+def gueltige_mahnung_sql(alias: str = "") -> str:
+    """Die Bedingung für gültige Mahnungen, mit Tabellenkürzel für JOINs."""
+    return GUELTIGE_MAHNUNG_SQL.format(p=f"{alias}." if alias else "")
+
+
+class MahnungNichtJuengsteError(RuntimeError):
+    """Storniert, gelöscht oder weitergemahnt wird nur die jüngste gültige Mahnung.
+
+    Sonst wäre „fällt auf die Stufe davor zurück" nicht eindeutig: Stufe 2
+    bliebe stehen, während Stufe 1 fehlt. `juengste_nr`/`juengste_stufe` nennen
+    die Mahnung, die zuerst dran ist — leer, wenn die gewählte selbst storniert
+    oder eine Stornomahnung ist.
+    """
+
+    def __init__(self, mahnungsnummer: str, juengste_nr: str = "",
+                 juengste_stufe: int | None = None):
+        self.mahnungsnummer = mahnungsnummer
+        self.juengste_nr = juengste_nr
+        self.juengste_stufe = juengste_stufe
+        if juengste_nr:
+            text = (f"Mahnung {mahnungsnummer} ist nicht die jüngste gültige Mahnung "
+                    f"der Rechnung — zuerst Mahnung {juengste_nr} (Stufe "
+                    f"{juengste_stufe}) stornieren bzw. löschen.")
+        else:
+            text = (f"Mahnung {mahnungsnummer} ist storniert oder selbst eine "
+                    f"Stornomahnung und gilt nicht mehr.")
+        super().__init__(text)
+
+
 class DBBelegeMixin:
     def get_verwendete_mwst_bezeichnungen(self) -> list:
         """DISTINCT eingefrorene MwSt-Bezeichnungen aus allen Positions-Tabellen der
@@ -340,12 +379,11 @@ class DBBelegeMixin:
             self.beleg_zahl_erhoehen("rechnungen", storno["rechnungsnr"], commit=False)
             self._update_firma("rechnungen", "storniert_durch_id=?, status=?",
                                (sid, "storniert"), rechnung_id)
-            # Zugehoerige Mahnungen mit-stornieren
-            mahnungen = self.get_all_mahnungen_fuer_rechnung(rechnung_id)
-            for m in mahnungen:
+            # Zugehoerige Mahnungen mit-stornieren — nur die gültigen, von der
+            # höchsten Stufe abwärts: Storniert wird je Rechnung nur die jüngste
+            # gültige, und eine schon stornierte (oder ein Storno) ist erledigt.
+            for m in reversed(self.gueltige_mahnungen_fuer_rechnung(rechnung_id)):
                 m = dict(m)
-                if m.get("geloescht"):
-                    continue
                 if m.get("festgeschrieben"):
                     self.storniere_mahnung(m["id"], commit=False)
                 else:
@@ -595,12 +633,15 @@ class DBBelegeMixin:
             mahnung = dict(mahnung)
             if mahnung.get("festgeschrieben"):
                 raise RuntimeError("festgeschrieben")
-            rechnung_id = mahnung.get("rechnung_id")
-            self._update_firma("mahnungen", "geloescht=1", (), id)
-            self.conn.commit()
-            if rechnung_id:
-                self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
+            self._pruefe_juengste_mahnung(mahnung)
+            try:
+                self._update_firma("mahnungen", "geloescht=1", (), id)
+                # Die Rechnung fällt auf die Stufe davor zurück — der Verweis mit.
+                self._mahnverweis_nachfuehren(mahnung.get("rechnung_id"))
                 self.conn.commit()
+            except Exception:
+                self.conn.rollback()
+                raise
 
     def storniere_mahnung(self, mahnung_id: int, commit: bool = True) -> int:
         """Storniert eine festgeschriebene Mahnung (analog rechnung_stornieren).
@@ -620,6 +661,9 @@ class DBBelegeMixin:
             raise RuntimeError("Eine Storno-Mahnung kann nicht nochmals storniert werden.")
         if not mahnung.get("festgeschrieben"):
             raise RuntimeError("Nur festgeschriebene Mahnungen können storniert werden.")
+        # Nur die jüngste gültige Stufe: Danach fällt die Rechnung eindeutig auf
+        # die Stufe davor zurück.
+        self._pruefe_juengste_mahnung(mahnung)
 
         # Nur Mahngebühr/Zinsen negieren — Rechnungspositionen nicht stornieren
         orig_pos = [dict(p) for p in self.get_mahnung_pos(mahnung_id)
@@ -652,6 +696,7 @@ class DBBelegeMixin:
                                            "mahnung_id", storno, storno_pos)
             self.beleg_zahl_erhoehen("mahnungen", storno["mahnungsnummer"], commit=False)
             self._update_firma("mahnungen", "storniert_durch_id=?", (sid,), mahnung_id)
+            self._mahnverweis_nachfuehren(mahnung.get("rechnung_id"))
             if commit:
                 self.conn.commit()
         except Exception as e:
@@ -714,7 +759,7 @@ class DBBelegeMixin:
 
         rows = self.conn.execute(
             "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND firma_id=? "
-            "AND COALESCE(geloescht,0)=0 ORDER BY mahnstufe",
+            f"AND {gueltige_mahnung_sql()} ORDER BY mahnstufe, id",
             (rechnung_id, self._firma_id())
         ).fetchall()
         timeline = {r[0]: r[1] for r in rows}
@@ -844,7 +889,7 @@ class DBBelegeMixin:
     def naechste_mahnstufe_fuer_rechnung(self, rechnung_id):
         row = self.conn.execute(
             "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND firma_id=? "
-            "AND COALESCE(geloescht,0)=0",
+            f"AND {gueltige_mahnung_sql()}",
             (rechnung_id, self._firma_id())
         ).fetchone()
         aktuell = row[0] if row and row[0] is not None else 0
@@ -919,6 +964,9 @@ class DBBelegeMixin:
 
     def mahnung_zu_naechste_stufe(self, mahnung_id):
         mahnung = dict(self.get_mahnung(mahnung_id))
+        # Weitergemahnt wird von der jüngsten gültigen Stufe aus — nicht von
+        # einer stornierten, einer Stornomahnung oder einer überholten Stufe.
+        self._pruefe_juengste_mahnung(mahnung)
         pos = self.get_mahnung_pos(mahnung_id)
         mahnkondition_id = mahnung.get('mahnkondition_id')
         if not mahnkondition_id:
@@ -1024,6 +1072,50 @@ class DBBelegeMixin:
             sql += " AND geloescht=0"
         sql += " ORDER BY mahnstufe ASC"
         return self.conn.execute(sql, (rechnung_id, self._firma_id())).fetchall()
+
+    def gueltige_mahnungen_fuer_rechnung(self, rechnung_id) -> list:
+        """Die gültigen Mahnungen (`GUELTIGE_MAHNUNG_SQL`), niedrigste Stufe zuerst.
+
+        Sie — und nur sie — bestimmen, auf welcher Stufe die Rechnung steht.
+        Wer die Historie braucht (Belegkette), nimmt `get_all_mahnungen_fuer_rechnung`.
+        """
+        return self.conn.execute(
+            "SELECT * FROM mahnungen WHERE rechnung_id=? AND firma_id=? "
+            f"AND {gueltige_mahnung_sql()} ORDER BY mahnstufe ASC, id ASC",
+            (rechnung_id, self._firma_id())).fetchall()
+
+    def juengste_gueltige_mahnung(self, rechnung_id):
+        """Die gültige Mahnung mit der höchsten Stufe — oder None."""
+        alle = self.gueltige_mahnungen_fuer_rechnung(rechnung_id)
+        return alle[-1] if alle else None
+
+    def _pruefe_juengste_mahnung(self, mahnung: dict) -> None:
+        """Nur die jüngste gültige Mahnung darf storniert, gelöscht oder
+        weitergemahnt werden — sonst `MahnungNichtJuengsteError`."""
+        gueltig = (not mahnung.get("geloescht") and not mahnung.get("storniert_durch_id")
+                   and not mahnung.get("storno_von_mahnung_id"))
+        if not gueltig:
+            raise MahnungNichtJuengsteError(mahnung.get("mahnungsnummer") or "")
+        if not mahnung.get("rechnung_id"):
+            return                          # ohne Rechnung gibt es keine Reihenfolge
+        juengste = self.juengste_gueltige_mahnung(mahnung["rechnung_id"])
+        if juengste is None or juengste["id"] == mahnung["id"]:
+            return
+        raise MahnungNichtJuengsteError(mahnung.get("mahnungsnummer") or "",
+                                        juengste["mahnungsnummer"] or "",
+                                        juengste["mahnstufe"])
+
+    def _mahnverweis_nachfuehren(self, rechnung_id) -> None:
+        """`rechnungen.mahnung_id` auf die jüngste gültige Mahnung setzen (ohne commit).
+
+        Nach Storno oder Löschen fällt die Rechnung auf die Stufe davor zurück —
+        auch ihr Verweis, nicht nur die errechnete Stufe.
+        """
+        if not rechnung_id:
+            return
+        juengste = self.juengste_gueltige_mahnung(rechnung_id)
+        self._update_firma("rechnungen", "mahnung_id=?",
+                           (juengste["id"] if juengste else None,), rechnung_id)
 
     # ─── PDF-Pfade ──────────────────────────────────────────────────────────
     def save_pdf_pfad(self, tabelle, beleg_id, pfad):

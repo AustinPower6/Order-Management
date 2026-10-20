@@ -268,8 +268,7 @@ class RechnungenFenster(BelegListeFenster):
             return
 
         # Bei vorhandenen Mahnungen: Warnung + Bestaetigung
-        mahnungen = [dict(m) for m in self.db.get_all_mahnungen_fuer_rechnung(id_)
-                     if not dict(m).get("geloescht")]
+        mahnungen = [dict(m) for m in self.db.gueltige_mahnungen_fuer_rechnung(id_)]
         if mahnungen:
             liste = "\n".join(f"  • {m.get('mahnungsnummer','')} "
                               f"(Stufe {m.get('mahnstufe', '?')})"

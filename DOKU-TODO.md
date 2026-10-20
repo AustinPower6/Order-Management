@@ -23,6 +23,19 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-10-20) **Mahnung stornieren: Rechnung fällt auf die Stufe davor zurück.**
+      Eine stornierte (oder gelöschte) Mahnung zählt nicht mehr: Die nächste
+      Mahnung der Rechnung bekommt wieder diese Stufe, Zinsen laufen ohne sie.
+      Stornieren, Löschen und „Zur nächsten Stufe" gehen nur von der **jüngsten
+      gültigen** Mahnung einer Rechnung aus; bei einer älteren Stufe nennt die
+      Meldung, welche Mahnung zuerst storniert bzw. gelöscht werden muss. Beim
+      Rechnungsstorno werden gedruckte Mahnungen storniert, nicht gedruckte
+      gelöscht. Die Belegkette zeigt weiterhin alle Mahnungen.
+  - Code: `app/db/db_belege.py` (`GUELTIGE_MAHNUNG_SQL`, `_pruefe_juengste_mahnung`),
+    `app/modul/mod_mahnungen.py`
+  - Doku: Kapitel **Mahnungen** (Stornieren, Löschen, nächste Stufe) und
+    **Rechnungen** (Storno mit Mahnungen) ergänzen.
+
 - [ ] (2026-10-20) **Löschregeln für Konditionen und Kunden.**
       Eine Zahlungs- oder Mahnkondition lässt sich nur noch löschen, wenn kein
       (nicht gelöschter) Kunde sie führt; sonst nennt die Meldung die Kunden

@@ -1,9 +1,18 @@
 from PyQt6.QtWidgets import QPushButton, QMessageBox, QHBoxLayout, QLabel
 from PyQt6.QtGui import QFont
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
+from db.db_belege import MahnungNichtJuengsteError
 import i18n
 from i18n import _
 from ui_widgets import zeige_warnung
+
+
+def _nicht_juengste_text(e: MahnungNichtJuengsteError) -> str:
+    """Warum diese Mahnung nicht storniert, gelöscht oder weitergemahnt wird."""
+    if e.juengste_nr:
+        return _("mahnung.msg.nicht_juengste", nr=e.mahnungsnummer,
+                 juengste=e.juengste_nr, stufe=e.juengste_stufe)
+    return _("mahnung.msg.nicht_gueltig", nr=e.mahnungsnummer)
 
 
 class MahnungenFenster(BelegListeFenster):
@@ -47,6 +56,9 @@ class MahnungenFenster(BelegListeFenster):
         """Löschen sperren wenn festgeschrieben."""
         try:
             self.db.delete_mahnung(id_)
+        except MahnungNichtJuengsteError as e:
+            # Vor dem allgemeinen RuntimeError fangen, sonst hieße es „festgeschrieben".
+            zeige_warnung(self, _("msg.loeschen_nicht_moeglich"), _nicht_juengste_text(e))
         except RuntimeError:
             QMessageBox.warning(self, _("msg.loeschen_nicht_moeglich"),
                                 _("msg.mahnung_festgeschrieben_loeschen"))
@@ -74,7 +86,11 @@ class MahnungenFenster(BelegListeFenster):
                 self, _("btn.stornieren"),
                 _("msg.mahnung_storno_frage", nr=mahnung["mahnungsnummer"])
         ) == QMessageBox.StandardButton.Yes:
-            self.db.storniere_mahnung(id_)
+            try:
+                self.db.storniere_mahnung(id_)
+            except MahnungNichtJuengsteError as e:
+                zeige_warnung(self, _("msg.hinweis"), _nicht_juengste_text(e))
+                return
             self._refresh()
 
     def _open_edit_dialog(self, id_):
@@ -115,7 +131,11 @@ class MahnungenFenster(BelegListeFenster):
                                   quelle=_("beleg.singular.mahnung"),
                                   nr=mahnung['mahnungsnummer'], artikel="", ziel=naechste_bez)
                                 ) == QMessageBox.StandardButton.Yes:
-            result = self.db.mahnung_zu_naechste_stufe(id_)
+            try:
+                result = self.db.mahnung_zu_naechste_stufe(id_)
+            except MahnungNichtJuengsteError as e:
+                zeige_warnung(self, _("msg.hinweis"), _nicht_juengste_text(e))
+                return
             if result is None:
                 zeige_warnung(self, _("msg.fehler"), _("msg.naechste_mahnstufe_undefiniert"))
             else:

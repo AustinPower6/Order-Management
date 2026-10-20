@@ -1,3 +1,49 @@
+## 2026-10-20 11:28 — Stornierte Mahnung: Rechnung fällt auf die Stufe davor zurück (Paket 3 / A4)
+
+**Anlass:** Abgleich mit dem Multi-Ableger (dort `2949ae6`, nur gelesen). Nach
+dem Storno einer Mahnung zählten Original und Stornomahnung (gleiche Stufe,
+Status „offen“) überall weiter mit. Bestand nur gelesen: Firma 990 hat 21
+Mahnungen, keine davon storniert, und keine Rechnung zeigt auf eine ungültige
+Mahnung. Eine Datenkorrektur ist nicht nötig.
+
+**Gemessen vorher** (`test_mahnung_storno.py` 0/9):
+- Stufe 1 storniert: Als nächste Stufe kam 2, `rechnungen.mahnung_id` zeigte
+  weiter auf die stornierte Mahnung.
+- Stufe 2 storniert: Als nächste Stufe kam 3.
+- `delete_mahnung` setzte den Verweis auf NULL statt auf die Stufe davor.
+- `rechnung_stornieren` hätte eine schon stornierte Mahnung erneut storniert und
+  wäre mit „bereits storniert“ abgebrochen.
+
+**Geändert** (Entscheidung Walter: Stornieren, Löschen und Weitermahnen nur von
+der jüngsten gültigen Mahnung aus):
+- `app/db/db_belege.py`:
+  - `GUELTIGE_MAHNUNG_SQL`/`gueltige_mahnung_sql()`: gültig heißt weder
+    gelöscht noch storniert noch Storno.
+  - Neu `gueltige_mahnungen_fuer_rechnung`, `juengste_gueltige_mahnung`,
+    `_pruefe_juengste_mahnung` (löst `MahnungNichtJuengsteError` mit Nummer und
+    Stufe der jüngsten aus) und `_mahnverweis_nachfuehren`.
+  - Umgestellt: `naechste_mahnstufe_fuer_rechnung`, die Zins-Zeitachse,
+    `storniere_mahnung` (Vorbedingung, Verweis zurück), `delete_mahnung`
+    (Vorbedingung, Verweis auf die Stufe davor, jetzt in einer Transaktion),
+    `mahnung_zu_naechste_stufe` (Vorbedingung) und `rechnung_stornieren` (nur
+    gültige Mahnungen, von oben nach unten). Die Belegkette zeigt weiterhin alle.
+- `app/modul/mod_mahnungen.py`: Löschen, Stornieren und „Zur nächsten Stufe“
+  melden den Grund samt der Mahnung, die zuerst dran ist. Beim Löschen wird die
+  Ausnahme vor dem allgemeinen `RuntimeError` gefangen.
+- `app/modul/mod_rechnungen.py`: Die Warnliste beim Rechnungsstorno zeigt nur
+  gültige Mahnungen.
+- `app/language.json`: neu `mahnung.msg.nicht_juengste`/`_gueltig`. Berichtigt:
+  `msg.mahnung_storno_frage` (den Status „storniert“ gibt es nicht) und
+  `msg.storno_mit_mahnungen_warnung` (gedruckte Mahnungen werden storniert, nicht
+  gelöscht).
+- `app/test_mahnung_storno.py` (neu): läuft mit der echten `Database`-Klasse auf
+  einer Speicher-DB.
+
+**Verifikation:** 0/9 → 12/12. Paket-1- und Paket-2-Tests,
+`test_beleg_konvertierung` und `test_firma_lazy` grün, `ruff` sauber,
+`audit_firma_id` ohne Fehler und ohne neue Warnung. Die Meldungen wurden auf DE
+und EN gerendert.
+
 ## 2026-10-20 11:17 — Paket 2 aus dem Multi-Ableger: Konditionen, Warengruppen und Kunden löschen
 
 **Anlass:** Abgleich mit dem Multi-Ableger (dort `c094d8c`, `6747c01`, nur gelesen).
