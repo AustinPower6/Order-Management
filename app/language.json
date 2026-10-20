@@ -222,11 +222,15 @@
   },
   "artikel.logo_braucht_marke": {
     "de": "Bitte zuerst eine Marke auswählen.",
-    "en": "Please select a brand first."
+    "en": "Please select a brand first.",
+    "ts": "2026-10-20 18:16",
+    "h": "dabcb15910fe"
   },
   "artikel.logo_frage_loeschen": {
     "de": "Logo der Marke „{marke}“ löschen? Es gilt für alle Artikel dieser Marke.",
-    "en": "Delete the logo of brand “{marke}”? It applies to every article of this brand."
+    "en": "Delete the logo of brand “{marke}”? It applies to every article of this brand.",
+    "ts": "2026-10-20 18:16",
+    "h": "3265a7b07483"
   },
   "artikel.ueb.tip_an": {
     "de": "Übersetzung für dieses Feld aktiviert (unabhängig vom Firmenstamm)",
@@ -869,7 +873,9 @@
   },
   "btn.kundeninfo": {
     "de": "Kundeninfo",
-    "en": "Customer info"
+    "en": "Customer info",
+    "ts": "2026-10-20 18:16",
+    "h": "57ec1be272ff"
   },
   "btn.neuer_export": {
     "de": "Neuer Export",
@@ -879,7 +885,9 @@
   },
   "btn.test_email_abruf": {
     "de": "E-Mail-Abruf testen",
-    "en": "Test email retrieval"
+    "en": "Test email retrieval",
+    "ts": "2026-10-20 18:16",
+    "h": "031186e33140"
   },
   "btn.wiederholen": {
     "de": "Wiederholen",
@@ -1135,7 +1143,9 @@
   },
   "col.nr": {
     "de": "Nr.",
-    "en": "No."
+    "en": "No.",
+    "ts": "2026-10-20 18:16",
+    "h": "466155bddafd"
   },
   "col.speditionsware": {
     "de": "Spedition",
@@ -1433,7 +1443,9 @@
   },
   "col.marke": {
     "de": "Marke",
-    "en": "Brand"
+    "en": "Brand",
+    "ts": "2026-10-20 18:16",
+    "h": "4b71c58a94e5"
   },
   "col.menge": {
     "de": "Menge",
@@ -1527,7 +1539,9 @@
   },
   "col.typ": {
     "de": "Typ",
-    "en": "Type"
+    "en": "Type",
+    "ts": "2026-10-20 18:16",
+    "h": "5f721bbf622d"
   },
   "col.untergruppe": {
     "de": "Untergruppe",
@@ -2029,7 +2043,9 @@
   },
   "dlg.kunde_loeschen_verwendet": {
     "de": "Kunde '{name}' kann nicht gelöscht werden, weil noch Einträge auf ihn verweisen:\n\n{liste}\n\nDie Belege müssen erhalten bleiben. Um die Daten des Kunden zu entfernen, die Schaltfläche „DSGVO“ → „Anonymisieren / Löschen (DSGVO)“ verwenden.",
-    "en": "Customer '{name}' cannot be deleted because entries still refer to it:\n\n{liste}\n\nThe documents must be kept. To remove the customer's data, use the button \"GDPR\" → \"Anonymise / delete (GDPR)\"."
+    "en": "Customer '{name}' cannot be deleted because entries still refer to it:\n\n{liste}\n\nThe documents must be kept. To remove the customer's data, use the button \"GDPR\" → \"Anonymise / delete (GDPR)\".",
+    "ts": "2026-10-20 18:16",
+    "h": "5ad655a34492"
   },
   "dlg.kunde_neu": {
     "de": "Neuer Kunde",
@@ -2672,7 +2688,9 @@
   },
   "druck.default.brief_datum": {
     "de": "Datum:",
-    "en": "Date:"
+    "en": "Date:",
+    "ts": "2026-10-20 18:16",
+    "h": "67afbed5d2a6"
   },
   "druck.default.brutto_gesamt": {
     "de": "Gesamtbetrag brutto:",
@@ -2850,7 +2868,9 @@
   },
   "druck.default.kunden_nr": {
     "de": "Kundennummer:",
-    "en": "Customer no.:"
+    "en": "Customer no.:",
+    "ts": "2026-10-20 18:16",
+    "h": "c6971012942d"
   },
   "druck.default.kundenkopie_label": {
     "de": "Kundenkopie in {sprache}",
@@ -3316,19 +3336,27 @@
   },
   "fallback.msg.lesefehler": {
     "de": "Die Fehlernachverfolgung konnte nicht gelesen werden. Die Liste bleibt deshalb leer, auch wenn Meldungen vorliegen.\n\nDatei: {datei}\nUrsache: {ursache}\n\nAbhilfe: Prüfen Sie, ob die Datei schreibgeschützt ist oder von einem anderen Programm offen gehalten wird — etwa vom Virenscanner oder von einem zweiten Programmfenster —, und versuchen Sie es dann erneut.\n\nIst die Datei beschädigt (Ursache „file is not a database“ oder „database disk image is malformed“), benennen Sie sie bei geschlossenem Programm um. Das Programm legt beim nächsten Fall eine neue an; die bisherigen Meldungen stehen dann nur noch in der umbenannten Datei.",
-    "en": "The error tracking could not be read. The list therefore stays empty, even if there are entries.\n\nFile: {datei}\nCause: {ursache}\n\nRemedy: check whether the file is read-only or held open by another program — such as the virus scanner or a second program window — and then try again.\n\nIf the file is damaged (cause \"file is not a database\" or \"database disk image is malformed\"), rename it while the program is closed. The program creates a new one on the next occurrence; the previous entries then remain only in the renamed file."
+    "en": "The error tracking could not be read. The list therefore stays empty, even if there are entries.\n\nFile: {datei}\nCause: {ursache}\n\nRemedy: check whether the file is read-only or held open by another program — such as the virus scanner or a second program window — and then try again.\n\nIf the file is damaged (cause \"file is not a database\" or \"database disk image is malformed\"), rename it while the program is closed. The program creates a new one on the next occurrence; the previous entries then remain only in the renamed file.",
+    "ts": "2026-10-20 18:16",
+    "h": "eec8a061c941"
   },
   "fallback.msg.nicht_erledigt": {
     "de": "Die Meldung konnte nicht als erledigt markiert werden.",
-    "en": "The entry could not be marked as done."
+    "en": "The entry could not be marked as done.",
+    "ts": "2026-10-20 18:16",
+    "h": "e29e6f1e2b84"
   },
   "fallback.msg.nicht_geoeffnet": {
     "de": "Die Meldung konnte nicht wieder geöffnet werden.",
-    "en": "The entry could not be reopened."
+    "en": "The entry could not be reopened.",
+    "ts": "2026-10-20 18:16",
+    "h": "0dfe46e17a3d"
   },
   "fallback.msg.schreibfehler": {
     "de": "{kopf}\n\nBetroffen: {anzahl} von {gesamt} Einträgen ({module})\nDatei: {datei}\nUrsache: {ursache}\n\nAbhilfe: Prüfen Sie, ob die Datei schreibgeschützt ist oder von einem anderen Programm offen gehalten wird — etwa vom Virenscanner oder von einem zweiten Programmfenster —, und versuchen Sie es dann erneut.",
-    "en": "{kopf}\n\nAffected: {anzahl} of {gesamt} entries ({module})\nFile: {datei}\nCause: {ursache}\n\nRemedy: check whether the file is read-only or held open by another program — such as the virus scanner or a second program window — and then try again."
+    "en": "{kopf}\n\nAffected: {anzahl} of {gesamt} entries ({module})\nFile: {datei}\nCause: {ursache}\n\nRemedy: check whether the file is read-only or held open by another program — such as the virus scanner or a second program window — and then try again.",
+    "ts": "2026-10-20 18:16",
+    "h": "3a9c0162e0d0"
   },
   "field.artikel.beschreibung": {
     "de": "Beschreibung:",
@@ -3446,7 +3474,9 @@
   },
   "field.kunde.ansprechpartner": {
     "de": "Ansprechpartner:",
-    "en": "Contact person:"
+    "en": "Contact person:",
+    "ts": "2026-10-20 18:16",
+    "h": "f6c19a1b77f1"
   },
   "field.kunde.e_rechnung_aktiv": {
     "de": "E-Rechnung erstellen:",
@@ -3480,7 +3510,9 @@
   },
   "field.kunde.fax": {
     "de": "Telefax:",
-    "en": "Fax:"
+    "en": "Fax:",
+    "ts": "2026-10-20 18:16",
+    "h": "fb05b0a8eef3"
   },
   "field.kunde.iban": {
     "de": "IBAN:",
@@ -3551,7 +3583,9 @@
   },
   "field.kunde.mobil": {
     "de": "Mobil:",
-    "en": "Mobile:"
+    "en": "Mobile:",
+    "ts": "2026-10-20 18:16",
+    "h": "25dc06fe2d56"
   },
   "field.kunde.nachname": {
     "de": "Nachname:",
@@ -3759,51 +3793,75 @@
   },
   "kunde.verwendung.angebote": {
     "de": "{n} Angebote",
-    "en": "{n} quotations"
+    "en": "{n} quotations",
+    "ts": "2026-10-20 18:16",
+    "h": "9256e704ff2c"
   },
   "kunde.verwendung.angebote_1": {
     "de": "1 Angebot",
-    "en": "1 quotation"
+    "en": "1 quotation",
+    "ts": "2026-10-20 18:16",
+    "h": "e55694376279"
   },
   "kunde.verwendung.auftraege": {
     "de": "{n} Aufträge",
-    "en": "{n} orders"
+    "en": "{n} orders",
+    "ts": "2026-10-20 18:16",
+    "h": "cb088bc0a51f"
   },
   "kunde.verwendung.auftraege_1": {
     "de": "1 Auftrag",
-    "en": "1 order"
+    "en": "1 order",
+    "ts": "2026-10-20 18:16",
+    "h": "cb300a11b0ae"
   },
   "kunde.verwendung.kommunikation": {
     "de": "{n} Kommunikationseinträge",
-    "en": "{n} communication entries"
+    "en": "{n} communication entries",
+    "ts": "2026-10-20 18:16",
+    "h": "db4a339ffe47"
   },
   "kunde.verwendung.kommunikation_1": {
     "de": "1 Kommunikationseintrag",
-    "en": "1 communication entry"
+    "en": "1 communication entry",
+    "ts": "2026-10-20 18:16",
+    "h": "237966fdd86d"
   },
   "kunde.verwendung.lieferscheine": {
     "de": "{n} Lieferscheine",
-    "en": "{n} delivery notes"
+    "en": "{n} delivery notes",
+    "ts": "2026-10-20 18:16",
+    "h": "643287af9590"
   },
   "kunde.verwendung.lieferscheine_1": {
     "de": "1 Lieferschein",
-    "en": "1 delivery note"
+    "en": "1 delivery note",
+    "ts": "2026-10-20 18:16",
+    "h": "8ea95cfcfc28"
   },
   "kunde.verwendung.mahnungen": {
     "de": "{n} Mahnungen",
-    "en": "{n} dunning letters"
+    "en": "{n} dunning letters",
+    "ts": "2026-10-20 18:16",
+    "h": "77d9233a478c"
   },
   "kunde.verwendung.mahnungen_1": {
     "de": "1 Mahnung",
-    "en": "1 dunning letter"
+    "en": "1 dunning letter",
+    "ts": "2026-10-20 18:16",
+    "h": "afef817bfc10"
   },
   "kunde.verwendung.rechnungen": {
     "de": "{n} Rechnungen",
-    "en": "{n} invoices"
+    "en": "{n} invoices",
+    "ts": "2026-10-20 18:16",
+    "h": "09bb85364af8"
   },
   "kunde.verwendung.rechnungen_1": {
     "de": "1 Rechnung",
-    "en": "1 invoice"
+    "en": "1 invoice",
+    "ts": "2026-10-20 18:16",
+    "h": "2c4f2254d393"
   },
   "firma.adresse.anrede_ap": {
     "de": "Anrede Ansprechpartner:",
@@ -4173,15 +4231,21 @@
   },
   "email.abruf_test.erfolg": {
     "de": "IMAP-Anmeldung erfolgreich. Der Posteingang enthält {anzahl} E-Mails.",
-    "en": "IMAP login successful. The inbox contains {anzahl} emails."
+    "en": "IMAP login successful. The inbox contains {anzahl} emails.",
+    "ts": "2026-10-20 18:16",
+    "h": "e3c0a38263fd"
   },
   "email.abruf_test.fehler": {
     "de": "E-Mail-Abruf fehlgeschlagen:\n{detail}",
-    "en": "Email retrieval failed:\n{detail}"
+    "en": "Email retrieval failed:\n{detail}",
+    "ts": "2026-10-20 18:16",
+    "h": "8265cb505e33"
   },
   "email.abruf_test.unvollstaendig": {
     "de": "Für den Abruf-Test fehlen Server oder Zugangsdaten.\nBitte die Felder im Reiter ausfüllen.",
-    "en": "Server or credentials are missing for the retrieval test.\nPlease fill in the fields on this tab."
+    "en": "Server or credentials are missing for the retrieval test.\nPlease fill in the fields on this tab.",
+    "ts": "2026-10-20 18:16",
+    "h": "ba8b425cc397"
   },
   "email.filter.alle": {
     "de": "Alle",
@@ -5800,7 +5864,9 @@
   },
   "firma.kond.kunde_zeile": {
     "de": "• {nr} {name}",
-    "en": "• {nr} {name}"
+    "en": "• {nr} {name}",
+    "ts": "2026-10-20 18:16",
+    "h": "947a31855224"
   },
   "firma.kopieren.bitte_quelle": {
     "de": "Bitte wählen Sie eine Quell-Firma aus.",
@@ -6380,7 +6446,9 @@
   },
   "firma.mahn.in_verwendung": {
     "de": "Die Mahnkondition ist noch bei {anzahl} Kunden hinterlegt und kann nicht gelöscht werden (höchstens 10 aufgeführt):\n\n{kunden}\n\nBitte zuerst im Kundenstamm beim jeweiligen Kunden im Feld „Mahnkondition“ eine andere auswählen. Bestehende Belege behalten ihre Kondition.",
-    "en": "The dunning terms are still assigned to {anzahl} customers and cannot be deleted (at most 10 listed):\n\n{kunden}\n\nPlease first select different terms in the \"Reminder Terms\" field of each customer in the customer master data. Existing documents keep their terms."
+    "en": "The dunning terms are still assigned to {anzahl} customers and cannot be deleted (at most 10 listed):\n\n{kunden}\n\nPlease first select different terms in the \"Reminder Terms\" field of each customer in the customer master data. Existing documents keep their terms.",
+    "ts": "2026-10-20 18:16",
+    "h": "5109f7d20894"
   },
   "firma.mahn.mahngebuehr": {
     "de": "Mahngebühr (€)",
@@ -6703,11 +6771,15 @@
   },
   "firma.parameter.imap_host": {
     "de": "IMAP-Server (Abruf):",
-    "en": "IMAP server (retrieval):"
+    "en": "IMAP server (retrieval):",
+    "ts": "2026-10-20 18:16",
+    "h": "b54d940aaa52"
   },
   "firma.parameter.imap_port": {
     "de": "IMAP-Port:",
-    "en": "IMAP port:"
+    "en": "IMAP port:",
+    "ts": "2026-10-20 18:16",
+    "h": "5fb043f51535"
   },
   "firma.pfade.durchsuchen": {
     "de": "Durchsuchen …",
@@ -8214,7 +8286,9 @@
   },
   "firma.zk.in_verwendung": {
     "de": "Die Zahlungskondition ist noch bei {anzahl} Kunden hinterlegt und kann nicht gelöscht werden (höchstens 10 aufgeführt):\n\n{kunden}\n\nBitte zuerst im Kundenstamm beim jeweiligen Kunden im Feld „Zahlungskondition“ eine andere auswählen. Bestehende Belege behalten ihre Kondition.",
-    "en": "The payment terms are still assigned to {anzahl} customers and cannot be deleted (at most 10 listed):\n\n{kunden}\n\nPlease first select different terms in the \"Payment Terms\" field of each customer in the customer master data. Existing documents keep their terms."
+    "en": "The payment terms are still assigned to {anzahl} customers and cannot be deleted (at most 10 listed):\n\n{kunden}\n\nPlease first select different terms in the \"Payment Terms\" field of each customer in the customer master data. Existing documents keep their terms.",
+    "ts": "2026-10-20 18:16",
+    "h": "2739a6e7372e"
   },
   "firma.zk.tage": {
     "de": "Tage",
@@ -8704,11 +8778,15 @@
   },
   "mahnung.msg.nicht_gueltig": {
     "de": "Mahnung {nr} ist storniert oder selbst eine Stornomahnung und gilt nicht mehr. Stornieren, Löschen und Weitermahnen gehen nur von der jüngsten gültigen Mahnung der Rechnung aus.",
-    "en": "Reminder {nr} is cancelled or is itself a cancellation reminder and no longer applies. Cancelling, deleting and moving to the next level only work from the most recent valid reminder of the invoice."
+    "en": "Reminder {nr} is cancelled or is itself a cancellation reminder and no longer applies. Cancelling, deleting and moving to the next level only work from the most recent valid reminder of the invoice.",
+    "ts": "2026-10-20 18:16",
+    "h": "73d3d21bfc96"
   },
   "mahnung.msg.nicht_juengste": {
     "de": "Mahnung {nr} ist nicht die jüngste gültige Mahnung dieser Rechnung. Storniert, gelöscht oder weitergemahnt wird immer nur die jüngste Stufe — nur so fällt die Rechnung eindeutig auf die Stufe davor zurück.\n\nZuerst Mahnung {juengste} (Stufe {stufe}) stornieren bzw. löschen.",
-    "en": "Reminder {nr} is not the most recent valid reminder of this invoice. Only the most recent level is cancelled, deleted or taken to the next level — only then does the invoice clearly fall back to the previous level.\n\nFirst cancel or delete reminder {juengste} (level {stufe})."
+    "en": "Reminder {nr} is not the most recent valid reminder of this invoice. Only the most recent level is cancelled, deleted or taken to the next level — only then does the invoice clearly fall back to the previous level.\n\nFirst cancel or delete reminder {juengste} (level {stufe}).",
+    "ts": "2026-10-20 18:16",
+    "h": "9683fec08d66"
   },
   "marker.angueltig": {
     "de": "Gültigkeitsdatum des Angebots (gültig bis)",
@@ -9318,7 +9396,9 @@
   },
   "msg.artikelnr_vergeben": {
     "de": "Die Artikelnummer {nr} ist bereits vergeben — möglicherweise an einen gelöschten Artikel. Gelöschte Artikel behalten ihre Nummer, damit alte Belege eindeutig bleiben.\n\nAbhilfe: Im Artikelstamm den Haken „Gelöscht anzeigen“ setzen und den Artikel wiederherstellen, oder eine andere Nummer wählen.",
-    "en": "Item number {nr} is already in use — possibly by a deleted item. Deleted items keep their number so that existing documents remain unambiguous.\n\nRemedy: Tick \"Show deleted\" in the item master data and restore the item, or choose a different number."
+    "en": "Item number {nr} is already in use — possibly by a deleted item. Deleted items keep their number so that existing documents remain unambiguous.\n\nRemedy: Tick \"Show deleted\" in the item master data and restore the item, or choose a different number.",
+    "ts": "2026-10-20 18:16",
+    "h": "080f1062d226"
   },
   "msg.hinweis": {
     "de": "Hinweis",
@@ -9382,7 +9462,9 @@
   },
   "msg.kundennr_vergeben": {
     "de": "Die Kundennummer {nr} ist bereits vergeben — möglicherweise an einen gelöschten Kunden. Gelöschte Kunden behalten ihre Nummer, damit alte Belege eindeutig bleiben.\n\nAbhilfe: Im Kundenstamm den Haken „Gelöscht anzeigen“ setzen und den Kunden wiederherstellen, oder eine andere Nummer wählen.",
-    "en": "Customer number {nr} is already in use — possibly by a deleted customer. Deleted customers keep their number so that existing documents remain unambiguous.\n\nRemedy: Tick \"Show deleted\" in the customer master data and restore the customer, or choose a different number."
+    "en": "Customer number {nr} is already in use — possibly by a deleted customer. Deleted customers keep their number so that existing documents remain unambiguous.\n\nRemedy: Tick \"Show deleted\" in the customer master data and restore the customer, or choose a different number.",
+    "ts": "2026-10-20 18:16",
+    "h": "2b3d65082663"
   },
   "msg.lock_admin_titel": {
     "de": "Nicht erlaubt",
@@ -9453,8 +9535,8 @@
   "msg.mahnung_storno_frage": {
     "de": "Mahnung {nr} stornieren?\n\nEine Stornomahnung bucht Mahngebühr und Zinsen dieser Mahnung zurück. Die Rechnung fällt auf die Mahnstufe davor zurück.",
     "en": "Cancel reminder {nr}?\n\nA cancellation reminder reverses the reminder fee and interest of this reminder. The invoice falls back to the previous reminder level.",
-    "ts": "2026-06-27 17:01",
-    "h": "64ecbc5ebdb1"
+    "ts": "2026-10-20 18:16",
+    "h": "e638e9235a27"
   },
   "msg.mahnung_nicht_festgeschrieben": {
     "de": "Diese Mahnung ist nicht festgeschrieben und kann nicht storniert werden.",
@@ -9482,15 +9564,21 @@
   },
   "msg.mandantenschutz_artikel": {
     "de": "Artikel {nr} wurde nicht gespeichert: Der Datensatz gehört nicht zur aktiven Firma {firma} oder existiert nicht mehr.\n\nBitte das Fenster schließen und den Artikel neu öffnen.",
-    "en": "Item {nr} was not saved: the record does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the item."
+    "en": "Item {nr} was not saved: the record does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the item.",
+    "ts": "2026-10-20 18:16",
+    "h": "90ae9f97b588"
   },
   "msg.mandantenschutz_kommunikation": {
     "de": "Der Kommunikationseintrag wurde nicht gespeichert: Er gehört nicht zur aktiven Firma {firma} oder existiert nicht mehr.\n\nBitte das Fenster schließen und den Eintrag neu öffnen.",
-    "en": "The communication entry was not saved: it does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the entry."
+    "en": "The communication entry was not saved: it does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the entry.",
+    "ts": "2026-10-20 18:16",
+    "h": "c5b6f30520bd"
   },
   "msg.mandantenschutz_kunde": {
     "de": "Kunde {nr} wurde nicht gespeichert: Der Datensatz gehört nicht zur aktiven Firma {firma} oder existiert nicht mehr.\n\nBitte das Fenster schließen und den Kunden neu öffnen.",
-    "en": "Customer {nr} was not saved: the record does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the customer."
+    "en": "Customer {nr} was not saved: the record does not belong to the active company {firma} or no longer exists.\n\nPlease close the window and reopen the customer.",
+    "ts": "2026-10-20 18:16",
+    "h": "16291d7689bf"
   },
   "msg.maximale_mahnstufe": {
     "de": "Maximale Mahnstufe (4) bereits erreicht.",
@@ -9591,8 +9679,8 @@
   "msg.storno_mit_mahnungen_warnung": {
     "de": "Zu Rechnung {nr} existieren noch folgende Mahnungen:\n\n{liste}\n\nBeim Storno werden gedruckte (festgeschriebene) Mahnungen storniert, nicht gedruckte gelöscht.\n\nWirklich stornieren?",
     "en": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nOn cancellation, printed (finalised) reminders are cancelled and unprinted ones are deleted.\n\nReally cancel?",
-    "ts": "2026-06-25 17:24",
-    "h": "1f255701680e"
+    "ts": "2026-10-20 18:16",
+    "h": "deaf61cb7774"
   },
   "msg.storno_nur_festgeschrieben": {
     "de": "Storno ist nur für festgeschriebene Rechnungen möglich (eine Rechnung wird beim ersten Echtdruck festgeschrieben).",
@@ -9602,23 +9690,33 @@
   },
   "msg.schluessel_grund.beschaedigt": {
     "de": "Die Datei ist beschädigt ({detail}).",
-    "en": "The file is damaged ({detail})."
+    "en": "The file is damaged ({detail}).",
+    "ts": "2026-10-20 18:16",
+    "h": "afb53358d637"
   },
   "msg.schluessel_grund.kein_passwort": {
     "de": "In der Datenbank ist kein Verschlüsselungs-Passwort für diese Firma hinterlegt, die Datei ist aber verschlüsselt.",
-    "en": "No encryption password is stored in the database for this company, but the file is encrypted."
+    "en": "No encryption password is stored in the database for this company, but the file is encrypted.",
+    "ts": "2026-10-20 18:16",
+    "h": "d95ab9011a95"
   },
   "msg.schluessel_grund.passwort_falsch": {
     "de": "Das in der Datenbank hinterlegte Passwort öffnet die Datei nicht — sie wurde mit einem anderen Passwort geschrieben.",
-    "en": "The password stored in the database does not open the file — it was written with a different password."
+    "en": "The password stored in the database does not open the file — it was written with a different password.",
+    "ts": "2026-10-20 18:16",
+    "h": "22a2eccc3eb9"
   },
   "msg.schluessel_nicht_gespeichert_defekt": {
     "de": "Die Schlüssel (API-Keys/Passwörter) der Firma {firma} wurden NICHT gespeichert, die übrigen Angaben schon.\n\nGrund: Die Schlüsseldatei ist nicht lesbar. {grund}\nDatei: {pfad}\n\nDamit die vorhandenen Schlüssel nicht still verloren gehen, wird in diese Datei nicht geschrieben. Abhilfe: Die Datei löschen und danach alle Schlüssel der Firma im Firmenstamm neu erfassen — die bisherigen sind damit verloren.",
-    "en": "The keys (API keys/passwords) of company {firma} were NOT saved; the other details were.\n\nReason: The key file cannot be read. {grund}\nFile: {pfad}\n\nSo that the existing keys are not silently lost, nothing is written to this file. Remedy: Delete the file and then re-enter all keys of the company in the company master data — the previous ones are lost."
+    "en": "The keys (API keys/passwords) of company {firma} were NOT saved; the other details were.\n\nReason: The key file cannot be read. {grund}\nFile: {pfad}\n\nSo that the existing keys are not silently lost, nothing is written to this file. Remedy: Delete the file and then re-enter all keys of the company in the company master data — the previous ones are lost.",
+    "ts": "2026-10-20 18:16",
+    "h": "8ad737f20669"
   },
   "msg.schluessel_nicht_gespeichert_gesperrt": {
     "de": "Die Schlüssel (API-Keys/Passwörter) der Firma {firma} wurden NICHT gespeichert, die übrigen Angaben schon.\n\nGrund: Ein anderes Programm hält die Schlüsseldatei geöffnet (z. B. eine zweite Programminstanz, ein Virenscanner oder die Windows-Suche). {grund}\nDatei: {pfad}\n\nAbhilfe: Kurz warten und erneut speichern. Die bisherige Datei ist unverändert.",
-    "en": "The keys (API keys/passwords) of company {firma} were NOT saved; the other details were.\n\nReason: Another program is holding the key file open (e.g. a second program instance, a virus scanner or Windows Search). {grund}\nFile: {pfad}\n\nRemedy: Wait a moment and save again. The previous file is unchanged."
+    "en": "The keys (API keys/passwords) of company {firma} were NOT saved; the other details were.\n\nReason: Another program is holding the key file open (e.g. a second program instance, a virus scanner or Windows Search). {grund}\nFile: {pfad}\n\nRemedy: Wait a moment and save again. The previous file is unchanged.",
+    "ts": "2026-10-20 18:16",
+    "h": "d925660a9e6e"
   },
   "msg.spellcheck_fehlt": {
     "de": "Das Wörterbuch für die Sprache \"{sprache}\" ist nicht installiert — Rechtschreibprüfung ist deaktiviert.\n\nInstallation:\n  python Install_Woerterbuecher.py {code}",
@@ -10228,11 +10326,15 @@
   },
   "kette.rolle.korrektur": {
     "de": "Korrekturrechnung",
-    "en": "Correction invoice"
+    "en": "Correction invoice",
+    "ts": "2026-10-20 18:16",
+    "h": "9e30bd55a1dc"
   },
   "kette.rolle.storno": {
     "de": "Stornorechnung",
-    "en": "Cancellation invoice"
+    "en": "Cancellation invoice",
+    "ts": "2026-10-20 18:16",
+    "h": "45c51e46c3d8"
   },
   "status.storno": {
     "de": "Storno",
@@ -11017,258 +11119,386 @@
   },
   "komm.anlage.ohne_pdf": {
     "de": "(kein Ausdruck vorhanden)",
-    "en": "(no printout available)"
+    "en": "(no printout available)",
+    "ts": "2026-10-20 18:16",
+    "h": "db48b1ca5653"
   },
   "komm.art.email_ein": {
     "de": "E-Mail (Eingang)",
-    "en": "Email (inbound)"
+    "en": "Email (inbound)",
+    "ts": "2026-10-20 18:16",
+    "h": "3981137cbced"
   },
   "komm.btn.anlage_entfernen": {
     "de": "Anlage entfernen",
-    "en": "Remove attachment"
+    "en": "Remove attachment",
+    "ts": "2026-10-20 18:16",
+    "h": "71ca666d4574"
   },
   "komm.btn.ansehen": {
     "de": "Ansehen",
-    "en": "View"
+    "en": "View",
+    "ts": "2026-10-20 18:16",
+    "h": "025eb0c5f203"
   },
   "komm.btn.drucken": {
     "de": "Drucken",
-    "en": "Print"
+    "en": "Print",
+    "ts": "2026-10-20 18:16",
+    "h": "4cd70ef1b552"
   },
   "komm.btn.erneut_drucken": {
     "de": "Erneut drucken",
-    "en": "Print again"
+    "en": "Print again",
+    "ts": "2026-10-20 18:16",
+    "h": "33784be4bd6c"
   },
   "komm.btn.erneut_senden": {
     "de": "Erneut senden",
-    "en": "Send again"
+    "en": "Send again",
+    "ts": "2026-10-20 18:16",
+    "h": "1a8ffe394010"
   },
   "komm.btn.kopie": {
     "de": "Kopie",
-    "en": "Copy"
+    "en": "Copy",
+    "ts": "2026-10-20 18:16",
+    "h": "9baec3fa8310"
   },
   "komm.btn.kopie_tt": {
     "de": "Inhalt in die Zwischenablage kopieren, um ihn erneut zu verwenden",
-    "en": "Copy the content to the clipboard for reuse"
+    "en": "Copy the content to the clipboard for reuse",
+    "ts": "2026-10-20 18:16",
+    "h": "18e6e6a6522b"
   },
   "komm.btn.senden": {
     "de": "Senden",
-    "en": "Send"
+    "en": "Send",
+    "ts": "2026-10-20 18:16",
+    "h": "3bd15fbae6b3"
   },
   "komm.btn.vorschau": {
     "de": "Vorschau",
-    "en": "Preview"
+    "en": "Preview",
+    "ts": "2026-10-20 18:16",
+    "h": "a6ed0d7a5079"
   },
   "komm.col.art": {
     "de": "Art",
-    "en": "Type"
+    "en": "Type",
+    "ts": "2026-10-20 18:16",
+    "h": "ae151d15af00"
   },
   "komm.col.benutzer": {
     "de": "Benutzer",
-    "en": "User"
+    "en": "User",
+    "ts": "2026-10-20 18:16",
+    "h": "9d3de98e5e98"
   },
   "komm.col.wiedervorlage": {
     "de": "Wiedervorlage",
-    "en": "Follow-up"
+    "en": "Follow-up",
+    "ts": "2026-10-20 18:16",
+    "h": "88204c7d4c24"
   },
   "komm.col.zeitpunkt": {
     "de": "Zeitpunkt",
-    "en": "Time"
+    "en": "Time",
+    "ts": "2026-10-20 18:16",
+    "h": "6e3bfd9d3213"
   },
   "komm.dlg.titel_ansehen": {
     "de": "Kommunikation ansehen",
-    "en": "View communication"
+    "en": "View communication",
+    "ts": "2026-10-20 18:16",
+    "h": "cb804b861660"
   },
   "komm.dlg.titel_bearbeiten": {
     "de": "Kommunikation bearbeiten",
-    "en": "Edit communication"
+    "en": "Edit communication",
+    "ts": "2026-10-20 18:16",
+    "h": "882f359099d3"
   },
   "komm.dlg.titel_neu": {
     "de": "Neue Kommunikation",
-    "en": "New communication"
+    "en": "New communication",
+    "ts": "2026-10-20 18:16",
+    "h": "4c84acbcd4b0"
   },
   "komm.lbl.anhaenge": {
     "de": "Anhänge (Doppelklick öffnet):",
-    "en": "Attachments (double-click to open):"
+    "en": "Attachments (double-click to open):",
+    "ts": "2026-10-20 18:16",
+    "h": "cc431c532cf5"
   },
   "komm.lbl.anlagen": {
     "de": "Anlagen:",
-    "en": "Enclosures:"
+    "en": "Enclosures:",
+    "ts": "2026-10-20 18:16",
+    "h": "a017c62548fa"
   },
   "komm.lbl.art": {
     "de": "Art:",
-    "en": "Type:"
+    "en": "Type:",
+    "ts": "2026-10-20 18:16",
+    "h": "baf1ceca2850"
   },
   "komm.lbl.benutzer": {
     "de": "Bearbeiter:",
-    "en": "Editor:"
+    "en": "Editor:",
+    "ts": "2026-10-20 18:16",
+    "h": "8be9d1222c74"
   },
   "komm.lbl.betreff": {
     "de": "Betreff:",
-    "en": "Subject:"
+    "en": "Subject:",
+    "ts": "2026-10-20 18:16",
+    "h": "856f2a6a31ab"
   },
   "komm.lbl.gesendet": {
     "de": "Versand:",
-    "en": "Dispatch:"
+    "en": "Dispatch:",
+    "ts": "2026-10-20 18:16",
+    "h": "38c05113b5bb"
   },
   "komm.lbl.inhalt": {
     "de": "Inhalt:",
-    "en": "Content:"
+    "en": "Content:",
+    "ts": "2026-10-20 18:16",
+    "h": "7b119846d8f1"
   },
   "komm.lbl.wiedervorlage": {
     "de": "Wiedervorlage:",
-    "en": "Follow-up:"
+    "en": "Follow-up:",
+    "ts": "2026-10-20 18:16",
+    "h": "a0329dc7e799"
   },
   "komm.lbl.zeitpunkt": {
     "de": "Zeitpunkt:",
-    "en": "Time:"
+    "en": "Time:",
+    "ts": "2026-10-20 18:16",
+    "h": "11846aeb06fe"
   },
   "komm.msg.anhang_fehlt": {
     "de": "Die Anhang-Datei wurde nicht gefunden:\n{pfad}",
-    "en": "The attachment file was not found:\n{pfad}"
+    "en": "The attachment file was not found:\n{pfad}",
+    "ts": "2026-10-20 18:16",
+    "h": "c2f7d4290c64"
   },
   "komm.msg.anlage_ohne_pdf": {
     "de": "Von diesen Belegen liegt kein Ausdruck vor; sie werden nicht beigelegt:\n\n{belege}\n\nBelege zuerst drucken, dann erneut versuchen.",
-    "en": "No printout exists for these documents, so they will not be enclosed:\n\n{belege}\n\nPrint the documents first, then try again."
+    "en": "No printout exists for these documents, so they will not be enclosed:\n\n{belege}\n\nPrint the documents first, then try again.",
+    "ts": "2026-10-20 18:16",
+    "h": "08491b59d615"
   },
   "komm.msg.anlage_waehlen": {
     "de": "Bitte eine Anlage auswählen.",
-    "en": "Please select an enclosure."
+    "en": "Please select an enclosure.",
+    "ts": "2026-10-20 18:16",
+    "h": "6d71f97aaa3a"
   },
   "komm.msg.bitte_auswaehlen": {
     "de": "Bitte einen Eintrag auswählen.",
-    "en": "Please select an entry."
+    "en": "Please select an entry.",
+    "ts": "2026-10-20 18:16",
+    "h": "74087879f915"
   },
   "komm.msg.brief_fehlt": {
     "de": "Der Brief wurde nicht gefunden:\n{pfad}",
-    "en": "The letter was not found:\n{pfad}"
+    "en": "The letter was not found:\n{pfad}",
+    "ts": "2026-10-20 18:16",
+    "h": "ba2e1a974732"
   },
   "komm.msg.loeschen_frage": {
     "de": "Ausgewählten Kommunikationseintrag löschen?",
-    "en": "Delete the selected communication entry?"
+    "en": "Delete the selected communication entry?",
+    "ts": "2026-10-20 18:16",
+    "h": "89492792c61f"
   },
   "komm.status.entwurf": {
     "de": "Entwurf (noch nicht verschickt)",
-    "en": "Draft (not yet sent)"
+    "en": "Draft (not yet sent)",
+    "ts": "2026-10-20 18:16",
+    "h": "7d0e71ff5d59"
   },
   "kundeninfo.anruf_betreff": {
     "de": "Telefonat {nr}",
-    "en": "Phone call {nr}"
+    "en": "Phone call {nr}",
+    "ts": "2026-10-20 18:16",
+    "h": "9234b375414b"
   },
   "kundeninfo.beleg_filter.alle": {
     "de": "Alle Belege",
-    "en": "All documents"
+    "en": "All documents",
+    "ts": "2026-10-20 18:16",
+    "h": "e00f0f558629"
   },
   "kundeninfo.beleg_filter.kette": {
     "de": "Belegkette",
-    "en": "Document chain"
+    "en": "Document chain",
+    "ts": "2026-10-20 18:16",
+    "h": "9c63fe10b2a2"
   },
   "kundeninfo.btn.anrufen": {
     "de": "Anrufen",
-    "en": "Call"
+    "en": "Call",
+    "ts": "2026-10-20 18:16",
+    "h": "b2e792f8d699"
   },
   "kundeninfo.btn.brief": {
     "de": "Brief schreiben",
-    "en": "Write letter"
+    "en": "Write letter",
+    "ts": "2026-10-20 18:16",
+    "h": "2a7ef3137466"
   },
   "kundeninfo.btn.email": {
     "de": "E-Mail senden",
-    "en": "Send email"
+    "en": "Send email",
+    "ts": "2026-10-20 18:16",
+    "h": "d89f3d7c395d"
   },
   "kundeninfo.btn.email_abruf": {
     "de": "E-Mails abrufen",
-    "en": "Retrieve emails"
+    "en": "Retrieve emails",
+    "ts": "2026-10-20 18:16",
+    "h": "828b713a5c38"
   },
   "kundeninfo.btn.email_abruf_laeuft": {
     "de": "Abruf läuft …",
-    "en": "Retrieving …"
+    "en": "Retrieving …",
+    "ts": "2026-10-20 18:16",
+    "h": "7b044505b89d"
   },
   "kundeninfo.eml_filter": {
     "de": "E-Mail-Dateien (*.eml)",
-    "en": "Email files (*.eml)"
+    "en": "Email files (*.eml)",
+    "ts": "2026-10-20 18:16",
+    "h": "f6d284f8761f"
   },
   "kundeninfo.gbx.belege": {
     "de": "Belege",
-    "en": "Documents"
+    "en": "Documents",
+    "ts": "2026-10-20 18:16",
+    "h": "42fcd7cc94ad"
   },
   "kundeninfo.gbx.kommunikation": {
     "de": "Kommunikation",
-    "en": "Communication"
+    "en": "Communication",
+    "ts": "2026-10-20 18:16",
+    "h": "f8f401dc653f"
   },
   "kundeninfo.gbx.kopf": {
     "de": "Kundendaten",
-    "en": "Customer data"
+    "en": "Customer data",
+    "ts": "2026-10-20 18:16",
+    "h": "cc9661a0c0fb"
   },
   "kundeninfo.gbx.umsatz": {
     "de": "Umsatz (brutto)",
-    "en": "Revenue (gross)"
+    "en": "Revenue (gross)",
+    "ts": "2026-10-20 18:16",
+    "h": "494dee1d8e75"
   },
   "kundeninfo.hint.belegkette": {
     "de": "Doppelklick filtert auf die Belegkette des Belegs",
-    "en": "Double-click filters to the document chain"
+    "en": "Double-click filters to the document chain",
+    "ts": "2026-10-20 18:16",
+    "h": "4f51fb081d53"
   },
   "kundeninfo.lbl.kunde": {
     "de": "Kunde:",
-    "en": "Customer:"
+    "en": "Customer:",
+    "ts": "2026-10-20 18:16",
+    "h": "1acff064f8af"
   },
   "kundeninfo.lbl.name": {
     "de": "Name:",
-    "en": "Name:"
+    "en": "Name:",
+    "ts": "2026-10-20 18:16",
+    "h": "7ac8e472f68d"
   },
   "kundeninfo.lbl.ort": {
     "de": "PLZ/Ort:",
-    "en": "ZIP/City:"
+    "en": "ZIP/City:",
+    "ts": "2026-10-20 18:16",
+    "h": "da4203d5e31a"
   },
   "kundeninfo.msg.abruf_ergebnis": {
     "de": "E-Mail-Abruf abgeschlossen:\n{neu} neu übernommen\n{doppelt} bereits vorhanden\n{ignoriert} nicht zuordenbar (übersprungen)",
-    "en": "Email retrieval finished:\n{neu} newly added\n{doppelt} already present\n{ignoriert} not attributable (skipped)"
+    "en": "Email retrieval finished:\n{neu} newly added\n{doppelt} already present\n{ignoriert} not attributable (skipped)",
+    "ts": "2026-10-20 18:16",
+    "h": "e30a1e8d7b3f"
   },
   "kundeninfo.msg.abruf_fehler_anzahl": {
     "de": "{anzahl} E-Mails konnten nicht verarbeitet werden (Details in der Fehler-Nachverfolgung):",
-    "en": "{anzahl} emails could not be processed (details in error tracking):"
+    "en": "{anzahl} emails could not be processed (details in error tracking):",
+    "ts": "2026-10-20 18:16",
+    "h": "757aaddc4b5f"
   },
   "kundeninfo.msg.email_postausgang": {
     "de": "Die E-Mail wurde erzeugt und liegt im Postausgang (E-Mails) zum Versand bereit.",
-    "en": "The email has been created and is ready to send in the outbox (Emails)."
+    "en": "The email has been created and is ready to send in the outbox (Emails).",
+    "ts": "2026-10-20 18:16",
+    "h": "19d1a4362326"
   },
   "kundeninfo.msg.eml_import_frage": {
     "de": "Automatischer Abruf ist nicht möglich:\n{grund}\n\nStattdessen gespeicherte E-Mail-Dateien (.eml) importieren?",
-    "en": "Automatic retrieval is not available:\n{grund}\n\nImport saved email files (.eml) instead?"
+    "en": "Automatic retrieval is not available:\n{grund}\n\nImport saved email files (.eml) instead?",
+    "ts": "2026-10-20 18:16",
+    "h": "6fd606ae0591"
   },
   "kundeninfo.msg.kein_tel_handler": {
     "de": "Auf diesem Arbeitsplatz ist kein Programm für Telefonanrufe (tel:-Links) eingerichtet.",
-    "en": "No application for phone calls (tel: links) is configured on this workstation."
+    "en": "No application for phone calls (tel: links) is configured on this workstation.",
+    "ts": "2026-10-20 18:16",
+    "h": "69435f546355"
   },
   "kundeninfo.msg.keine_email": {
     "de": "Für diesen Kunden ist keine E-Mail-Adresse hinterlegt.",
-    "en": "No email address is stored for this customer."
+    "en": "No email address is stored for this customer.",
+    "ts": "2026-10-20 18:16",
+    "h": "10c3a763dd94"
   },
   "kundeninfo.umsatz.gesamt": {
     "de": "Gesamt",
-    "en": "Total"
+    "en": "Total",
+    "ts": "2026-10-20 18:16",
+    "h": "7a6c53a14679"
   },
   "kundeninfo.umsatz.jahr": {
     "de": "Jahr",
-    "en": "Year"
+    "en": "Year",
+    "ts": "2026-10-20 18:16",
+    "h": "2f09607ebec0"
   },
   "kundeninfo.umsatz.monat": {
     "de": "Monat",
-    "en": "Month"
+    "en": "Month",
+    "ts": "2026-10-20 18:16",
+    "h": "3ed09801234c"
   },
   "kundeninfo.umsatz.quartal": {
     "de": "Quartal",
-    "en": "Quarter"
+    "en": "Quarter",
+    "ts": "2026-10-20 18:16",
+    "h": "9916866c97d5"
   },
   "kundeninfo.umsatz.quartal_spalte": {
     "de": "Q{q}/{jahr}",
-    "en": "Q{q}/{jahr}"
+    "en": "Q{q}/{jahr}",
+    "ts": "2026-10-20 18:16",
+    "h": "ed2f4ca5f417"
   },
   "sidebar.btn.kundeninfo": {
     "de": "Kundeninfo",
-    "en": "Customer Info"
+    "en": "Customer Info",
+    "ts": "2026-10-20 18:16",
+    "h": "a5a1902cb3e6"
   },
   "tab.kundeninfo": {
     "de": "Kundeninfo",
-    "en": "Customer Info"
+    "en": "Customer Info",
+    "ts": "2026-10-20 18:16",
+    "h": "a5a1902cb3e6"
   }
 }
